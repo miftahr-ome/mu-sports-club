@@ -1,9 +1,7 @@
 FROM php:8.4-cli
+ENV CACHE_BUST=3
 
-ENV CACHE_BUST=2
-
-RUN chmod +x start.sh
-CMD ["sh", "start.sh"]
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     git curl zip unzip \
     libzip-dev libpng-dev \
@@ -23,15 +21,12 @@ RUN npm install -g npm@latest
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
-
 COPY . .
 
 RUN composer install --no-dev --optimize-autoloader --no-interaction
-
 RUN npm ci && npm run build
-
 RUN chmod -R 775 storage bootstrap/cache
+RUN chmod +x start.sh
 
 EXPOSE 8000
-
-CMD ["sh", "-c", "php artisan key:generate && php artisan migrate --force && php artisan config:cache && php -S 0.0.0.0:8000 -t public"]
+CMD ["sh", "start.sh"]
