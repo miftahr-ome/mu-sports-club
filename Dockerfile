@@ -1,10 +1,9 @@
-FROM php:8.2-apache
-
+FROM php:8.4-apache
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git curl zip unzip libzip-dev libpng-dev \
     libxml2-dev libcurl4-openssl-dev \
-    && docker-php-ext-install pdo pdo_mysql zip bcmath
+    && RUN docker-php-ext-install pdo pdo_mysql zip bcmath mbstring
 
 # Install Node.js
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
