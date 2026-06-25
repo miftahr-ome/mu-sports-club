@@ -1,5 +1,7 @@
 FROM php:8.4-cli
 
+ENV CACHE_BUST=2
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git curl zip unzip \
