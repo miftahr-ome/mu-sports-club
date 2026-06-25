@@ -2,7 +2,8 @@ FROM php:8.4-cli
 
 ENV CACHE_BUST=2
 
-# Install system dependencies
+RUN chmod +x start.sh
+CMD ["sh", "start.sh"]
 RUN apt-get update && apt-get install -y \
     git curl zip unzip \
     libzip-dev libpng-dev \
