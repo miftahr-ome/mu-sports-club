@@ -11,7 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // 👈 এই লাইনটি নিশ্চিত করুন (এটিই ওয়েব রাউটে ইনার্শিয়া একটিভেট করে)
+        $middleware->validateCsrfTokens(except: [
+            '/register-event',
+        ]);
+
         $middleware->web(append: [
             \App\Http\Middleware\HandleInertiaRequests::class,
         ]);
