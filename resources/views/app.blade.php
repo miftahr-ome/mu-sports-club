@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="MU Sports Club - Official Sports Club of Metropolitan University, Sylhet. Tournaments, Events and Athletic Excellence.">
     <meta name="google-site-verification" content="f59fdecf25416f70" />
+    <meta name="google-site-verification" content="5l_klaztvnSfnj0jNI783xXCMoxUT2o72AnrUOfkMAU" />
 
 <meta name="keywords" content="MU Sports Club, Metropolitan University Sylhet, Sports, Tournaments, Cricket, Football, Futsal">
 <meta name="robots" content="index, follow">
