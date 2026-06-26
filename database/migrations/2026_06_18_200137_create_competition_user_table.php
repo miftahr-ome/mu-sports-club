@@ -8,14 +8,12 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('competitions', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->string('manager_name')->default('Not Assigned'); // টুর্নামেন্ট ম্যানেজার
-            $table->integer('players_count')->default(0);
-            $table->timestamps();
-        });
+       Schema::create('competition_user', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('competition_id')->constrained()->onDelete('cascade');
+    $table->foreignId('user_id')->constrained()->onDelete('cascade');
+    $table->timestamps();
+});
     }
 
     public function down(): void
