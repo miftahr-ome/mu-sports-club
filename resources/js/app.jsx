@@ -520,10 +520,21 @@ function AdminLogin({ onLogin, dark }) {
     );
 }
 
-// ─── Main App ─────────────────────────────────────────────────────────────────
 function MUSportsClubApp() {
-    const dbEvents = window.backendEvents || [];
-    const dbUsers = window.backendUsers || [];
+const [dbEvents, setDbEvents] = useState(window.backendEvents || []);
+
+useEffect(() => {
+    fetch('/admin/events', {
+        headers: { 'X-Admin-Key': ADMIN_PASSWORD }
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success && data.data.length > 0) {
+            setDbEvents(data.data);
+        }
+    })
+    .catch(() => {});
+}, []);    const dbUsers = window.backendUsers || [];
 
     const [currentTab, setCurrentTab] = useState('home');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
