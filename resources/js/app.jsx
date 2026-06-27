@@ -7,8 +7,6 @@ import { createRoot } from 'react-dom/client';
 // ─── Admin Password (change this!) ───────────────────────────────────────────
 const ADMIN_PASSWORD = 'musc2026admin';
 
-const [memberForm, setMemberForm] = useState({ name: '', email: '', phone: '', committee_role: '', profile_picture: '' });
-const [editingMember, setEditingMember] = useState(null);
 function useCountUp(target, duration = 2000, start = false) {
     const [count, setCount] = useState(0);
     useEffect(() => {
@@ -69,47 +67,6 @@ const testimonials = [
     { name: "MANNA", dept: "CSE 62, MU", text: "The indoor games season is brilliantly organized. Carrom and Chess tournaments with proper brackets and scheduling — loved every moment.", avatar: "MN" },
     { name: "SALEH", dept: "English, MU", text: "From futsal to cricket, every event is managed with so much passion and dedication. Proud to be part of this family.", avatar: "SL" },
 ];
-const saveMember = async () => {
-    const url = editingMember ? `/admin/members/${editingMember.id}` : '/admin/members';
-    const method = editingMember ? 'PUT' : 'POST';
-    try {
-        const res = await fetch(url, {
-            method,
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Admin-Key': ADMIN_PASSWORD,
-                'X-CSRF-TOKEN': csrfToken()
-            },
-            body: JSON.stringify(memberForm)
-        });
-        const data = await res.json();
-        if (data.success) {
-            showToast(editingMember ? 'Member updated!' : 'Member added!');
-            setMemberForm({ name: '', email: '', phone: '', committee_role: '', profile_picture: '' });
-            setEditingMember(null);
-            fetchMembers();
-        }
-    } catch { showToast('Save failed', 'error'); }
-};
-
-const deleteMember = async (id) => {
-    if (!confirm('Delete this member?')) return;
-    try {
-        const res = await fetch(`/admin/members/${id}`, {
-            method: 'DELETE',
-            headers: { 'X-Admin-Key': ADMIN_PASSWORD, 'X-CSRF-TOKEN': csrfToken() }
-        });
-        const data = await res.json();
-        if (data.success) { showToast('Member deleted!'); fetchMembers(); }
-    } catch { showToast('Delete failed', 'error'); }
-};
-
-const startEditMember = (m) => {
-    setEditingMember(m);
-    setMemberForm({ name: m.name, email: m.email, phone: m.phone || '', committee_role: m.committee_role || '', profile_picture: m.profile_picture || '' });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-};
-
 
 function TestimonialCarousel({ dark }) {
     const [active, setActive] = useState(0);
@@ -363,122 +320,56 @@ function AdminPanel({ onLogout, dark }) {
 
                 {/* ── Members Tab ── */}
                 {adminTab === 'members' && (
-    <div className="space-y-8">
-        {/* Add/Edit Form */}
-        <div className={`p-6 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
-            <h3 className={`font-black text-base mb-5 ${d ? 'text-white' : 'text-blue-950'}`}>
-                {editingMember ? '✏️ Edit Member' : '➕ Add New Member'}
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                <input type="text" placeholder="Full Name *" value={memberForm.name}
-                    onChange={e => setMemberForm({ ...memberForm, name: e.target.value })}
-                    className={`p-3 border rounded-xl text-sm outline-none ${d ? 'bg-slate-800 border-slate-700 text-white focus:border-amber-500' : 'border-slate-200 focus:border-blue-500'}`} />
-                <input type="email" placeholder="Email *" value={memberForm.email}
-                    onChange={e => setMemberForm({ ...memberForm, email: e.target.value })}
-                    className={`p-3 border rounded-xl text-sm outline-none ${d ? 'bg-slate-800 border-slate-700 text-white focus:border-amber-500' : 'border-slate-200 focus:border-blue-500'}`} />
-                <input type="text" placeholder="Phone" value={memberForm.phone}
-                    onChange={e => setMemberForm({ ...memberForm, phone: e.target.value })}
-                    className={`p-3 border rounded-xl text-sm outline-none ${d ? 'bg-slate-800 border-slate-700 text-white focus:border-amber-500' : 'border-slate-200 focus:border-blue-500'}`} />
-                <select value={memberForm.committee_role}
-                    onChange={e => setMemberForm({ ...memberForm, committee_role: e.target.value })}
-                    className={`p-3 border rounded-xl text-sm outline-none ${d ? 'bg-slate-800 border-slate-700 text-white focus:border-amber-500' : 'border-slate-200 focus:border-blue-500'}`}>
-                    <option value="">-- Select Role --</option>
-                    <option>PRESIDENT</option>
-                    <option>GENERAL SECRETARY</option>
-                    <option>ORGANISING SECRETARY</option>
-                    <option>THE GREAT TREASURER</option>
-                    <option>EVENT COORDINATOR</option>
-                    <option>OFFICE SECRETARY</option>
-                    <option>PRESS SECRETARY</option>
-                    <option>CHIEF PHOTOGRAPHER</option>
-                    <option>Executive Member</option>
-                </select>
-                <input type="text" placeholder="Profile Picture URL" value={memberForm.profile_picture}
-                    onChange={e => setMemberForm({ ...memberForm, profile_picture: e.target.value })}
-                    className={`p-3 border rounded-xl text-sm outline-none sm:col-span-2 ${d ? 'bg-slate-800 border-slate-700 text-white focus:border-amber-500' : 'border-slate-200 focus:border-blue-500'}`} />
-            </div>
-            <div className="flex gap-3">
-                <button onClick={saveMember}
-                    className="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl transition-colors">
-                    {editingMember ? '💾 Update Member' : '➕ Add Member'}
-                </button>
-                {editingMember && (
-                    <button onClick={() => { setEditingMember(null); setMemberForm({ name: '', email: '', phone: '', committee_role: '', profile_picture: '' }); }}
-                        className={`px-6 py-2.5 font-black text-xs rounded-xl transition-colors ${d ? 'bg-slate-700 text-white' : 'bg-slate-100 text-slate-700'}`}>
-                        Cancel
-                    </button>
+                    <div>
+                        <div className="flex justify-between items-center mb-5">
+                            <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-blue-950'}`}>
+                                All Members <span className="text-amber-500">({members.length})</span>
+                            </h2>
+                            <button onClick={fetchMembers} className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl">
+                                🔄 Refresh
+                            </button>
+                        </div>
+
+                        {loading ? (
+                            <div className="text-center py-20 text-slate-400 font-black">Loading...</div>
+                        ) : members.length === 0 ? (
+                            <div className={`text-center py-20 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+                                <p className="text-4xl mb-3">👥</p>
+                                <p className={`font-black ${d ? 'text-slate-400' : 'text-slate-500'}`}>No members found</p>
+                            </div>
+                        ) : (
+                            <div className="overflow-x-auto rounded-2xl border shadow-sm">
+                                <table className={`w-full text-sm ${d ? 'bg-slate-900 border-slate-800' : 'bg-white'}`}>
+                                    <thead>
+                                        <tr className={`text-[10px] font-black uppercase tracking-wider ${d ? 'bg-slate-800 text-slate-400' : 'bg-slate-50 text-slate-500'}`}>
+                                            <th className="px-4 py-3 text-left">#</th>
+                                            <th className="px-4 py-3 text-left">Name</th>
+                                            <th className="px-4 py-3 text-left">Email</th>
+                                            <th className="px-4 py-3 text-left">Role</th>
+                                            <th className="px-4 py-3 text-left">Phone</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {members.map((m, i) => (
+                                            <tr key={m.id} className={`border-t ${d ? 'border-slate-800 hover:bg-slate-800/50' : 'border-slate-100 hover:bg-slate-50'}`}>
+                                                <td className={`px-4 py-3 font-black text-xs ${d ? 'text-slate-500' : 'text-slate-400'}`}>{i + 1}</td>
+                                                <td className={`px-4 py-3 font-bold ${d ? 'text-white' : 'text-slate-800'}`}>{m.name}</td>
+                                                <td className={`px-4 py-3 ${d ? 'text-slate-300' : 'text-slate-600'}`}>{m.email}</td>
+                                                <td className="px-4 py-3">
+                                                    <span className="bg-blue-100 text-blue-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg">
+                                                        {m.committee_role || m.system_role || 'Member'}
+                                                    </span>
+                                                </td>
+                                                <td className={`px-4 py-3 ${d ? 'text-slate-300' : 'text-slate-600'}`}>{m.phone || '—'}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+                    </div>
                 )}
-            </div>
-        </div>
 
-        {/* Members List */}
-        <div>
-            <div className="flex justify-between items-center mb-4">
-                <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-blue-950'}`}>
-                    All Members <span className="text-amber-500">({members.length})</span>
-                </h2>
-                <button onClick={fetchMembers} className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl">
-                    🔄 Refresh
-                </button>
-            </div>
-
-            {loading ? (
-                <div className="text-center py-20 text-slate-400 font-black">Loading...</div>
-            ) : members.length === 0 ? (
-                <div className={`text-center py-20 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
-                    <p className="text-4xl mb-3">👥</p>
-                    <p className={`font-black ${d ? 'text-slate-400' : 'text-slate-500'}`}>No members yet — add one above!</p>
-                </div>
-            ) : (
-                <div className="overflow-x-auto rounded-2xl border shadow-sm">
-                    <table className={`w-full text-sm ${d ? 'bg-slate-900 border-slate-800' : 'bg-white'}`}>
-                        <thead>
-                            <tr className={`text-[10px] font-black uppercase tracking-wider ${d ? 'bg-slate-800 text-slate-400' : 'bg-slate-50 text-slate-500'}`}>
-                                <th className="px-4 py-3 text-left">#</th>
-                                <th className="px-4 py-3 text-left">Photo</th>
-                                <th className="px-4 py-3 text-left">Name</th>
-                                <th className="px-4 py-3 text-left">Email</th>
-                                <th className="px-4 py-3 text-left">Role</th>
-                                <th className="px-4 py-3 text-left">Phone</th>
-                                <th className="px-4 py-3 text-left">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {members.map((m, i) => (
-                                <tr key={m.id} className={`border-t ${d ? 'border-slate-800 hover:bg-slate-800/50' : 'border-slate-100 hover:bg-slate-50'}`}>
-                                    <td className={`px-4 py-3 font-black text-xs ${d ? 'text-slate-500' : 'text-slate-400'}`}>{i + 1}</td>
-                                    <td className="px-4 py-3">
-                                        <img src={m.profile_picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name)}&background=1E3A8A&color=fff`}
-                                            className="w-9 h-9 rounded-xl object-cover" alt=""
-                                            onError={e => { e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name)}&background=1E3A8A&color=fff`; }} />
-                                    </td>
-                                    <td className={`px-4 py-3 font-bold ${d ? 'text-white' : 'text-slate-800'}`}>{m.name}</td>
-                                    <td className={`px-4 py-3 ${d ? 'text-slate-300' : 'text-slate-600'}`}>{m.email}</td>
-                                    <td className="px-4 py-3">
-                                        <span className="bg-blue-100 text-blue-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg">
-                                            {m.committee_role || 'Member'}
-                                        </span>
-                                    </td>
-                                    <td className={`px-4 py-3 ${d ? 'text-slate-300' : 'text-slate-600'}`}>{m.phone || '—'}</td>
-                                    <td className="px-4 py-3 flex gap-2">
-                                        <button onClick={() => startEditMember(m)}
-                                            className="text-[10px] font-black bg-blue-100 hover:bg-blue-200 text-blue-700 px-2.5 py-1 rounded-lg">
-                                            ✏️ Edit
-                                        </button>
-                                        <button onClick={() => deleteMember(m.id)}
-                                            className="text-[10px] font-black bg-red-100 hover:bg-red-200 text-red-700 px-2.5 py-1 rounded-lg">
-                                            🗑 Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            )}
-        </div>
-    </div>
-)}
                 {/* ── Events Tab ── */}
                 {adminTab === 'events' && (
                     <div className="space-y-8">
@@ -629,21 +520,10 @@ function AdminLogin({ onLogin, dark }) {
     );
 }
 
+// ─── Main App ─────────────────────────────────────────────────────────────────
 function MUSportsClubApp() {
-const [dbEvents, setDbEvents] = useState(window.backendEvents || []);
-
-useEffect(() => {
-    fetch('/admin/events', {
-        headers: { 'X-Admin-Key': ADMIN_PASSWORD }
-    })
-    .then(r => r.json())
-    .then(data => {
-        if (data.success && data.data.length > 0) {
-            setDbEvents(data.data);
-        }
-    })
-    .catch(() => {});
-}, []);    const dbUsers = window.backendUsers || [];
+    const dbEvents = window.backendEvents || [];
+    const dbUsers = window.backendUsers || [];
 
     const [currentTab, setCurrentTab] = useState('home');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -729,14 +609,14 @@ useEffect(() => {
 
     const committeeList = dbUsers.length > 1 ? dbUsers : defaultCommittee;
 
-   const clubEvents = dbEvents.length > 0 ? dbEvents : [
-    { title: "INDOOR GAMES SEASON-15", type: "Indoor Tournament", date: "July 5, 2026", details: "Annual ultimate indoor showdown for enthusiasts at MU Lounge." },
-    { title: "INTRA-MUSC FUTSAL", type: "Indoor Tournament", date: "August 15, 2026", details: "Strategic mind games tournament targeting MUSC members brackets." },
-    { title: "LEAGUE M", type: "League Match", date: "Sep 02, 2026", details: "Premium inter-university 9-a-side main football league." },
-    { title: "INTRA FUTSAL", type: "League Match", date: "Oct 20, 2026", details: "The ultimate futsal competition." },
-    { title: "UPL", type: "Domestic Tournament", date: "Nov 15, 2026", details: "The grand cricket tournament under international standard rules." },
-    { title: "MPL-15", type: "Tournament", date: "Jan 20, 2027", details: "Inter-university level grand cricket event." }
-];
+    const clubEvents = dbEvents.length >= 6 ? dbEvents : [
+        { title: "INDOOR GAMES SEASON-15", type: "Indoor Tournament", date: "July 5, 2026", details: "Annual ultimate indoor showdown for enthusiasts at MU Lounge." },
+        { title: "INTRA-MUSC FUTSAL", type: "Indoor Tournament", date: "August 15, 2026", details: "Strategic mind games tournament targeting MUSC members brackets." },
+        { title: "LEAGUE M", type: "League Match", date: "Sep 02, 2026", details: "Premium inter-university 9-a-side main football league." },
+        { title: "INTRA FUTSAL", type: "League Match", date: "Oct 20, 2026", details: "The ultimate futsal competition." },
+        { title: "UPL", type: "Domestic Tournament", date: "Nov 15, 2026", details: "The grand cricket tournament under international standard rules." },
+        { title: "MPL-15", type: "Tournament", date: "Jan 20, 2027", details: "Inter-university level grand cricket event." }
+    ];
 
     const galleryImages = [
         { src: "https://scontent.fdac174-1.fna.fbcdn.net/v/t39.30808-6/626331988_1313951187425703_3795850859671558213_n.jpg?stp=dst-jpg_tt6&cstp=mx1920x1080&ctp=s1920x1080&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGfKZKxBhUkxshIv0MLqNsX5vVj678KACvm9WPrvwoAK_eOrkTMWMH01cqcd1GjE6YNcNnRRK7AOIQRMA7QM7px&_nc_ohc=V5_lUO_g7DIQ7kNvwECe9yJ&_nc_oc=AdpKO67a3GM6P6QSjQj3cb0YMvX3DR9RKfPWBe0pgh0qzXQlvazn3RB1C3yU7qdIvzw&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=WJslUUbN2hf_h-FYaxpZ3g&_nc_ss=7b2a8&oh=00_Af-hTbY22ijzzJncUWTzbfk16iUoIIG_Az5RAw-votkguw&oe=6A408A7F", label: "MPL Champions 2026" },
