@@ -620,14 +620,14 @@ useEffect(() => {
 
     const committeeList = dbUsers.length > 1 ? dbUsers : defaultCommittee;
 
-    const clubEvents = dbEvents.length >= 6 ? dbEvents : [
-        { title: "INDOOR GAMES SEASON-15", type: "Indoor Tournament", date: "July 5, 2026", details: "Annual ultimate indoor showdown for enthusiasts at MU Lounge." },
-        { title: "INTRA-MUSC FUTSAL", type: "Indoor Tournament", date: "August 15, 2026", details: "Strategic mind games tournament targeting MUSC members brackets." },
-        { title: "LEAGUE M", type: "League Match", date: "Sep 02, 2026", details: "Premium inter-university 9-a-side main football league." },
-        { title: "INTRA FUTSAL", type: "League Match", date: "Oct 20, 2026", details: "The ultimate futsal competition." },
-        { title: "UPL", type: "Domestic Tournament", date: "Nov 15, 2026", details: "The grand cricket tournament under international standard rules." },
-        { title: "MPL-15", type: "Tournament", date: "Jan 20, 2027", details: "Inter-university level grand cricket event." }
-    ];
+   const clubEvents = dbEvents.length > 0 ? dbEvents : [
+    { title: "INDOOR GAMES SEASON-15", type: "Indoor Tournament", date: "July 5, 2026", details: "Annual ultimate indoor showdown for enthusiasts at MU Lounge." },
+    { title: "INTRA-MUSC FUTSAL", type: "Indoor Tournament", date: "August 15, 2026", details: "Strategic mind games tournament targeting MUSC members brackets." },
+    { title: "LEAGUE M", type: "League Match", date: "Sep 02, 2026", details: "Premium inter-university 9-a-side main football league." },
+    { title: "INTRA FUTSAL", type: "League Match", date: "Oct 20, 2026", details: "The ultimate futsal competition." },
+    { title: "UPL", type: "Domestic Tournament", date: "Nov 15, 2026", details: "The grand cricket tournament under international standard rules." },
+    { title: "MPL-15", type: "Tournament", date: "Jan 20, 2027", details: "Inter-university level grand cricket event." }
+];
 
     const galleryImages = [
         { src: "https://scontent.fdac174-1.fna.fbcdn.net/v/t39.30808-6/626331988_1313951187425703_3795850859671558213_n.jpg?stp=dst-jpg_tt6&cstp=mx1920x1080&ctp=s1920x1080&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGfKZKxBhUkxshIv0MLqNsX5vVj678KACvm9WPrvwoAK_eOrkTMWMH01cqcd1GjE6YNcNnRRK7AOIQRMA7QM7px&_nc_ohc=V5_lUO_g7DIQ7kNvwECe9yJ&_nc_oc=AdpKO67a3GM6P6QSjQj3cb0YMvX3DR9RKfPWBe0pgh0qzXQlvazn3RB1C3yU7qdIvzw&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=WJslUUbN2hf_h-FYaxpZ3g&_nc_ss=7b2a8&oh=00_Af-hTbY22ijzzJncUWTzbfk16iUoIIG_Az5RAw-votkguw&oe=6A408A7F", label: "MPL Champions 2026" },
