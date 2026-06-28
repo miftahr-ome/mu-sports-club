@@ -13,17 +13,21 @@ Route::get('/', function () {
 });
 
 Route::post('/register-event', function (Request $request) {
-    $data = $request->json()->all();
-    DB::table('registrations')->insert([
-        'player_name' => $data['player_name'] ?? '',
-        'email'       => $data['email'] ?? '',
-        'phone'       => $data['phone'] ?? '',
-        'event_name'  => $data['event_name'] ?? '',
-        'department'  => $data['department'] ?? '',
-        'created_at'  => now(),
-        'updated_at'  => now(),
-    ]);
-    return response()->json(['success' => true, 'message' => 'Registered Successfully!']);
+    try {
+        $data = $request->json()->all();
+        DB::table('registrations')->insert([
+            'player_name' => $data['player_name'] ?? '',
+            'email'       => $data['email'] ?? '',
+            'phone'       => $data['phone'] ?? '',
+            'event_name'  => $data['event_name'] ?? '',
+            'department'  => $data['department'] ?? '',
+            'created_at'  => now(),
+            'updated_at'  => now(),
+        ]);
+        return response()->json(['success' => true, 'message' => 'Registered Successfully!']);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+    }
 });
 
 // Admin — Get Registrations
@@ -58,19 +62,39 @@ Route::post('/admin/members', function (Request $request) {
     if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) {
         return response()->json(['error' => 'Unauthorized'], 401);
     }
-    $data = $request->json()->all();
-    DB::table('users')->insert([
-        'name'            => $data['name'] ?? '',
-        'email'           => $data['email'] ?? '',
-        'phone'           => $data['phone'] ?? '',
-        'committee_role'  => $data['committee_role'] ?? '',
-        'system_role'     => $data['system_role'] ?? 'member',
-        'profile_picture' => $data['profile_picture'] ?? '',
-        'password'        => bcrypt('musc2026'),
-        'created_at'      => now(),
-        'updated_at'      => now(),
-    ]);
-    return response()->json(['success' => true]);
+    try {
+        $data = $request->json()->all();
+
+        // Debug: return what we received so we can verify data is arriving
+        if (empty($data) || !isset($data['name'])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No JSON data received. Got: ' . json_encode($data),
+                'content_type' => $request->header('Content-Type'),
+                'raw' => $request->getContent(),
+            ], 422);
+        }
+
+        DB::table('users')->insert([
+            'name'            => $data['name'],
+            'email'           => $data['email'],
+            'phone'           => $data['phone'] ?? '',
+            'committee_role'  => $data['committee_role'] ?? '',
+            'system_role'     => $data['system_role'] ?? 'member',
+            'profile_picture' => $data['profile_picture'] ?? '',
+            'password'        => bcrypt('musc2026'),
+            'created_at'      => now(),
+            'updated_at'      => now(),
+        ]);
+        return response()->json(['success' => true]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage(),
+            'line'    => $e->getLine(),
+            'file'    => $e->getFile(),
+        ], 500);
+    }
 });
 
 // Admin — Update Member
@@ -78,17 +102,21 @@ Route::put('/admin/members/{id}', function (Request $request, $id) {
     if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) {
         return response()->json(['error' => 'Unauthorized'], 401);
     }
-    $data = $request->json()->all();
-    DB::table('users')->where('id', $id)->update([
-        'name'            => $data['name'] ?? '',
-        'email'           => $data['email'] ?? '',
-        'phone'           => $data['phone'] ?? '',
-        'committee_role'  => $data['committee_role'] ?? '',
-        'system_role'     => $data['system_role'] ?? 'member',
-        'profile_picture' => $data['profile_picture'] ?? '',
-        'updated_at'      => now(),
-    ]);
-    return response()->json(['success' => true]);
+    try {
+        $data = $request->json()->all();
+        DB::table('users')->where('id', $id)->update([
+            'name'            => $data['name'] ?? '',
+            'email'           => $data['email'] ?? '',
+            'phone'           => $data['phone'] ?? '',
+            'committee_role'  => $data['committee_role'] ?? '',
+            'system_role'     => $data['system_role'] ?? 'member',
+            'profile_picture' => $data['profile_picture'] ?? '',
+            'updated_at'      => now(),
+        ]);
+        return response()->json(['success' => true]);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+    }
 });
 
 // Admin — Delete Member
@@ -114,16 +142,20 @@ Route::post('/admin/events', function (Request $request) {
     if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) {
         return response()->json(['error' => 'Unauthorized'], 401);
     }
-    $data = $request->json()->all();
-    DB::table('events')->insert([
-        'title'      => $data['title'] ?? '',
-        'type'       => $data['type'] ?? 'Tournament',
-        'event_date' => $data['date'] ?? '',
-        'details'    => $data['details'] ?? '',
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]);
-    return response()->json(['success' => true]);
+    try {
+        $data = $request->json()->all();
+        DB::table('events')->insert([
+            'title'      => $data['title'] ?? '',
+            'type'       => $data['type'] ?? 'Tournament',
+            'event_date' => $data['date'] ?? '',
+            'details'    => $data['details'] ?? '',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        return response()->json(['success' => true]);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+    }
 });
 
 // Admin — Update Event
@@ -131,15 +163,19 @@ Route::put('/admin/events/{id}', function (Request $request, $id) {
     if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) {
         return response()->json(['error' => 'Unauthorized'], 401);
     }
-    $data = $request->json()->all();
-    DB::table('events')->where('id', $id)->update([
-        'title'      => $data['title'] ?? '',
-        'type'       => $data['type'] ?? 'Tournament',
-        'event_date' => $data['date'] ?? '',
-        'details'    => $data['details'] ?? '',
-        'updated_at' => now(),
-    ]);
-    return response()->json(['success' => true]);
+    try {
+        $data = $request->json()->all();
+        DB::table('events')->where('id', $id)->update([
+            'title'      => $data['title'] ?? '',
+            'type'       => $data['type'] ?? 'Tournament',
+            'event_date' => $data['date'] ?? '',
+            'details'    => $data['details'] ?? '',
+            'updated_at' => now(),
+        ]);
+        return response()->json(['success' => true]);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+    }
 });
 
 // Admin — Delete Event
