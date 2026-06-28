@@ -13,12 +13,13 @@ Route::get('/', function () {
 });
 
 Route::post('/register-event', function (Request $request) {
+    $data = $request->json()->all();
     DB::table('registrations')->insert([
-        'player_name' => $request->player_name,
-        'email'       => $request->email,
-        'phone'       => $request->phone,
-        'event_name'  => $request->event_name,
-        'department'  => $request->department ?? '',
+        'player_name' => $data['player_name'] ?? '',
+        'email'       => $data['email'] ?? '',
+        'phone'       => $data['phone'] ?? '',
+        'event_name'  => $data['event_name'] ?? '',
+        'department'  => $data['department'] ?? '',
         'created_at'  => now(),
         'updated_at'  => now(),
     ]);
@@ -57,13 +58,14 @@ Route::post('/admin/members', function (Request $request) {
     if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) {
         return response()->json(['error' => 'Unauthorized'], 401);
     }
+    $data = $request->json()->all();
     DB::table('users')->insert([
-        'name'            => $request->name,
-        'email'           => $request->email,
-        'phone'           => $request->phone ?? '',
-        'committee_role'  => $request->committee_role,
-        'system_role'     => $request->system_role ?? 'member',
-        'profile_picture' => $request->profile_picture ?? '',
+        'name'            => $data['name'] ?? '',
+        'email'           => $data['email'] ?? '',
+        'phone'           => $data['phone'] ?? '',
+        'committee_role'  => $data['committee_role'] ?? '',
+        'system_role'     => $data['system_role'] ?? 'member',
+        'profile_picture' => $data['profile_picture'] ?? '',
         'password'        => bcrypt('musc2026'),
         'created_at'      => now(),
         'updated_at'      => now(),
@@ -76,13 +78,14 @@ Route::put('/admin/members/{id}', function (Request $request, $id) {
     if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) {
         return response()->json(['error' => 'Unauthorized'], 401);
     }
+    $data = $request->json()->all();
     DB::table('users')->where('id', $id)->update([
-        'name'            => $request->name,
-        'email'           => $request->email,
-        'phone'           => $request->phone ?? '',
-        'committee_role'  => $request->committee_role,
-        'system_role'     => $request->system_role ?? 'member',
-        'profile_picture' => $request->profile_picture ?? '',
+        'name'            => $data['name'] ?? '',
+        'email'           => $data['email'] ?? '',
+        'phone'           => $data['phone'] ?? '',
+        'committee_role'  => $data['committee_role'] ?? '',
+        'system_role'     => $data['system_role'] ?? 'member',
+        'profile_picture' => $data['profile_picture'] ?? '',
         'updated_at'      => now(),
     ]);
     return response()->json(['success' => true]);
@@ -111,11 +114,12 @@ Route::post('/admin/events', function (Request $request) {
     if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) {
         return response()->json(['error' => 'Unauthorized'], 401);
     }
+    $data = $request->json()->all();
     DB::table('events')->insert([
-        'title'      => $request->title,
-        'type'       => $request->type,
-        'event_date' => $request->date,
-        'details'    => $request->details,
+        'title'      => $data['title'] ?? '',
+        'type'       => $data['type'] ?? 'Tournament',
+        'event_date' => $data['date'] ?? '',
+        'details'    => $data['details'] ?? '',
         'created_at' => now(),
         'updated_at' => now(),
     ]);
@@ -127,11 +131,12 @@ Route::put('/admin/events/{id}', function (Request $request, $id) {
     if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) {
         return response()->json(['error' => 'Unauthorized'], 401);
     }
+    $data = $request->json()->all();
     DB::table('events')->where('id', $id)->update([
-        'title'      => $request->title,
-        'type'       => $request->type,
-        'event_date' => $request->date,
-        'details'    => $request->details,
+        'title'      => $data['title'] ?? '',
+        'type'       => $data['type'] ?? 'Tournament',
+        'event_date' => $data['date'] ?? '',
+        'details'    => $data['details'] ?? '',
         'updated_at' => now(),
     ]);
     return response()->json(['success' => true]);

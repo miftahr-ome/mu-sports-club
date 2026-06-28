@@ -1,3 +1,4 @@
+// bootstrap/app.php
 <?php
 
 use Illuminate\Foundation\Application;
@@ -11,12 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->validateCsrfTokens(except: [
-            '/register-event',
-        ]);
+        $middleware->inertia();         // keep your existing Inertia line if present
 
-        $middleware->web(append: [
-            \App\Http\Middleware\HandleInertiaRequests::class,
+        // ADD THIS — exclude these routes from CSRF verification
+        $middleware->validateCsrfTokens(except: [
+            'admin/*',
+            'register-event',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
