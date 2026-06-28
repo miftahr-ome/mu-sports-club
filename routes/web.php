@@ -64,36 +64,22 @@ Route::post('/admin/members', function (Request $request) {
     }
     try {
         $data = $request->json()->all();
-
-        // Debug: return what we received so we can verify data is arriving
-        if (empty($data) || !isset($data['name'])) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No JSON data received. Got: ' . json_encode($data),
-                'content_type' => $request->header('Content-Type'),
-                'raw' => $request->getContent(),
-            ], 422);
-        }
-
         DB::table('users')->insert([
-            'name'            => $data['name'],
-            'email'           => $data['email'],
-            'phone'           => $data['phone'] ?? '',
-            'committee_role'  => $data['committee_role'] ?? '',
-            'system_role'     => $data['system_role'] ?? 'member',
-            'profile_picture' => $data['profile_picture'] ?? '',
-            'password'        => bcrypt('musc2026'),
-            'created_at'      => now(),
-            'updated_at'      => now(),
+            'name'              => $data['name'] ?? '',
+            'email'             => $data['email'] ?? '',
+            'phone'             => $data['phone'] ?? '',
+            'committee_role'    => $data['committee_role'] ?? '',
+            'system_role'       => $data['system_role'] ?? 'member',
+            'profile_picture'   => $data['profile_picture'] ?? '',
+            'password'          => bcrypt('musc2026'),
+            'email_verified_at' => now(),
+            'remember_token'    => \Illuminate\Support\Str::random(10),
+            'created_at'        => now(),
+            'updated_at'        => now(),
         ]);
         return response()->json(['success' => true]);
     } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => $e->getMessage(),
-            'line'    => $e->getLine(),
-            'file'    => $e->getFile(),
-        ], 500);
+        return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
     }
 });
 
