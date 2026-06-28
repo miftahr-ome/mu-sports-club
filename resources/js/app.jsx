@@ -4,7 +4,6 @@ import '../css/app.css';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { createRoot } from 'react-dom/client';
 
-// ─── Admin Password (change this!) ───────────────────────────────────────────
 const ADMIN_PASSWORD = 'musc2026admin';
 
 function useCountUp(target, duration = 2000, start = false) {
@@ -52,7 +51,7 @@ function StatCard({ count, suffix = '', label, icon, dark, delay = 0, trigger })
 function Toast({ message, type, onClose }) {
     useEffect(() => { const t = setTimeout(onClose, 3500); return () => clearTimeout(t); }, [onClose]);
     return (
-        <div className={`fixed bottom-6 right-6 z-[9999] flex items-center gap-3 px-5 py-4 rounded-2xl shadow-2xl text-sm font-bold transition-all animate-slide-up
+        <div className={`fixed bottom-4 right-4 left-4 sm:left-auto sm:bottom-6 sm:right-6 z-[9999] flex items-center gap-3 px-5 py-4 rounded-2xl shadow-2xl text-sm font-bold transition-all animate-slide-up
             ${type === 'success' ? 'bg-emerald-500 text-white' : type === 'error' ? 'bg-red-500 text-white' : 'bg-blue-600 text-white'}`}>
             <span>{type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span>
             <span>{message}</span>
@@ -107,7 +106,8 @@ const sportsCategories = [
     { icon: "🏋️", name: "Athletics", desc: "Track, field and endurance events for campus athletes", tag: "Coming Soon" },
 ];
 
-// ─── Admin Panel Component ────────────────────────────────────────────────────
+const EMPTY_MEMBER = { name: '', email: '', phone: '', committee_role: '', system_role: 'member', profile_picture: '' };
+
 function AdminPanel({ onLogout, dark }) {
     const [adminTab, setAdminTab] = useState('registrations');
     const [registrations, setRegistrations] = useState([]);
@@ -116,6 +116,8 @@ function AdminPanel({ onLogout, dark }) {
     const [loading, setLoading] = useState(false);
     const [eventForm, setEventForm] = useState({ title: '', type: 'Tournament', date: '', details: '' });
     const [editingEvent, setEditingEvent] = useState(null);
+    const [memberForm, setMemberForm] = useState(EMPTY_MEMBER);
+    const [editingMember, setEditingMember] = useState(null);
     const [toast, setToast] = useState(null);
 
     const showToast = (msg, type = 'success') => setToast({ message: msg, type });
@@ -171,6 +173,7 @@ function AdminPanel({ onLogout, dark }) {
     };
 
     const saveEvent = async () => {
+        if (!eventForm.title || !eventForm.date) { showToast('Title and date are required', 'error'); return; }
         const url = editingEvent ? `/admin/events/${editingEvent.id}` : '/admin/events';
         const method = editingEvent ? 'PUT' : 'POST';
         try {
@@ -189,6 +192,8 @@ function AdminPanel({ onLogout, dark }) {
                 setEventForm({ title: '', type: 'Tournament', date: '', details: '' });
                 setEditingEvent(null);
                 fetchEvents();
+            } else {
+                showToast('Save failed', 'error');
             }
         } catch { showToast('Save failed', 'error'); }
     };
@@ -211,6 +216,59 @@ function AdminPanel({ onLogout, dark }) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
+    const saveMember = async () => {
+        if (!memberForm.name || !memberForm.email) { showToast('Name and email are required', 'error'); return; }
+        const url = editingMember ? `/admin/members/${editingMember.id}` : '/admin/members';
+        const method = editingMember ? 'PUT' : 'POST';
+        try {
+            const res = await fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Admin-Key': ADMIN_PASSWORD,
+                    'X-CSRF-TOKEN': csrfToken()
+                },
+                body: JSON.stringify(memberForm)
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast(editingMember ? 'Member updated!' : 'Member added!');
+                setMemberForm(EMPTY_MEMBER);
+                setEditingMember(null);
+                fetchMembers();
+            } else {
+                showToast('Save failed', 'error');
+            }
+        } catch { showToast('Save failed', 'error'); }
+    };
+
+    const deleteMember = async (id) => {
+        if (!confirm('Remove this member?')) return;
+        try {
+            const res = await fetch(`/admin/members/${id}`, {
+                method: 'DELETE',
+                headers: { 'X-Admin-Key': ADMIN_PASSWORD, 'X-CSRF-TOKEN': csrfToken() }
+            });
+            const data = await res.json();
+            if (data.success) { showToast('Member removed!'); fetchMembers(); }
+        } catch { showToast('Delete failed', 'error'); }
+    };
+
+    const startEditMember = (m) => {
+        setEditingMember(m);
+        setMemberForm({
+            name: m.name || '',
+            email: m.email || '',
+            phone: m.phone || '',
+            committee_role: m.committee_role || '',
+            system_role: m.system_role || 'member',
+            profile_picture: m.profile_picture || '',
+        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const cancelMemberEdit = () => { setEditingMember(null); setMemberForm(EMPTY_MEMBER); };
+
     useEffect(() => {
         if (adminTab === 'registrations') fetchRegistrations();
         else if (adminTab === 'members') fetchMembers();
@@ -221,7 +279,6 @@ function AdminPanel({ onLogout, dark }) {
 
     return (
         <div className={`min-h-screen ${d ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
-            {/* Admin Nav */}
             <nav className="bg-slate-900 border-b border-amber-500/20 sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
                     <div className="flex items-center gap-3">
@@ -239,7 +296,6 @@ function AdminPanel({ onLogout, dark }) {
             </nav>
 
             <div className="max-w-7xl mx-auto px-4 py-8">
-                {/* Tab Switcher */}
                 <div className="flex gap-3 mb-8 flex-wrap">
                     {[
                         { key: 'registrations', label: '📋 Registrations' },
@@ -255,10 +311,9 @@ function AdminPanel({ onLogout, dark }) {
                     ))}
                 </div>
 
-                {/* ── Registrations Tab ── */}
                 {adminTab === 'registrations' && (
                     <div>
-                        <div className="flex justify-between items-center mb-5">
+                        <div className="flex flex-wrap justify-between items-center gap-3 mb-5">
                             <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-blue-950'}`}>
                                 All Registrations <span className="text-amber-500">({registrations.length})</span>
                             </h2>
@@ -275,7 +330,7 @@ function AdminPanel({ onLogout, dark }) {
                                 <p className={`font-black ${d ? 'text-slate-400' : 'text-slate-500'}`}>No registrations yet</p>
                             </div>
                         ) : (
-                            <div className="overflow-x-auto rounded-2xl border shadow-sm">
+                            <div className="overflow-x-auto rounded-2xl border shadow-sm -mx-4 px-4 sm:mx-0 sm:px-0">
                                 <table className={`w-full text-sm ${d ? 'bg-slate-900 border-slate-800' : 'bg-white'}`}>
                                     <thead>
                                         <tr className={`text-[10px] font-black uppercase tracking-wider ${d ? 'bg-slate-800 text-slate-400' : 'bg-slate-50 text-slate-500'}`}>
@@ -293,19 +348,19 @@ function AdminPanel({ onLogout, dark }) {
                                         {registrations.map((r, i) => (
                                             <tr key={r.id} className={`border-t ${d ? 'border-slate-800 hover:bg-slate-800/50' : 'border-slate-100 hover:bg-slate-50'}`}>
                                                 <td className={`px-4 py-3 font-black text-xs ${d ? 'text-slate-500' : 'text-slate-400'}`}>{i + 1}</td>
-                                                <td className={`px-4 py-3 font-bold ${d ? 'text-white' : 'text-slate-800'}`}>{r.player_name}</td>
-                                                <td className={`px-4 py-3 ${d ? 'text-slate-300' : 'text-slate-600'}`}>{r.email}</td>
-                                                <td className={`px-4 py-3 ${d ? 'text-slate-300' : 'text-slate-600'}`}>{r.phone}</td>
+                                                <td className={`px-4 py-3 font-bold whitespace-nowrap ${d ? 'text-white' : 'text-slate-800'}`}>{r.player_name}</td>
+                                                <td className={`px-4 py-3 whitespace-nowrap ${d ? 'text-slate-300' : 'text-slate-600'}`}>{r.email}</td>
+                                                <td className={`px-4 py-3 whitespace-nowrap ${d ? 'text-slate-300' : 'text-slate-600'}`}>{r.phone}</td>
                                                 <td className="px-4 py-3">
-                                                    <span className="bg-amber-100 text-amber-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg">{r.event_name}</span>
+                                                    <span className="bg-amber-100 text-amber-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg whitespace-nowrap">{r.event_name}</span>
                                                 </td>
-                                                <td className={`px-4 py-3 ${d ? 'text-slate-300' : 'text-slate-600'}`}>{r.department || '—'}</td>
-                                                <td className={`px-4 py-3 text-xs ${d ? 'text-slate-400' : 'text-slate-500'}`}>
+                                                <td className={`px-4 py-3 whitespace-nowrap ${d ? 'text-slate-300' : 'text-slate-600'}`}>{r.department || '—'}</td>
+                                                <td className={`px-4 py-3 text-xs whitespace-nowrap ${d ? 'text-slate-400' : 'text-slate-500'}`}>
                                                     {r.created_at ? new Date(r.created_at).toLocaleDateString() : '—'}
                                                 </td>
                                                 <td className="px-4 py-3">
                                                     <button onClick={() => deleteRegistration(r.id)}
-                                                        className="text-[10px] font-black bg-red-100 hover:bg-red-200 text-red-700 px-2.5 py-1 rounded-lg transition-colors">
+                                                        className="text-[10px] font-black bg-red-100 hover:bg-red-200 text-red-700 px-2.5 py-1 rounded-lg transition-colors whitespace-nowrap">
                                                         🗑 Delete
                                                     </button>
                                                 </td>
@@ -318,62 +373,112 @@ function AdminPanel({ onLogout, dark }) {
                     </div>
                 )}
 
-                {/* ── Members Tab ── */}
                 {adminTab === 'members' && (
-                    <div>
-                        <div className="flex justify-between items-center mb-5">
-                            <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-blue-950'}`}>
-                                All Members <span className="text-amber-500">({members.length})</span>
-                            </h2>
-                            <button onClick={fetchMembers} className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl">
-                                🔄 Refresh
-                            </button>
+                    <div className="space-y-8">
+                        <div className={`p-6 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+                            <h3 className={`font-black text-base mb-5 ${d ? 'text-white' : 'text-blue-950'}`}>
+                                {editingMember ? '✏️ Edit Member' : '➕ Add New Member'}
+                            </h3>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                <input type="text" placeholder="Full Name *" value={memberForm.name}
+                                    onChange={e => setMemberForm({ ...memberForm, name: e.target.value })}
+                                    className={`p-3 border rounded-xl text-sm outline-none ${d ? 'bg-slate-800 border-slate-700 text-white focus:border-amber-500' : 'border-slate-200 focus:border-blue-500'}`} />
+                                <input type="email" placeholder="Email *" value={memberForm.email}
+                                    onChange={e => setMemberForm({ ...memberForm, email: e.target.value })}
+                                    className={`p-3 border rounded-xl text-sm outline-none ${d ? 'bg-slate-800 border-slate-700 text-white focus:border-amber-500' : 'border-slate-200 focus:border-blue-500'}`} />
+                                <input type="text" placeholder="Phone" value={memberForm.phone}
+                                    onChange={e => setMemberForm({ ...memberForm, phone: e.target.value })}
+                                    className={`p-3 border rounded-xl text-sm outline-none ${d ? 'bg-slate-800 border-slate-700 text-white focus:border-amber-500' : 'border-slate-200 focus:border-blue-500'}`} />
+                                <input type="text" placeholder="Committee Role (e.g. PRESIDENT)" value={memberForm.committee_role}
+                                    onChange={e => setMemberForm({ ...memberForm, committee_role: e.target.value })}
+                                    className={`p-3 border rounded-xl text-sm outline-none ${d ? 'bg-slate-800 border-slate-700 text-white focus:border-amber-500' : 'border-slate-200 focus:border-blue-500'}`} />
+                                <select value={memberForm.system_role} onChange={e => setMemberForm({ ...memberForm, system_role: e.target.value })}
+                                    className={`p-3 border rounded-xl text-sm outline-none ${d ? 'bg-slate-800 border-slate-700 text-white focus:border-amber-500' : 'border-slate-200 focus:border-blue-500'}`}>
+                                    <option value="member">Member</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                                <input type="text" placeholder="Profile Picture URL" value={memberForm.profile_picture}
+                                    onChange={e => setMemberForm({ ...memberForm, profile_picture: e.target.value })}
+                                    className={`p-3 border rounded-xl text-sm outline-none sm:col-span-2 ${d ? 'bg-slate-800 border-slate-700 text-white focus:border-amber-500' : 'border-slate-200 focus:border-blue-500'}`} />
+                            </div>
+                            <div className="flex gap-3">
+                                <button onClick={saveMember}
+                                    className="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl transition-colors">
+                                    {editingMember ? '💾 Update Member' : '➕ Add Member'}
+                                </button>
+                                {editingMember && (
+                                    <button onClick={cancelMemberEdit}
+                                        className={`px-6 py-2.5 font-black text-xs rounded-xl transition-colors ${d ? 'bg-slate-700 text-white' : 'bg-slate-100 text-slate-700'}`}>
+                                        Cancel
+                                    </button>
+                                )}
+                            </div>
                         </div>
 
-                        {loading ? (
-                            <div className="text-center py-20 text-slate-400 font-black">Loading...</div>
-                        ) : members.length === 0 ? (
-                            <div className={`text-center py-20 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
-                                <p className="text-4xl mb-3">👥</p>
-                                <p className={`font-black ${d ? 'text-slate-400' : 'text-slate-500'}`}>No members found</p>
+                        <div>
+                            <div className="flex flex-wrap justify-between items-center gap-3 mb-5">
+                                <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-blue-950'}`}>
+                                    All Members <span className="text-amber-500">({members.length})</span>
+                                </h2>
+                                <button onClick={fetchMembers} className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl">
+                                    🔄 Refresh
+                                </button>
                             </div>
-                        ) : (
-                            <div className="overflow-x-auto rounded-2xl border shadow-sm">
-                                <table className={`w-full text-sm ${d ? 'bg-slate-900 border-slate-800' : 'bg-white'}`}>
-                                    <thead>
-                                        <tr className={`text-[10px] font-black uppercase tracking-wider ${d ? 'bg-slate-800 text-slate-400' : 'bg-slate-50 text-slate-500'}`}>
-                                            <th className="px-4 py-3 text-left">#</th>
-                                            <th className="px-4 py-3 text-left">Name</th>
-                                            <th className="px-4 py-3 text-left">Email</th>
-                                            <th className="px-4 py-3 text-left">Role</th>
-                                            <th className="px-4 py-3 text-left">Phone</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {members.map((m, i) => (
-                                            <tr key={m.id} className={`border-t ${d ? 'border-slate-800 hover:bg-slate-800/50' : 'border-slate-100 hover:bg-slate-50'}`}>
-                                                <td className={`px-4 py-3 font-black text-xs ${d ? 'text-slate-500' : 'text-slate-400'}`}>{i + 1}</td>
-                                                <td className={`px-4 py-3 font-bold ${d ? 'text-white' : 'text-slate-800'}`}>{m.name}</td>
-                                                <td className={`px-4 py-3 ${d ? 'text-slate-300' : 'text-slate-600'}`}>{m.email}</td>
-                                                <td className="px-4 py-3">
-                                                    <span className="bg-blue-100 text-blue-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg">
-                                                        {m.committee_role || m.system_role || 'Member'}
-                                                    </span>
-                                                </td>
-                                                <td className={`px-4 py-3 ${d ? 'text-slate-300' : 'text-slate-600'}`}>{m.phone || '—'}</td>
+
+                            {loading ? (
+                                <div className="text-center py-20 text-slate-400 font-black">Loading...</div>
+                            ) : members.length === 0 ? (
+                                <div className={`text-center py-20 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+                                    <p className="text-4xl mb-3">👥</p>
+                                    <p className={`font-black ${d ? 'text-slate-400' : 'text-slate-500'}`}>No members found</p>
+                                </div>
+                            ) : (
+                                <div className="overflow-x-auto rounded-2xl border shadow-sm -mx-4 px-4 sm:mx-0 sm:px-0">
+                                    <table className={`w-full text-sm ${d ? 'bg-slate-900 border-slate-800' : 'bg-white'}`}>
+                                        <thead>
+                                            <tr className={`text-[10px] font-black uppercase tracking-wider ${d ? 'bg-slate-800 text-slate-400' : 'bg-slate-50 text-slate-500'}`}>
+                                                <th className="px-4 py-3 text-left">#</th>
+                                                <th className="px-4 py-3 text-left">Name</th>
+                                                <th className="px-4 py-3 text-left">Email</th>
+                                                <th className="px-4 py-3 text-left">Role</th>
+                                                <th className="px-4 py-3 text-left">Phone</th>
+                                                <th className="px-4 py-3 text-left">Actions</th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        )}
+                                        </thead>
+                                        <tbody>
+                                            {members.map((m, i) => (
+                                                <tr key={m.id} className={`border-t ${d ? 'border-slate-800 hover:bg-slate-800/50' : 'border-slate-100 hover:bg-slate-50'}`}>
+                                                    <td className={`px-4 py-3 font-black text-xs ${d ? 'text-slate-500' : 'text-slate-400'}`}>{i + 1}</td>
+                                                    <td className={`px-4 py-3 font-bold whitespace-nowrap ${d ? 'text-white' : 'text-slate-800'}`}>{m.name}</td>
+                                                    <td className={`px-4 py-3 whitespace-nowrap ${d ? 'text-slate-300' : 'text-slate-600'}`}>{m.email}</td>
+                                                    <td className="px-4 py-3">
+                                                        <span className="bg-blue-100 text-blue-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg whitespace-nowrap">
+                                                            {m.committee_role || m.system_role || 'Member'}
+                                                        </span>
+                                                    </td>
+                                                    <td className={`px-4 py-3 whitespace-nowrap ${d ? 'text-slate-300' : 'text-slate-600'}`}>{m.phone || '—'}</td>
+                                                    <td className="px-4 py-3 flex gap-2">
+                                                        <button onClick={() => startEditMember(m)}
+                                                            className="text-[10px] font-black bg-blue-100 hover:bg-blue-200 text-blue-700 px-2.5 py-1 rounded-lg whitespace-nowrap">
+                                                            ✏️ Edit
+                                                        </button>
+                                                        <button onClick={() => deleteMember(m.id)}
+                                                            className="text-[10px] font-black bg-red-100 hover:bg-red-200 text-red-700 px-2.5 py-1 rounded-lg whitespace-nowrap">
+                                                            🗑 Remove
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 )}
 
-                {/* ── Events Tab ── */}
                 {adminTab === 'events' && (
                     <div className="space-y-8">
-                        {/* Add/Edit Form */}
                         <div className={`p-6 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
                             <h3 className={`font-black text-base mb-5 ${d ? 'text-white' : 'text-blue-950'}`}>
                                 {editingEvent ? '✏️ Edit Event' : '➕ Add New Event'}
@@ -410,9 +515,8 @@ function AdminPanel({ onLogout, dark }) {
                             </div>
                         </div>
 
-                        {/* Events List */}
                         <div>
-                            <div className="flex justify-between items-center mb-4">
+                            <div className="flex flex-wrap justify-between items-center gap-3 mb-4">
                                 <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-blue-950'}`}>
                                     All Events <span className="text-amber-500">({events.length})</span>
                                 </h2>
@@ -429,7 +533,7 @@ function AdminPanel({ onLogout, dark }) {
                                     <p className={`font-black ${d ? 'text-slate-400' : 'text-slate-500'}`}>No events yet — add one above!</p>
                                 </div>
                             ) : (
-                                <div className="overflow-x-auto rounded-2xl border shadow-sm">
+                                <div className="overflow-x-auto rounded-2xl border shadow-sm -mx-4 px-4 sm:mx-0 sm:px-0">
                                     <table className={`w-full text-sm ${d ? 'bg-slate-900' : 'bg-white'}`}>
                                         <thead>
                                             <tr className={`text-[10px] font-black uppercase tracking-wider ${d ? 'bg-slate-800 text-slate-400' : 'bg-slate-50 text-slate-500'}`}>
@@ -445,19 +549,19 @@ function AdminPanel({ onLogout, dark }) {
                                             {events.map((ev, i) => (
                                                 <tr key={ev.id} className={`border-t ${d ? 'border-slate-800 hover:bg-slate-800/50' : 'border-slate-100 hover:bg-slate-50'}`}>
                                                     <td className={`px-4 py-3 font-black text-xs ${d ? 'text-slate-500' : 'text-slate-400'}`}>{i + 1}</td>
-                                                    <td className={`px-4 py-3 font-bold ${d ? 'text-white' : 'text-slate-800'}`}>{ev.title}</td>
+                                                    <td className={`px-4 py-3 font-bold whitespace-nowrap ${d ? 'text-white' : 'text-slate-800'}`}>{ev.title}</td>
                                                     <td className="px-4 py-3">
-                                                        <span className="bg-emerald-100 text-emerald-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg">{ev.type}</span>
+                                                        <span className="bg-emerald-100 text-emerald-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg whitespace-nowrap">{ev.type}</span>
                                                     </td>
-                                                    <td className={`px-4 py-3 text-xs ${d ? 'text-slate-300' : 'text-slate-600'}`}>{ev.event_date || ev.date || '—'}</td>
+                                                    <td className={`px-4 py-3 text-xs whitespace-nowrap ${d ? 'text-slate-300' : 'text-slate-600'}`}>{ev.event_date || ev.date || '—'}</td>
                                                     <td className={`px-4 py-3 text-xs max-w-xs truncate ${d ? 'text-slate-400' : 'text-slate-500'}`}>{ev.details || '—'}</td>
                                                     <td className="px-4 py-3 flex gap-2">
                                                         <button onClick={() => startEdit(ev)}
-                                                            className="text-[10px] font-black bg-blue-100 hover:bg-blue-200 text-blue-700 px-2.5 py-1 rounded-lg">
+                                                            className="text-[10px] font-black bg-blue-100 hover:bg-blue-200 text-blue-700 px-2.5 py-1 rounded-lg whitespace-nowrap">
                                                             ✏️ Edit
                                                         </button>
                                                         <button onClick={() => deleteEvent(ev.id)}
-                                                            className="text-[10px] font-black bg-red-100 hover:bg-red-200 text-red-700 px-2.5 py-1 rounded-lg">
+                                                            className="text-[10px] font-black bg-red-100 hover:bg-red-200 text-red-700 px-2.5 py-1 rounded-lg whitespace-nowrap">
                                                             🗑 Delete
                                                         </button>
                                                     </td>
@@ -477,7 +581,6 @@ function AdminPanel({ onLogout, dark }) {
     );
 }
 
-// ─── Admin Login Component ────────────────────────────────────────────────────
 function AdminLogin({ onLogin, dark }) {
     const [pw, setPw] = useState('');
     const [error, setError] = useState('');
@@ -493,7 +596,7 @@ function AdminLogin({ onLogin, dark }) {
 
     const d = dark;
     return (
-        <div className={`min-h-screen flex items-center justify-center ${d ? 'bg-slate-950' : 'bg-slate-100'}`}>
+        <div className={`min-h-screen flex items-center justify-center px-4 ${d ? 'bg-slate-950' : 'bg-slate-100'}`}>
             <div className={`w-full max-w-sm p-8 rounded-3xl border shadow-xl ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
                 <div className="text-center mb-8">
                     <span className="text-5xl block mb-3">🛡️</span>
@@ -520,7 +623,6 @@ function AdminLogin({ onLogin, dark }) {
     );
 }
 
-// ─── Main App ─────────────────────────────────────────────────────────────────
 function MUSportsClubApp() {
     const dbEvents = window.backendEvents || [];
     const dbUsers = window.backendUsers || [];
@@ -545,7 +647,6 @@ function MUSportsClubApp() {
         document.documentElement.classList.toggle('dark', darkMode);
     }, [darkMode]);
 
-    // Check URL for admin route
     useEffect(() => {
         if (window.location.hash === '#admin') {
             setShowAdminLogin(true);
@@ -644,7 +745,6 @@ function MUSportsClubApp() {
 
     const d = darkMode;
 
-    // ── Show Admin Panel if logged in ──
     if (showAdminLogin && !isAdmin) {
         return <AdminLogin dark={d} onLogin={() => setIsAdmin(true)} />;
     }
