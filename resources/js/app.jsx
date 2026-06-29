@@ -708,7 +708,10 @@ function MUSportsClubApp() {
         { id: 'c10', name: "Miftahur Rahman Omi", committee_role: "CHIEF PHOTOGRAPHER", email: "leo@mu.edu", phone: "01887457293", profile_picture: "https://scontent.fdac174-1.fna.fbcdn.net/v/t39.30808-6/494788140_643333422028875_6621256742388626645_n.jpg?stp=dst-jpg_tt6&cstp=mx1331x1330&ctp=s1331x1330&_nc_cat=111&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeFsbe_DrxQRtmqgbKJJ4vIcYKkGnmI7cCtgqQaeYjtwK5z-j3-oyO1kYYTghlFmWhY1IySz23faNbPFzxhgCJm7&_nc_ohc=WEIfaiBkX4cQ7kNvwHwBlVm&_nc_oc=AdqG8XkIIPOwCL5KXnVroMBwzWxWi-7pptUfSRKgBQSi8tXEtgkoUK3chsuKk1t-tSY&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=ozq06bFjN2tYkQM2LDpTaw&_nc_ss=7b2a8&oh=00_Af_Pj36Za4yWX-Ffn9TmjakHK_lMxjowjwEYTtzCHp2EPA&oe=6A40CEC6" },
     ];
 
-    const committeeList = dbUsers.length > 0 ? dbUsers : defaultCommittee;
+    const defaultEmails = new Set(defaultCommittee.map(m => m.email));
+const extraMembers = dbUsers.filter(u => !defaultEmails.has(u.email));
+const committeeList = [...defaultCommittee, ...extraMembers];
+
 
     const clubEvents = dbEvents.length >= 6 ? dbEvents : [
         { title: "INDOOR GAMES SEASON-15", type: "Indoor Tournament", date: "July 5, 2026", details: "Annual ultimate indoor showdown for enthusiasts at MU Lounge." },
