@@ -1242,7 +1242,6 @@ import { createRoot } from 'react-dom/client';
 
 const ADMIN_PASSWORD = 'musc2026admin';
 
-// ─── Hooks ───────────────────────────────────────────────────────────────────
 function useCountUp(target, duration = 2000, start = false) {
     const [count, setCount] = useState(0);
     useEffect(() => {
@@ -1271,7 +1270,6 @@ function useInView(threshold = 0.2) {
     return [ref, inView];
 }
 
-// ─── Small Components ─────────────────────────────────────────────────────────
 function StatCard({ count, suffix = '', label, icon, dark, delay = 0, trigger }) {
     const num = useCountUp(count, 2000, trigger);
     return (
@@ -1342,7 +1340,7 @@ const sportsCategories = [
     { icon: "🏋️", name: "Athletics", desc: "Track, field and endurance events for campus athletes", tag: "Coming Soon" },
 ];
 
-// ─── Tournament types config ──────────────────────────────────────────────────
+
 const TEAM_TOURNAMENTS = ['LEAGUE M', 'INTRA-MUSC FUTSAL', 'INTRA FUTSAL', 'UPL', 'MPL-15'];
 const INDOOR_TOURNAMENTS = ['INDOOR GAMES SEASON-15'];
 
@@ -1359,13 +1357,11 @@ const DEFAULT_INDOOR_GAMES = [
     { id: 10, game_name: 'fifa26',      game_icon: '🎮', entry_type: 'solo' },
 ];
 
-// ─── REGISTRATION PAGE (3 tabs) ───────────────────────────────────────────────
 function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
     const [regTab, setRegTab] = useState('tournament'); // 'member' | 'tournament' | 'team'
     const d = dark;
     const csrfToken = () => document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 
-    // ── Tournament (solo + indoor game picker) ────────────────────────────────
     const [formData, setFormData] = useState({ player_name: '', email: '', phone: '', event_name: '', game_name: '', department: '' });
     const [isSaving, setIsSaving] = useState(false);
     const [indoorGames, setIndoorGames] = useState([]);
@@ -1409,7 +1405,6 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
         finally { setIsSaving(false); }
     };
 
-    // ── Team Registration ─────────────────────────────────────────────────────
     const [teamForm, setTeamForm] = useState({
         tournament_name: '', team_name: '', captain_name: '',
         captain_phone: '', captain_email: '', department: '',
@@ -1445,7 +1440,7 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
         finally { setIsTeamSaving(false); }
     };
 
-    // ── Member Registration ───────────────────────────────────────────────────
+
     const [memberForm, setMemberForm] = useState({ name: '', student_id: '', department: '', semester: '', phone: '', email: '' });
     const [isMemberSaving, setIsMemberSaving] = useState(false);
 
@@ -1498,7 +1493,7 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
                 ))}
             </div>
 
-            {/* ── TAB: Member Registration ── */}
+
             {regTab === 'member' && (
                 <div className={`p-7 rounded-3xl border shadow-xl ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-blue-100'}`}>
                     <div className="flex items-center gap-3 mb-6">
@@ -1558,7 +1553,7 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
                 </div>
             )}
 
-            {/* ── TAB: Solo / Indoor Tournament ── */}
+
             {regTab === 'tournament' && (
                 <div className={`p-7 rounded-3xl border shadow-xl ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-blue-100'}`}>
                     <div className="flex items-center gap-3 mb-6">
@@ -1597,7 +1592,6 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
                             </select>
                         </div>
 
-                        {/* Indoor game picker */}
                         {formData.event_name && formData.event_name.toUpperCase().includes('INDOOR') && (
                             <div className="space-y-3">
                                 <label className={labelCls}>Select Your Game *</label>
@@ -1631,7 +1625,7 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
                             </div>
                         )}
 
-                        {/* Redirect to team tab if team tournament selected */}
+
                         {formData.event_name && TEAM_TOURNAMENTS.includes(formData.event_name) && (
                             <div className={`p-4 rounded-xl border ${d ? 'bg-blue-950 border-blue-900' : 'bg-blue-50 border-blue-200'}`}>
                                 <p className={`text-xs font-black ${d ? 'text-blue-300' : 'text-blue-700'}`}>⚽ This is a team tournament! Please use the <strong>Team Entry</strong> tab instead.</p>
@@ -1649,7 +1643,7 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
                 </div>
             )}
 
-            {/* ── TAB: Team Registration ── */}
+
             {regTab === 'team' && (
                 <div className={`p-7 rounded-3xl border shadow-xl ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-blue-100'}`}>
                     <div className="flex items-center gap-3 mb-6">
@@ -1708,7 +1702,6 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
                             </div>
                         </div>
 
-                        {/* Players List */}
                         <div className="space-y-3">
                             <p className={`text-xs font-black uppercase tracking-wider ${d ? 'text-amber-400' : 'text-blue-700'}`}>
                                 👥 Squad Players ({isCricket ? '11 players + subs' : 'up to ' + playerCount + ' players'})
@@ -1760,7 +1753,6 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
     );
 }
 
-// ─── Admin Panel ──────────────────────────────────────────────────────────────
 function AdminPanel({ onLogout, dark }) {
     const [adminTab, setAdminTab] = useState('registrations');
     const [registrations, setRegistrations] = useState([]);
@@ -2242,7 +2234,7 @@ function MUSportsClubApp() {
         { id:'c10', name:"Miftahur Rahman Omi",   committee_role:"CHIEF PHOTOGRAPHER",   email:"leo@mu.edu",        phone:"01887457293", profile_picture:"https://scontent.fdac174-1.fna.fbcdn.net/v/t39.30808-6/494788140_643333422028875_6621256742388626645_n.jpg?stp=dst-jpg_tt6&cstp=mx1331x1330&ctp=s1331x1330&_nc_cat=111&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeFsbe_DrxQRtmqgbKJJ4vIcYKkGnmI7cCtgqQaeYjtwK5z-j3-oyO1kYYTghlFmWhY1IySz23faNbPFzxhgCJm7&_nc_ohc=WEIfaiBkX4cQ7kNvwHwBlVm&_nc_oc=AdqG8XkIIPOwCL5KXnVroMBwzWxWi-7pptUfSRKgBQSi8tXEtgkoUK3chsuKk1t-tSY&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=ozq06bFjN2tYkQM2LDpTaw&_nc_ss=7b2a8&oh=00_Af_Pj36Za4yWX-Ffn9TmjakHK_lMxjowjwEYTtzCHp2EPA&oe=6A40CEC6" },
     ];
 
-    const committeeList = dbUsers.length > 1 ? dbUsers : defaultCommittee;
+    const committeeList = dbUsers.length > 0 ? dbUsers : defaultCommittee;
 
     const clubEvents = dbEvents.length >= 6 ? dbEvents : [
         { title:"INDOOR GAMES SEASON-15", type:"Indoor Tournament",   date:"July 5, 2026",   details:"Annual ultimate indoor showdown — Chess, Carrom, Table Tennis, Badminton & more at MU Lounge." },

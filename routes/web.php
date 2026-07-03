@@ -3,14 +3,13 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
-// ── Main page
+
 Route::get('/', function () {
     $events = DB::table('events')->orderBy('event_date', 'asc')->get();
     $users  = DB::table('users')->select('id','name','email','system_role','committee_role','phone')->get();
     return view('app', ['dbEvents' => $events, 'dbUsers' => $users]);
 });
 
-// ── Solo tournament registration
 Route::post('/register-event', function (Request $request) {
     DB::table('registrations')->insert([
         'player_name' => $request->player_name,
@@ -23,7 +22,7 @@ Route::post('/register-event', function (Request $request) {
     return response()->json(['success' => true, 'message' => 'Registered Successfully!']);
 });
 
-// ── Club member registration
+
 Route::post('/register-member', function (Request $request) {
     $exists = DB::table('members')->where('email', $request->email)
         ->orWhere('student_id', $request->student_id)->exists();
@@ -44,7 +43,6 @@ Route::post('/register-member', function (Request $request) {
     return response()->json(['success' => true, 'message' => 'Welcome to MU Sports Club!']);
 });
 
-// ── Team registration (football, cricket etc)
 Route::post('/register-team', function (Request $request) {
     DB::table('team_registrations')->insert([
         'tournament_name' => $request->tournament_name,
@@ -60,7 +58,6 @@ Route::post('/register-team', function (Request $request) {
     return response()->json(['success' => true, 'message' => 'Team registered successfully!']);
 });
 
-// ── Get games for a tournament (for indoor game picker)
 Route::get('/tournament-games/{tournament}', function ($tournament) {
     $games = DB::table('tournament_games')
         ->where('tournament_name', $tournament)
@@ -69,7 +66,6 @@ Route::get('/tournament-games/{tournament}', function ($tournament) {
     return response()->json(['success' => true, 'data' => $games]);
 });
 
-// ── Admin routes
 Route::get('/admin/registrations', function (Request $request) {
     if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) return response()->json(['error' => 'Unauthorized'], 401);
     return response()->json(['success' => true, 'data' => DB::table('registrations')->orderBy('created_at','desc')->get()]);
@@ -131,7 +127,7 @@ Route::delete('/admin/events/{id}', function (Request $request, $id) {
     return response()->json(['success' => true]);
 });
 
-// ── Admin: manage tournament games
+
 Route::get('/admin/tournament-games', function (Request $request) {
     if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) return response()->json(['error' => 'Unauthorized'], 401);
     return response()->json(['success' => true, 'data' => DB::table('tournament_games')->get()]);
