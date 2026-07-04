@@ -1347,12 +1347,9 @@ const INDOOR_TOURNAMENTS = ['INDOOR GAMES SEASON-15'];
 const DEFAULT_INDOOR_GAMES = [
     { id: 1, game_name: 'Chess',                 game_icon: '♟️', entry_type: 'solo' },
     { id: 2, game_name: 'Carrom',                game_icon: '🎯', entry_type: 'solo' },
-    // { id: 3, game_name: 'Table Tennis',          game_icon: '🏓', entry_type: 'solo' },
     { id: 4, game_name: 'Badminton',             game_icon: '🏸', entry_type: 'solo' },
-    // { id: 5, game_name: 'Arm Wrestling',         game_icon: '💪', entry_type: 'solo' },
     { id: 6, game_name: 'Ludo',                  game_icon: '🎲', entry_type: 'team' },
     { id: 7, game_name: 'Dart',                  game_icon: '🎯', entry_type: 'solo' },
-    // { id: 8, game_name: 'Scrabble',              game_icon: '🔤', entry_type: 'solo' },
     { id: 9, game_name: 'eFootball', game_icon: '🎮', entry_type: 'solo' },
     { id: 10, game_name: 'fifa26',      game_icon: '🎮', entry_type: 'solo' },
 ];
@@ -2225,7 +2222,7 @@ function MUSportsClubApp() {
         { id:'c16', name:"Samir Ahmed",   committee_role:"Executive for Design",   email:"samir@mu.edu",        phone:"", profile_picture:"https://imgur.com/py1LVG5.jpg" },
         { id:'c17', name:"Mansur Rahman Manna",   committee_role:"Volunteer Coordinator",   email:"manna@mu.edu",        phone:"", profile_picture:"https://imgur.com/iUVviQ7.jpg" },
     ];
-const committeeList = [...defaultCommittee, ...dbUsers];
+    const committeeList = [...defaultCommittee, ...dbUsers];
     const clubEvents = dbEvents.length >= 6 ? dbEvents : [
         { title:"INDOOR GAMES SEASON-15", type:"Indoor Tournament",   date:"July 5, 2026",   details:"Annual ultimate indoor showdown — Chess, Carrom, Table Tennis, Badminton & more at MU Lounge." },
         { title:"INTRA-MUSC FUTSAL",      type:"Indoor Tournament",   date:"August 15, 2026", details:"Strategic futsal tournament targeting MUSC members. Team-based knockout format." },
@@ -2263,6 +2260,14 @@ const committeeList = [...defaultCommittee, ...dbUsers];
 
     if (showAdminLogin && !isAdmin) return <AdminLogin dark={d} onLogin={() => setIsAdmin(true)} />;
     if (isAdmin) return <AdminPanel dark={d} onLogout={() => { setIsAdmin(false); setShowAdminLogin(false); window.location.hash = ''; }} />;
+
+    // Nav items: label + the actual tab key used by the `currentTab === '...'` checks below.
+    const navItems = [
+        { key: 'home',      label: 'Home' },
+        { key: 'about',     label: 'About' },
+        { key: 'committee', label: 'Executive Panel' },
+        { key: 'events',    label: 'Tournaments' },
+    ];
 
     return (
         <>
@@ -2307,80 +2312,95 @@ const committeeList = [...defaultCommittee, ...dbUsers];
 
         <div className={`min-h-screen font-sans antialiased transition-colors duration-300 ${d ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
 
-       <nav className={`shadow-2xl sticky top-0 z-50 border-b transition-colors duration-300 ${d ? 'bg-slate-900/95 border-slate-800' : 'bg-slate-950/95 border-amber-500/20'}`} style={{ backdropFilter:'blur(20px)' }}>
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-20 items-center">
-            
+            <nav className={`shadow-2xl sticky top-0 z-50 border-b transition-colors duration-300 ${d ? 'bg-slate-900/95 border-slate-800' : 'bg-slate-950/95 border-amber-500/20'}`} style={{ backdropFilter:'blur(20px)' }}>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex justify-between h-20 items-center">
 
-            <div className="flex items-center space-x-2 md:space-x-3 cursor-pointer group min-w-max shrink-0" onClick={() => goTo('home')}>
+                        <div className="flex items-center space-x-2 md:space-x-3 cursor-pointer group min-w-max shrink-0" onClick={() => goTo('home')}>
+                            <div className="w-10 h-10 md:w-11 md:h-11 rounded-xl overflow-hidden shadow-lg shadow-amber-500/10 bg-white flex items-center justify-center p-0.5 shrink-0">
+                                <img
+                                    src="https://imgur.com/RBtBKlX.jpg"
+                                    alt="Club Logo"
+                                    className="w-full h-full object-contain"
+                                />
+                            </div>
+                            <div className="flex flex-col justify-center">
+                                <span className="text-sm md:text-lg font-black tracking-widest block text-white leading-none">
+                                    MU SPORTS CLUB
+                                </span>
+                            </div>
+                        </div>
 
-                <div className="w-10 h-10 md:w-11 md:h-11 rounded-xl overflow-hidden shadow-lg shadow-amber-500/10 bg-white flex items-center justify-center p-0.5 shrink-0">
-                    <img 
-                        src="https://imgur.com/RBtBKlX.jpg" 
-                        alt="Club Logo" 
-                        className="w-full h-full object-contain" 
-                    />
-                </div>
-                
+                        {/* Desktop nav links */}
+                        <div className="hidden lg:flex items-center space-x-6 text-sm font-semibold text-gray-300">
+                            {navItems.map(item => (
+                                <button key={item.key} onClick={() => goTo(item.key)}
+                                    className={`nav-link transition ${currentTab === item.key ? 'text-amber-500 active' : 'hover:text-white'}`}>
+                                    {item.label}
+                                </button>
+                            ))}
+                        </div>
 
-                <div className="flex flex-col justify-center">
-                    <span className="text-sm md:text-lg font-black tracking-widest block text-white leading-none">
-                        MU SPORTS CLUB
-                    </span>
-                </div>
-            </div>
+                        <div className="flex items-center space-x-4 shrink-0">
 
+                            <div className="flex items-center space-x-3">
+                                <button onClick={() => setDarkMode(!d)} className="text-amber-400 text-lg hover:scale-110 transition-transform">
+                                    {d ? '☀️' : '🌙'}
+                                </button>
+                                <button onClick={() => goTo('register')} className="hidden sm:inline-block bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2 md:px-5 md:py-2.5 rounded-lg text-xs md:text-sm uppercase tracking-wider transition shadow-lg shadow-amber-500/10">
+                                    Register Now
+                                </button>
+                            </div>
 
-            <div className="hidden lg:flex items-center space-x-6 text-sm font-semibold text-gray-300">
-                <button onClick={() => goTo('home')} className="text-amber-500 hover:text-amber-400 transition">Home</button>
-                <button onClick={() => goTo('about')} className="hover:text-white transition">About</button>
-                <button onClick={() => goTo('panel')} className="hover:text-white transition">Executive Panel</button>
-                <button onClick={() => goTo('tournaments')} className="hover:text-white transition">Tournaments</button>
-            </div>
+                            <div className="h-8 w-[1px] bg-slate-800 hidden sm:block"></div>
 
+                            <div className="hidden sm:flex items-center space-x-2 md:space-x-3 text-right">
+                                <div className="flex flex-col justify-center min-w-[110px] md:min-w-[140px]">
+                                    <span className="text-[8px] md:text-[9px] tracking-[.15em] font-extrabold uppercase block leading-tight">
+                                        <span className="text-red-500 font-black">METROPOLITAN</span> <span className="text-white">UNIVERSITY</span>
+                                    </span>
+                                    <span className="block text-[7px] md:text-[8px] tracking-[.25em] text-gray-400 font-medium mt-0.5">
+                                        SYLHET
+                                    </span>
+                                </div>
+                                <div className="w-10 h-10 md:w-11 md:h-11 rounded-xl overflow-hidden shadow-lg bg-white flex items-center justify-center p-0.5 shrink-0">
+                                    <img
+                                        src="https://imgur.com/SGXqF5C.jpg"
+                                        alt="MU Logo"
+                                        className="w-full h-full object-contain"
+                                    />
+                                </div>
+                            </div>
 
-            <div className="flex items-center space-x-4 shrink-0">
-                
-
-                <div className="flex items-center space-x-3">
-
-                    <button className="text-amber-400 text-lg hover:scale-110 transition-transform">
-                        {d ? '☀️' : '🌙'}
-                    </button>
-                    <button className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2 md:px-5 md:py-2.5 rounded-lg text-xs md:text-sm uppercase tracking-wider transition shadow-lg shadow-amber-500/10">
-                        Register Now
-                    </button>
-                </div>
-
-
-                <div className="h-8 w-[1px] bg-slate-800 hidden sm:block"></div>
-
-
-                <div className="hidden sm:flex items-center space-x-2 md:space-x-3 text-right">
-                    <div className="flex flex-col justify-center min-w-[110px] md:min-w-[140px]">
-                        <span className="text-[8px] md:text-[9px] tracking-[.15em] font-extrabold uppercase block leading-tight">
-                            <span className="text-red-500 font-black">METROPOLITAN</span> <span className="text-white">UNIVERSITY</span>
-                        </span>
-                        <span className="block text-[7px] md:text-[8px] tracking-[.25em] text-gray-400 font-medium mt-0.5">
-                            SYLHET
-                        </span>
+                            {/* Mobile hamburger toggle */}
+                            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden text-white p-2 -mr-2">
+                                <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    {isMenuOpen
+                                        ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                                        : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />}
+                                </svg>
+                            </button>
+                        </div>
                     </div>
-
-
-                    <div className="w-10 h-10 md:w-11 md:h-11 rounded-xl overflow-hidden shadow-lg bg-white flex items-center justify-center p-0.5 shrink-0">
-                        <img 
-                            src="https://imgur.com/SGXqF5C.jpg" 
-                            alt="MU Logo" 
-                            className="w-full h-full object-contain" 
-                        />
-                    </div>
                 </div>
 
-            </div>
-
-        </div>
-    </div>
-</nav>
+                {/* Mobile dropdown menu */}
+                {isMenuOpen && (
+                    <div className="lg:hidden bg-slate-900/98 border-t border-slate-800 px-4 pt-3 pb-5 space-y-1 text-base font-semibold text-white"
+                        style={{ backdropFilter: 'blur(20px)' }}>
+                        {navItems.map(item => (
+                            <button key={item.key} onClick={() => goTo(item.key)}
+                                className={`block w-full text-left py-2.5 px-3 rounded-lg transition-colors ${currentTab === item.key ? 'text-amber-400 bg-amber-400/10' : 'hover:text-amber-400 hover:bg-white/5'}`}>
+                                {item.label}
+                            </button>
+                        ))}
+                        <button onClick={() => goTo('register')}
+                            className="block w-full text-center bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black py-3 rounded-xl mt-3 shadow-lg">
+                            Register Now 🚀
+                        </button>
+                    </div>
+                )}
+            </nav>
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
@@ -2695,7 +2715,7 @@ const committeeList = [...defaultCommittee, ...dbUsers];
                         <div>
                             <div className="flex items-center gap-3 mb-4">
                                 <div className="w-10 h-10 rounded-xl overflow-hidden">
-                                    <img src="https://scontent.fdac174-1.fna.fbcdn.net/v/t39.30808-6/469504888_979335607553931_871846207987255438_n.jpg?stp=dst-jpg_tt6&cstp=mx1579x1579&ctp=s1579x1579&_nc_cat=109&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeH0shj4KjfBHVniiJRf1ACVuTeY0gI1ruG5N5jSAjWu4e9K7cwmngnLfL8XfJk3GwvnufgJ2EUQ76hV5eVgRoio&_nc_ohc=Lrb2sHs5_9IQ7kNvwEWz_dt&_nc_oc=AdpnYJRS6XxWb1IVMEcSPo7unJlxZW0PVuoZ4tLLfqzHJ_TZWG5ln8l5qTvqQH9gzYw&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=Uo9KpgJyYpabe_Hrl_MDNw&_nc_ss=7b2a8&oh=00_Af-dOO7BI57lOBpMfZJKa9Uvn693TpVdJtE8rJ8dijaN9g&oe=6A408D3E" alt="logo" className="w-full h-full object-cover" />
+                                    <img src="https://imgur.com/RBtBKlX.jpg" alt="logo" className="w-full h-full object-cover" />
                                 </div>
                                 <div>
                                     <p className="text-white font-black text-sm tracking-wider">MU SPORTS CLUB</p>
