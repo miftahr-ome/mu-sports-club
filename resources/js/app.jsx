@@ -1469,14 +1469,12 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
 
     return (
         <div className="max-w-2xl mx-auto space-y-6 animate-fade-in-up">
-            {/* Header */}
             <div className="text-center">
                 <p className={`text-xs font-black uppercase tracking-widest mb-1 ${d ? 'text-blue-400' : 'text-blue-600'}`}>MU Sports Club</p>
                 <h1 className={`text-3xl font-black tracking-tight uppercase ${d ? 'text-white' : 'text-blue-950'}`}>Registration Portal</h1>
                 <p className={`text-xs mt-2 ${d ? 'text-slate-400' : 'text-slate-500'}`}>Choose what you'd like to sign up for</p>
             </div>
 
-            {/* Tab Switcher */}
             <div className={`flex rounded-2xl p-1.5 gap-1.5 ${d ? 'bg-slate-800' : 'bg-slate-100'}`}>
                 {[
                     { key: 'member',     label: '🎽 Join as Member',     desc: 'New club member' },
@@ -1683,7 +1681,6 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
                             </div>
                         </div>
 
-                        {/* Captain Info */}
                         <div className={`p-4 rounded-2xl border space-y-3 ${d ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
                             <p className={`text-xs font-black uppercase tracking-wider ${d ? 'text-amber-400' : 'text-blue-700'}`}>👑 Captain Information</p>
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -1851,7 +1848,7 @@ function AdminPanel({ onLogout, dark }) {
 
     return (
         <div className={`min-h-screen ${d ? 'bg-slate-950' : 'bg-slate-100'}`}>
-            {/* Nav */}
+
             <nav className="bg-slate-900 border-b border-amber-500/20 sticky top-0 z-50 shadow-xl">
                 <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
                     <div className="flex items-center gap-3">
@@ -1885,7 +1882,6 @@ function AdminPanel({ onLogout, dark }) {
             </nav>
 
             <div className="max-w-7xl mx-auto px-4 py-6 flex gap-6">
-                {/* Sidebar */}
                 <aside className="hidden md:flex flex-col w-56 flex-shrink-0 space-y-2">
                     <div className={`p-4 rounded-2xl border mb-2 ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
                         <p className={`text-[10px] font-black uppercase tracking-widest mb-3 ${d ? 'text-slate-400' : 'text-slate-500'}`}>Navigation</p>
@@ -1913,10 +1909,8 @@ function AdminPanel({ onLogout, dark }) {
                     </div>
                 </aside>
 
-                {/* Main */}
                 <div className="flex-1 min-w-0 space-y-5">
 
-                    {/* Solo Registrations */}
                     {adminTab === 'registrations' && (
                         <div className="animate-fade-in-up space-y-4">
                             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
@@ -1928,7 +1922,7 @@ function AdminPanel({ onLogout, dark }) {
                             : filteredReg.length === 0 ? <div className={`text-center py-20 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}><p className="text-5xl mb-3">📭</p><p className={`font-black text-sm ${d ? 'text-slate-400' : 'text-slate-500'}`}>No registrations yet</p></div>
                             : (
                                 <>
-                                    {/* Mobile */}
+
                                     <div className="md:hidden space-y-3">
                                         {filteredReg.map((r, i) => (
                                             <div key={r.id} className={`p-4 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
@@ -1944,7 +1938,6 @@ function AdminPanel({ onLogout, dark }) {
                                             </div>
                                         ))}
                                     </div>
-                                    {/* Desktop */}
                                     <div className={`hidden md:block overflow-x-auto rounded-2xl border ${d ? 'border-slate-800' : 'border-slate-200'}`}>
                                         <table className={`w-full text-sm ${d ? 'bg-slate-900' : 'bg-white'}`}>
                                             <thead><tr className={`text-[10px] font-black uppercase tracking-wider ${d ? 'bg-slate-800 text-slate-400' : 'bg-slate-50 text-slate-500'}`}>
@@ -1970,7 +1963,6 @@ function AdminPanel({ onLogout, dark }) {
                         </div>
                     )}
 
-                    {/* Team Registrations */}
                     {adminTab === 'teams' && (
                         <div className="animate-fade-in-up space-y-4">
                             <div className="flex justify-between items-center">
@@ -2015,7 +2007,6 @@ function AdminPanel({ onLogout, dark }) {
                         </div>
                     )}
 
-                    {/* Club Members */}
                     {adminTab === 'club-members' && (
                         <div className="animate-fade-in-up space-y-4">
                             <div className="flex justify-between items-center">
@@ -2047,7 +2038,6 @@ function AdminPanel({ onLogout, dark }) {
                         </div>
                     )}
 
-                    {/* Committee Members */}
                     {adminTab === 'members' && (
                         <div className="animate-fade-in-up space-y-4">
                             <div className="flex justify-between items-center">
@@ -2076,7 +2066,6 @@ function AdminPanel({ onLogout, dark }) {
                         </div>
                     )}
 
-                    {/* Events */}
                     {adminTab === 'events' && (
                         <div className="animate-fade-in-up space-y-5">
                             <div className={`p-5 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
@@ -2117,7 +2106,6 @@ function AdminPanel({ onLogout, dark }) {
                         </div>
                     )}
 
-                    {/* Tournament Games */}
                     {adminTab === 'games' && (
                         <div className="animate-fade-in-up space-y-5">
                             <div className={`p-5 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
@@ -2158,7 +2146,6 @@ function AdminPanel({ onLogout, dark }) {
     );
 }
 
-// ─── Admin Login ──────────────────────────────────────────────────────────────
 function AdminLogin({ onLogin, dark }) {
     const [pw, setPw] = useState('');
     const [error, setError] = useState('');
@@ -2185,7 +2172,6 @@ function AdminLogin({ onLogin, dark }) {
     );
 }
 
-// ─── Main App ─────────────────────────────────────────────────────────────────
 function MUSportsClubApp() {
     const dbEvents = window.backendEvents || [];
     const dbUsers  = window.backendUsers  || [];
@@ -2222,18 +2208,26 @@ function MUSportsClubApp() {
     };
 
     const defaultCommittee = [
-        { id:'c1',  name:"Abu Sufian",          committee_role:"PRESIDENT",            email:"president@mu.edu",  phone:"01741197388", profile_picture:"https://scontent.fdac174-1.fna.fbcdn.net/v/t39.30808-6/503150460_4049824781929787_6892879632643073192_n.jpg?stp=dst-jpg_tt6&cstp=mx1440x1800&ctp=s1440x1800&_nc_cat=103&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeH5hS8SG9Yr-FII0z2MH_4ERRp_ONRoSPtFGn841GhI-zn2LsgQpII3Kz64QQHN7xEr671NYzKDtKqOBg-F2hf_&_nc_ohc=x3m7tI3hzdUQ7kNvwGmUsZX&_nc_oc=AdpQBJRVYs93INxRt8nwFbWcTvuaDwnP2yhjafpgk_A8dgp7Nbj9yHW_6t9Q9NkzHK8&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=DonhVO38m-hAEJPr7Wq3Ww&_nc_ss=7b2a8&oh=00_Af-QP3-ysWTPC6obmvGqC_MOis-L-hxtDXNG77sOqmWHSQ&oe=6A40A402" },
-        { id:'c2',  name:"Shahriyar Rifat",      committee_role:"GENERAL SECRETARY",    email:"gs.sports@mu.edu",  phone:"01308893939", profile_picture:"https://scontent.fdac174-1.fna.fbcdn.net/v/t39.30808-6/655709272_2092664634800547_1015161797952192305_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x2048&ctp=s1536x2048&_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGPv1QV0UOJ60bvffq7wLaal7QxW74pvqiXtDFbvim-qGfY5HNTcLLO6PM-1xiDOpoap-bupfwC5iPjyRWC5ZO2&_nc_ohc=NBTrF1_-3OYQ7kNvwFnIxHj&_nc_oc=AdoLn4s0oQLPJD3mo3pzw_LNb-IhLtvX2ZGQHs_eJDqIrzw5IRV0_SooivijtwK0hWo&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=M3877ep7paQA7E7p6ecScg&_nc_ss=7b2a8&oh=00_Af9R-shvdCoh0QB6B6fAJ_t4Z3cqnC8qp-T6mGSHTBAyEg&oe=6A40D138" },
-        { id:'c3',  name:"Abdullah Jabid",        committee_role:"ORGANISING SECRETARY", email:"organizer@mu.edu",  phone:"01317242586", profile_picture:"https://scontent.fdac174-1.fna.fbcdn.net/v/t39.30808-6/636944439_2514557168941395_109792837164866248_n.jpg?stp=dst-jpg_tt6&cstp=mx2040x2048&ctp=s2040x2048&_nc_cat=109&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeEto4w9UPiQjaXrFn8JZhGD5fQB77QGrRnl9AHvtAatGXDPgJeAqjXU-psHiUozBeiRx7QYWZyXVqpFFvoUcGz4&_nc_ohc=8WSXHtYupkUQ7kNvwFst4E4&_nc_oc=Adqs-grXxU9i-emXJPn3e7idp2b_pXiSyYSE61e-bs3T6Eysaq6ReWAYd7RzhpB_nFQ&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=Rfgiz-NP6zH1rxpiBdZJ_g&_nc_ss=7b2a8&oh=00_Af_mkc6hyCAworaGcHmXHc1bTyXB_0tU_21KiVwYl_zkbQ&oe=6A40D2C8" },
-        { id:'c4',  name:"MD.Saiful Islam",       committee_role:"ORGANISING SECRETARY", email:"oyon@mu.edu",       phone:"01607896330", profile_picture:"https://scontent.fdac174-1.fna.fbcdn.net/v/t51.82787-15/615276663_18092496719489692_6663784768538851935_n.webp?stp=dst-jpg_tt6&cstp=mx1440x1440&ctp=s1440x1440&_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeGhh11_rd7HabzYw7OUwrPlm3agS9XHs_ubdqBL1cez-y-11QkMwyWTcmSOOFxI5EL305EClZVw4wwIxfExKH0a&_nc_ohc=Nndgs9IrfH8Q7kNvwFNH4JG&_nc_oc=Adr_83iA73aYZXVzOOXp2SEaFL8tM5DWRBnwEkW87LbSJc38YC03iQnkq2hnVzFCztQ&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=C8JtvTyZ9jYNp6ftBKzluw&_nc_ss=7b2a8&oh=00_Af9WIXZPc5COM0NGgkX_Ote-SJMZL1XKtbZeqasG4nsIUA&oe=6A40CD00" },
-        { id:'c5',  name:"MD.Salman",             committee_role:"ORGANISING SECRETARY", email:"salman@mu.edu",     phone:"01737599603", profile_picture:"https://scontent.fdac174-1.fna.fbcdn.net/v/t39.30808-6/514280458_1735593600661307_8270103835630323832_n.jpg?stp=dst-jpg_tt6&cstp=mx1242x1452&ctp=s1242x1452&_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeE52RS9VzgA-ziRBDIi0oFDFMFd_jJCIZ8UwV3-MkIhn2zt5G-uVUBSFJItd1O4xdUDBfT6ds67azbxq0pW8CKE&_nc_ohc=Xer3V1aDOzcQ7kNvwFArjN6&_nc_oc=AdqaiK_LE6SsxydbJYZSYD721xJ1EWFYowIVIB3i2D8IHfXCx3LUqTe7syB7iw106j8&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=p8YXeoFCV8jA2XZnR7qOrA&_nc_ss=7b2a8&oh=00_Af8rliIWZdU4KugEqvsqEJ_Ft6bg62Foi45b_Ceq9U-Y3A&oe=6A40ABAE" },
-        { id:'c6',  name:"Adnan Wahdi",           committee_role:"THE GREAT TREASURER",  email:"treasurer@mu.edu",  phone:"01724926802", profile_picture:"https://scontent.fdac174-1.fna.fbcdn.net/v/t51.75761-15/487452849_18343963657156059_8013629657132169764_n.jpg?stp=dst-jpg_tt6&cstp=mx1440x1800&ctp=s1440x1800&_nc_cat=107&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeEJjhGoo0xdXmTCfdHMXnpsspOp419H8Qiyk6njX0fxCEDmtu3Sz4avxlp417W44ucI6-n5q8YxDuvBSUYQ05D5&_nc_ohc=ckgjnWiUQ_4Q7kNvwGiLF_Q&_nc_oc=Adp5wEKK86EHmZlgV5goe11t77GZajOLsEOR6CshzSpOyJl6okKzCS54q85soeksJU8&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=NNweY7Vs8JLaUGbEZ6HPZA&_nc_ss=7b2a8&oh=00_Af9BTfe92R9rkeKwY0jTmMJRsFZCXb0YsUOCPit6CQFShg&oe=6A40B335" },
-        { id:'c7',  name:"Syed Hassan",           committee_role:"EVENT COORDINATOR",    email:"hassan@mu.edu",     phone:"01957636327", profile_picture:"https://scontent.fdac174-1.fna.fbcdn.net/v/t39.30808-6/615086623_2337705286674902_2308975441158817751_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1535&ctp=s2048x1535&_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeH8rP1x0yuzGrd4-avR8G55QkbZH2caYg5CRtkfZxpiDkK8bz46hpsCt88lqDWes1c_YN3SCs1DgEFKzUgfxJ7H&_nc_ohc=ZJh55WfFRuUQ7kNvwGpMTny&_nc_oc=Ado2-imNLVuRhRixjBh1mkIsblLdwncgrrekSWUyUP0CoEuwuucx8wlkzdz_sj4iXNc&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=CYl3C_1frO2j-2LYyMyUvA&_nc_ss=7b2a8&oh=00_Af-_ce_XutoOpR5AYEaNGCNCOpm4Q7b-jb1Ag1HGT5fpcg&oe=6A40C07A" },
-        { id:'c8',  name:"MD.Sodrul Hasan Sohi",  committee_role:"OFFICE SECRETARY",     email:"sohi@mu.edu",       phone:"01316586392", profile_picture:"https://scontent.fdac174-1.fna.fbcdn.net/v/t39.30808-6/496008790_1848890432557187_7153082079078757147_n.jpg?stp=dst-jpg_tt6&cstp=mx1280x1277&ctp=s1280x1277&_nc_cat=102&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeFkN30ifDmqINN7_bJnpfhQSJqzRi2y_JVImrNGLbL8lWtthV6MFpR_Gdo0mZgd2_KiDSsYINWscVOKkjp0cbyG&_nc_ohc=xpNW_qdzyOQQ7kNvwFvvkFC&_nc_oc=Adrn63x6KgoOAJgijcC-9LjKQRXhRlpSomIr8vC1p7AEZex-vvikDxCc7AEdNRfjUTk&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=H1eKmTsau7-Q4JHRWdrQ3g&_nc_ss=7b2a8&oh=00_Af8dypcFw0XrpPlI3o89mBWjnt60IxR7PVu3ASX-Xv-ptw&oe=6A40A98D" },
-        { id:'c9',  name:"Md.Mahiyan Noor Mahi",  committee_role:"PRESS SECRETARY",      email:"motu@mu.edu",       phone:"01756510942", profile_picture:"https://scontent.fdac174-1.fna.fbcdn.net/v/t39.30808-6/541591829_1328192965595500_5345473691480325870_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x1280&_nc_cat=108&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeGEfG0OIi9nOrp4UN708NQF_GW1NdtDLAf8ZbU120MsB327E5RO9wkqP6luI9-r2ljvs1Z1KwqpF65XulEh-tpj&_nc_ohc=Ua1NFG-tOloQ7kNvwGau3rg&_nc_oc=Adr5ghAyJslRVmwEoU27Zmtb8rl_lMKAVzbzZrH1iu5694g1Ezz8bcLgIasiiU6doiQ&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=SCt7TgV2yIbVACf7YJLhnQ&_nc_ss=7b2a8&oh=00_Af9IkWVqYmxtuc3rH1z27ZuEmlyw24eyfoYzALtARyqhxQ&oe=6A40C895" },
-        { id:'c10', name:"Miftahur Rahman Omi",   committee_role:"CHIEF PHOTOGRAPHER",   email:"leo@mu.edu",        phone:"01887457293", profile_picture:"https://scontent.fdac174-1.fna.fbcdn.net/v/t39.30808-6/494788140_643333422028875_6621256742388626645_n.jpg?stp=dst-jpg_tt6&cstp=mx1331x1330&ctp=s1331x1330&_nc_cat=111&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeFsbe_DrxQRtmqgbKJJ4vIcYKkGnmI7cCtgqQaeYjtwK5z-j3-oyO1kYYTghlFmWhY1IySz23faNbPFzxhgCJm7&_nc_ohc=WEIfaiBkX4cQ7kNvwHwBlVm&_nc_oc=AdqG8XkIIPOwCL5KXnVroMBwzWxWi-7pptUfSRKgBQSi8tXEtgkoUK3chsuKk1t-tSY&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=ozq06bFjN2tYkQM2LDpTaw&_nc_ss=7b2a8&oh=00_Af_Pj36Za4yWX-Ffn9TmjakHK_lMxjowjwEYTtzCHp2EPA&oe=6A40CEC6" },
-    ];
+        { id:'c1',  name:"Abu Sufian",          committee_role:"PRESIDENT",            email:"president@mu.edu",  phone:"01741197388", profile_picture:"https://imgur.com/JKxNhUe.jpg" },
+        { id:'c2',  name:"Shahriyar Rifat",      committee_role:"GENERAL SECRETARY",    email:"gs.sports@mu.edu",  phone:"01308893939", profile_picture:"https://imgur.com/g2U3xIF.jpg" },
+        { id:'c3',  name:"Abdullah Jabid",        committee_role:"ORGANISING SECRETARY", email:"organizer@mu.edu",  phone:"01317242586", profile_picture:"https://imgur.com/ToF8tAU.jpg" },
+        { id:'c4',  name:"MD.Saiful Islam",       committee_role:"ORGANISING SECRETARY", email:"oyon@mu.edu",       phone:"01607896330", profile_picture:"https://imgur.com/xXCKpLf.jpg" },
+        { id:'c5',  name:"MD.Salman",             committee_role:"ORGANISING SECRETARY", email:"salman@mu.edu",     phone:"01737599603", profile_picture:"https://imgur.com/VQY5Xt6.jpg" },
+        { id:'c6',  name:"Adnan Wahdi",           committee_role:"THE GREAT TREASURER",  email:"treasurer@mu.edu",  phone:"01724926802", profile_picture:"https://imgur.com/cUx7PjL.jpg" },
+        { id:'c7',  name:"Syed Hassan",           committee_role:"EVENT COORDINATOR",    email:"hassan@mu.edu",     phone:"01957636327", profile_picture:"https://imgur.com/46oGbg7.jpg" },
+        { id:'c8',  name:"MD.Sodrul Hasan Sohi",  committee_role:"OFFICE SECRETARY",     email:"sohi@mu.edu",       phone:"01316586392", profile_picture:"https://imgur.com/p5UAaHB.jpg" },
+        { id:'c9',  name:"Muhtasim Labib",  committee_role:"Esports Event Coordinator",     email:"labib@mu.edu",       phone:"", profile_picture:"https://imgur.com/zNFGArI.jpg" },
+        { id:'c10', name:"Mifrat Hussain Chahat",  committee_role:"Public Relations Secretary",     email:"chahat@mu.edu",       phone:"", profile_picture:"https://imgur.com/CrHZ8B8.jpg" },
+        { id:'c11', name:"Tajul Islam",  committee_role:"PRESS SECRETARY",     email:"taj@mu.edu",       phone:"", profile_picture:"https://imgur.com/wYFDVb4" },
+        { id:'c12', name:"Tajul Islam",  committee_role:"PRESS SECRETARY",     email:"taj@mu.edu",       phone:"", profile_picture:"https://imgur.com/wYFDVb4" },
 
+       
+        { id:'c13',  name:"Md.Mahiyan Noor Mahi",  committee_role:"PRESS SECRETARY",      email:"motu@mu.edu",       phone:"01756510942", profile_picture:"https://imgur.com/PIsCE4u.jpg" },
+        { id:'c14', name:"Miftahur Rahman Omi",   committee_role:"CHIEF PHOTOGRAPHER",   email:"leo@mu.edu",        phone:"01887457293", profile_picture:"https://imgur.com/sgjKYoV.jpg" },
+        { id:'c15', name:"Bijay Paul",   committee_role:"Logistics Secretary",   email:"paul@mu.edu",        phone:"", profile_picture:"https://imgur.com/9TeyKxy.jpg" },
+        { id:'c16', name:"Samir Ahmed",   committee_role:"Executive for Design",   email:"samir@mu.edu",        phone:"", profile_picture:"https://imgur.com/py1LVG5.jpg" },
+        { id:'c17', name:"Mansur Rahman Manna",   committee_role:"Volunteer Coordinator",   email:"manna@mu.edu",        phone:"", profile_picture:"https://imgur.com/iUVviQ7.jpg" },
+    ];
 const committeeList = [...defaultCommittee, ...dbUsers];
     const clubEvents = dbEvents.length >= 6 ? dbEvents : [
         { title:"INDOOR GAMES SEASON-15", type:"Indoor Tournament",   date:"July 5, 2026",   details:"Annual ultimate indoor showdown — Chess, Carrom, Table Tennis, Badminton & more at MU Lounge." },
@@ -2245,12 +2239,12 @@ const committeeList = [...defaultCommittee, ...dbUsers];
     ];
 
     const galleryImages = [
-        { src:"https://scontent.fdac174-1.fna.fbcdn.net/v/t39.30808-6/626331988_1313951187425703_3795850859671558213_n.jpg?stp=dst-jpg_tt6&cstp=mx1920x1080&ctp=s1920x1080&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGfKZKxBhUkxshIv0MLqNsX5vVj678KACvm9WPrvwoAK_eOrkTMWMH01cqcd1GjE6YNcNnRRK7AOIQRMA7QM7px&_nc_ohc=V5_lUO_g7DIQ7kNvwECe9yJ&_nc_oc=AdpKO67a3GM6P6QSjQj3cb0YMvX3DR9RKfPWBe0pgh0qzXQlvazn3RB1C3yU7qdIvzw&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=WJslUUbN2hf_h-FYaxpZ3g&_nc_ss=7b2a8&oh=00_Af-hTbY22ijzzJncUWTzbfk16iUoIIG_Az5RAw-votkguw&oe=6A408A7F", label:"MPL Champions 2026" },
-        { src:"https://scontent.fdac174-1.fna.fbcdn.net/v/t39.30808-6/617090785_1295051429315679_6213409423227020079_n.jpg?stp=dst-jpg_tt6&cstp=mx1280x960&ctp=s1280x960&_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEj090S2l12tydczuAd8kJEt6X1WXet48C3pfVZd63jwCo0Ikx4630tODBF1wj-Org-lUUsqRN9B9cbzS4UrcZ7&_nc_ohc=ND9frAJfSWkQ7kNvwHZnGPE&_nc_oc=Ado5vWMDc2RyAl2TX9A3pqTcQgqLqKLKP2yADxWcZSRtXEgBmkybM0e8ItY2GNadUIs&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=OMKrLJwlHD-X0Q6jzyA7Ew&_nc_ss=7b2a8&oh=00_Af-zXomqDiBiPyTwiVMVxOlHTpopt5howwAjaJODERf3-w&oe=6A421D4C", label:"BBQ Night 2026" },
-        { src:"https://scontent.fdac174-1.fna.fbcdn.net/v/t39.30808-6/619334737_1299774662176689_3518894522302526164_n.jpg?stp=dst-jpg_tt6&cstp=mx960x503&ctp=s960x503&_nc_cat=100&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFOl9eDDuyA9kMmuHTlwNMfXra_aN3yAodetr9o3fICh-ujj4-A8kj_3b1WhNYzBaWLJxkir1grjvwYGpQMEuZb&_nc_ohc=ugqPf0tUVx8Q7kNvwENxCL-&_nc_oc=AdopBLDw6YSaWg52Mu_A4CZSrg-Q1Kgv6CTeh-P7xXWymycdBE3MyT6MnVk_DSrt51k&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=pybPjK7orcttmXa8XuKvRA&_nc_ss=7b2a8&oh=00_Af_PZ8MDq_ql2wWKRKv5qHSIkkw29Z2CugSHeza3Pc2T2w&oe=6A4219AE", label:"Committee Handover 2024-25" },
-        { src:"https://scontent.fdac174-1.fna.fbcdn.net/v/t39.30808-6/618882277_1299774898843332_4609512799048176452_n.jpg?stp=dst-jpg_tt6&cstp=mx960x720&ctp=s960x720&_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGYQ6vCDI47XalNseXi_iSr-RKQn8dcABv5EpCfx1wAG_zcAxxB9x4cKJd5OeSkTFgYO1Cky4QbbfbC59ooRl3M&_nc_ohc=QTOAzR98FQIQ7kNvwElXHGq&_nc_oc=AdpNN7a9c2flZGUuJZAmobdjFJIbANhYSvZWN3xtzDw2BA_S_5mG3GVOKg3NjILV5lM&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=SnCsuH4kh0ezzeX4Y7M3cg&_nc_ss=7b2a8&oh=00_Af8W8LSI3rHkwSzAmrTBanhQgIaZbJ-JFs-iHFq5Qy3mLg&oe=6A420041", label:"Farewell MR.President 24-25" },
-        { src:"https://scontent.fdac174-1.fna.fbcdn.net/v/t39.30808-6/575188965_1233925582094931_5998660472661711882_n.jpg?stp=dst-jpg_tt6&cstp=mx960x640&ctp=s960x640&_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGZebmeiz0KG2lvbgmqbszEvvMdYyIgEtm-8x1jIiAS2eRHKq1zcR6tzLmzSjez3DUtefz9c8iUi255yYXBV6A5&_nc_ohc=6DPtcRKpJXAQ7kNvwF30puP&_nc_oc=AdrdAqw4DU7FF16GLKWxJ77s60Cipw1EpYWNWaZorguBa9MYsrscOps764Rc2M7BgI8&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=DiZ518oWMc-poXXSgPraOQ&_nc_ss=7b2a8&oh=00_Af965S4SYg1HJq1h-BBburFWkzgEV4DdFUUmiwlL9wzW7A&oe=6A40AB24", label:"Arrival of MR.15" },
-        { src:"https://scontent.fdac174-1.fna.fbcdn.net/v/t39.30808-6/558671734_1215392863948203_254053450087788206_n.jpg?stp=dst-jpg_tt6&cstp=mx1024x1280&ctp=s1024x1280&_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEgCJDpjlGsXG5BNscswPfjy6RMhWhgZP_LpEyFaGBk_0RUf0HxbGyaLyUQ0cq3nFedmNIjMqDbzB2LkK9a3Zsn&_nc_ohc=yM8pgS4htxcQ7kNvwEiGAYA&_nc_oc=Adrv0AUMjIZ5tmsH25sh6ZY-Fvrg9q6vn7GUd4vOwjV4y9qHicmHWhXAR6E9VfMBrX8&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=mNjS-q6OtT1-nNHh8rTfIA&_nc_ss=7b2a8&oh=00_Af8JXkG566il-FdY67E2jogTBsl37vlqTq-JGlTy6h5eYQ&oe=6A408703", label:"League M Champions 2025" },
+        { src:"https://imgur.com/WA9AgTj.jpg", label:"MPL Champions 2026" },
+        { src:"https://imgur.com/PIsCE4u.jpg", label:"BBQ Night 2026" },
+        { src:"https://imgur.com/sgjKYoV.jpg", label:"Committee Handover 2024-25" },
+        { src:"https://imgur.com/9TeyKxy.jpg", label:"Farewell MR.President 24-25" },
+        { src:"https://imgur.com/py1LVG5.jpg", label:"Arrival of MR.15" },
+        { src:"https://imgur.com/iUVviQ7.jpg", label:"League M Champions 2025" },
     ];
 
     const eventTypes = ['All', ...Array.from(new Set(clubEvents.map(e => e.type || 'Tournament')))];
@@ -2316,19 +2310,22 @@ const committeeList = [...defaultCommittee, ...dbUsers];
 
         <div className={`min-h-screen font-sans antialiased transition-colors duration-300 ${d ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
 
-            {/* NAV */}
             <nav className={`shadow-2xl sticky top-0 z-50 border-b transition-colors duration-300 ${d ? 'bg-slate-900/95 border-slate-800' : 'bg-slate-950/95 border-amber-500/20'}`} style={{ backdropFilter:'blur(20px)' }}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-20">
-                        <div className="flex items-center space-x-3 cursor-pointer group" onClick={() => goTo('home')}>
-                            <div className="w-12 h-12 rounded-xl overflow-hidden shadow-lg shadow-amber-500/20 group-hover:shadow-amber-400/40 transition-shadow">
-                                <img src="https://scontent.fdac174-1.fna.fbcdn.net/v/t39.30808-6/469504888_979335607553931_871846207987255438_n.jpg?stp=dst-jpg_tt6&cstp=mx1579x1579&ctp=s1579x1579&_nc_cat=109&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeH0shj4KjfBHVniiJRf1ACVuTeY0gI1ruG5N5jSAjWu4e9K7cwmngnLfL8XfJk3GwvnufgJ2EUQ76hV5eVgRoio&_nc_ohc=Lrb2sHs5_9IQ7kNvwEWz_dt&_nc_oc=AdpnYJRS6XxWb1IVMEcSPo7unJlxZW0PVuoZ4tLLfqzHJ_TZWG5ln8l5qTvqQH9gzYw&_nc_zt=23&_nc_ht=scontent.fdac174-1.fna&_nc_gid=Uo9KpgJyYpabe_Hrl_MDNw&_nc_ss=7b2a8&oh=00_Af-dOO7BI57lOBpMfZJKa9Uvn693TpVdJtE8rJ8dijaN9g&oe=6A408D3E" alt="Logo" className="w-full h-full object-cover" />
-                            </div>
-                            <div>
-                                <span className="text-lg font-black tracking-widest block text-white leading-tight">MU SPORTS CLUB</span>
-                                <span className="text-[9px] tracking-[.22em] font-extrabold uppercase bg-gradient-to-r from-red-500 via-red-200 to-blue-300 bg-clip-text text-transparent">Metropolitan University, Sylhet</span>
-                            </div>
-                        </div>
+                        // In navbar, replace the logo section with:
+<div className="flex items-center space-x-3 cursor-pointer group" onClick={() => goTo('home')}>
+    <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg">
+        <img src="https://imgur.com/SGXqF5C.jpg" alt="MU Logo" className="w-full h-full object-cover" />
+    </div>
+    <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg shadow-amber-500/20">
+        <img src="https://imgur.com/RBtBKlX.jpg" alt="Club Logo" className="w-full h-full object-cover" />
+    </div>
+    <div>
+        <span className="text-lg font-black tracking-widest block text-white leading-tight">MU SPORTS CLUB</span>
+        <span className="text-[9px] tracking-[.22em] font-extrabold uppercase bg-gradient-to-r from-red-500 via-red-200 to-blue-300 bg-clip-text text-transparent">Metropolitan University, Sylhet</span>
+    </div>
+</div>
                         <div className="hidden md:flex items-center space-x-7 text-sm font-bold text-white">
                             {['home','about','committee','events'].map(tab => (
                                 <button key={tab} onClick={() => goTo(tab)} className={`nav-link capitalize hover:text-amber-400 transition-colors duration-200 ${currentTab === tab ? 'text-amber-400 active' : ''}`}>

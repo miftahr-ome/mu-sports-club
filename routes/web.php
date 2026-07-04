@@ -152,3 +152,34 @@ Route::delete('/admin/tournament-games/{id}', function (Request $request, $id) {
     DB::table('tournament_games')->where('id', $id)->delete();
     return response()->json(['success' => true]);
 });
+
+Route::post('/admin/members', function (Request $request) {
+    if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) return response()->json(['error' => 'Unauthorized'], 401);
+    DB::table('users')->insert([
+        'name'           => $request->name,
+        'email'          => $request->email,
+        'committee_role' => $request->committee_role,
+        'phone'          => $request->phone,
+        'password'       => bcrypt('musc2026'),
+        'created_at'     => now(),
+        'updated_at'     => now(),
+    ]);
+    return response()->json(['success' => true]);
+});
+
+Route::put('/admin/members/{id}', function (Request $request, $id) {
+    if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) return response()->json(['error' => 'Unauthorized'], 401);
+    DB::table('users')->where('id', $id)->update([
+        'name'           => $request->name,
+        'committee_role' => $request->committee_role,
+        'phone'          => $request->phone,
+        'updated_at'     => now(),
+    ]);
+    return response()->json(['success' => true]);
+});
+
+Route::delete('/admin/members/{id}', function (Request $request, $id) {
+    if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) return response()->json(['error' => 'Unauthorized'], 401);
+    DB::table('users')->where('id', $id)->delete();
+    return response()->json(['success' => true]);
+});
