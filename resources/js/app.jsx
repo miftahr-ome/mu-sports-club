@@ -2219,9 +2219,6 @@ function MUSportsClubApp() {
         { id:'c9',  name:"Muhtasim Labib",  committee_role:"Esports Event Coordinator",     email:"labib@mu.edu",       phone:"", profile_picture:"https://imgur.com/zNFGArI.jpg" },
         { id:'c10', name:"Mifrat Hussain Chahat",  committee_role:"Public Relations Secretary",     email:"chahat@mu.edu",       phone:"", profile_picture:"https://imgur.com/CrHZ8B8.jpg" },
         { id:'c11', name:"Tajul Islam",  committee_role:"PRESS SECRETARY",     email:"taj@mu.edu",       phone:"", profile_picture:"https://imgur.com/wYFDVb4" },
-        { id:'c12', name:"Tajul Islam",  committee_role:"PRESS SECRETARY",     email:"taj@mu.edu",       phone:"", profile_picture:"https://imgur.com/wYFDVb4" },
-
-       
         { id:'c13',  name:"Md.Mahiyan Noor Mahi",  committee_role:"PRESS SECRETARY",      email:"motu@mu.edu",       phone:"01756510942", profile_picture:"https://imgur.com/PIsCE4u.jpg" },
         { id:'c14', name:"Miftahur Rahman Omi",   committee_role:"CHIEF PHOTOGRAPHER",   email:"leo@mu.edu",        phone:"01887457293", profile_picture:"https://imgur.com/sgjKYoV.jpg" },
         { id:'c15', name:"Bijay Paul",   committee_role:"Logistics Secretary",   email:"paul@mu.edu",        phone:"", profile_picture:"https://imgur.com/9TeyKxy.jpg" },
@@ -2240,11 +2237,11 @@ const committeeList = [...defaultCommittee, ...dbUsers];
 
     const galleryImages = [
         { src:"https://imgur.com/WA9AgTj.jpg", label:"MPL Champions 2026" },
-        { src:"https://imgur.com/PIsCE4u.jpg", label:"BBQ Night 2026" },
-        { src:"https://imgur.com/sgjKYoV.jpg", label:"Committee Handover 2024-25" },
-        { src:"https://imgur.com/9TeyKxy.jpg", label:"Farewell MR.President 24-25" },
-        { src:"https://imgur.com/py1LVG5.jpg", label:"Arrival of MR.15" },
-        { src:"https://imgur.com/iUVviQ7.jpg", label:"League M Champions 2025" },
+        { src:"https://imgur.com/jq26MPc.jpg", label:"BBQ Night 2026" },
+        { src:"https://imgur.com/Ce6pAoN.jpg", label:"Committee Handover 2024-25" },
+        { src:"https://imgur.com/v3jndUb.jpg", label:"Farewell MR.President 24-25" },
+        { src:"https://imgur.com/vR6QBef.jpg", label:"Arrival of MR.15" },
+        { src:"https://imgur.com/UJwcCaC.jpg", label:"League M Champions 2025" },
     ];
 
     const eventTypes = ['All', ...Array.from(new Set(clubEvents.map(e => e.type || 'Tournament')))];
@@ -2310,23 +2307,46 @@ const committeeList = [...defaultCommittee, ...dbUsers];
 
         <div className={`min-h-screen font-sans antialiased transition-colors duration-300 ${d ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
 
-            <nav className={`shadow-2xl sticky top-0 z-50 border-b transition-colors duration-300 ${d ? 'bg-slate-900/95 border-slate-800' : 'bg-slate-950/95 border-amber-500/20'}`} style={{ backdropFilter:'blur(20px)' }}>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between h-20">
-                        // In navbar, replace the logo section with:
-<div className="flex items-center space-x-3 cursor-pointer group" onClick={() => goTo('home')}>
-    <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg">
-        <img src="https://imgur.com/SGXqF5C.jpg" alt="MU Logo" className="w-full h-full object-cover" />
-    </div>
-    <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg shadow-amber-500/20">
-        <img src="https://imgur.com/RBtBKlX.jpg" alt="Club Logo" className="w-full h-full object-cover" />
-    </div>
-    <div>
-        <span className="text-lg font-black tracking-widest block text-white leading-tight">MU SPORTS CLUB</span>
-        <span className="text-[9px] tracking-[.22em] font-extrabold uppercase bg-gradient-to-r from-red-500 via-red-200 to-blue-300 bg-clip-text text-transparent">Metropolitan University, Sylhet</span>
-    </div>
-</div>
-                        <div className="hidden md:flex items-center space-x-7 text-sm font-bold text-white">
+           <nav className={`shadow-2xl sticky top-0 z-50 border-b transition-colors duration-300 ${d ? 'bg-slate-900/95 border-slate-800' : 'bg-slate-950/95 border-amber-500/20'}`} style={{ backdropFilter:'blur(20px)' }}>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-20">
+            
+            <div className="flex items-center space-x-2 md:space-x-3 cursor-pointer group min-w-max shrink-0" onClick={() => goTo('home')}>
+                
+
+                <div className="flex items-center space-x-1.5 md:space-x-2 shrink-0">
+
+                    <div className="w-10 h-10 md:w-11 md:h-11 rounded-xl overflow-hidden shadow-lg bg-white flex items-center justify-center p-0.5">
+                        <img 
+                            src="https://imgur.com/SGXqF5C.jpg" 
+                            alt="MU Logo" 
+                            className="w-full h-full object-contain" 
+                        />
+                    </div>
+                    
+
+                    <div className="w-10 h-10 md:w-11 md:h-11 rounded-xl overflow-hidden shadow-lg shadow-amber-500/10 bg-white flex items-center justify-center p-0.5">
+                        <img 
+                            src="https://imgur.com/RBtBKlX.jpg" 
+                            alt="Club Logo" 
+                            className="w-full h-full object-contain" 
+                        />
+                    </div>
+                </div>
+                
+
+                <div className="flex flex-col justify-center min-w-[150px] md:min-w-[190px]">
+                    <span className="text-sm md:text-lg font-black tracking-widest block text-white leading-none mb-0.5 transition-all">
+                        MU SPORTS CLUB
+                    </span>
+                    <span className="text-[8px] md:text-[9px] tracking-[.18em] font-extrabold uppercase block leading-tight transition-all">
+                        <span className="text-red-500 font-black">METROPOLITAN</span> <span className="text-white">UNIVERSITY</span>
+                        <span className="block text-[7px] md:text-[8px] tracking-[.25em] text-gray-400 font-medium mt-0.5">SYLHET</span>
+                    </span>
+                </div>
+
+            </div>  
+                               <div className="hidden md:flex items-center space-x-7 text-sm font-bold text-white">
                             {['home','about','committee','events'].map(tab => (
                                 <button key={tab} onClick={() => goTo(tab)} className={`nav-link capitalize hover:text-amber-400 transition-colors duration-200 ${currentTab === tab ? 'text-amber-400 active' : ''}`}>
                                     {tab==='committee'?'Executive Panel':tab==='events'?'Tournaments':tab.charAt(0).toUpperCase()+tab.slice(1)}
@@ -2357,10 +2377,10 @@ const committeeList = [...defaultCommittee, ...dbUsers];
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-                {/* HOME */}
+
                 {currentTab === 'home' && (
                     <div className="space-y-20">
-                        {/* Hero */}
+
                         <div className={`relative rounded-3xl overflow-hidden text-center text-white py-20 md:py-28 px-6 ${d?'hero-gradient-dark':'hero-gradient'}`}>
                             <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none animate-spin-slow"></div>
                             <div className="absolute bottom-0 left-0 w-80 h-80 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
