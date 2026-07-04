@@ -2307,73 +2307,74 @@ const committeeList = [...defaultCommittee, ...dbUsers];
 
         <div className={`min-h-screen font-sans antialiased transition-colors duration-300 ${d ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
 
-           <nav className={`shadow-2xl sticky top-0 z-50 border-b transition-colors duration-300 ${d ? 'bg-slate-900/95 border-slate-800' : 'bg-slate-950/95 border-amber-500/20'}`} style={{ backdropFilter:'blur(20px)' }}>
+        <nav className={`shadow-2xl sticky top-0 z-50 border-b transition-colors duration-300 ${d ? 'bg-slate-900/95 border-slate-800' : 'bg-slate-950/95 border-amber-500/20'}`} style={{ backdropFilter:'blur(20px)' }}>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-20">
+        <div className="flex justify-between h-20 items-center">
             
+
             <div className="flex items-center space-x-2 md:space-x-3 cursor-pointer group min-w-max shrink-0" onClick={() => goTo('home')}>
+
+                <div className="w-10 h-10 md:w-11 md:h-11 rounded-xl overflow-hidden shadow-lg shadow-amber-500/10 bg-white flex items-center justify-center p-0.5 shrink-0">
+                    <img 
+                        src="https://imgur.com/RBtBKlX.jpg" 
+                        alt="Club Logo" 
+                        className="w-full h-full object-contain" 
+                    />
+                </div>
                 
 
-                <div className="flex items-center space-x-1.5 md:space-x-2 shrink-0">
+                <div className="flex flex-col justify-center">
+                    <span className="text-sm md:text-lg font-black tracking-widest block text-white leading-none">
+                        MU SPORTS CLUB
+                    </span>
+                </div>
+            </div>
 
-                    <div className="w-10 h-10 md:w-11 md:h-11 rounded-xl overflow-hidden shadow-lg bg-white flex items-center justify-center p-0.5">
+
+
+            <div className="hidden md:flex items-center space-x-6">
+
+            </div>
+
+            <div className="flex items-center space-x-4 shrink-0">
+                
+
+                <div className="flex items-center space-x-3">
+                    <button className="text-amber-400">🌙</button>
+                    <button className="bg-amber-500 text-slate-950 font-bold px-4 py-2 rounded-lg text-xs md:text-sm uppercase tracking-wider">
+                        Register Now
+                    </button>
+                </div>
+
+
+                <div className="h-8 w-[1px] bg-slate-800 hidden sm:block"></div>
+
+
+                <div className="hidden sm:flex items-center space-x-2 md:space-x-3 text-right">
+                    <div className="flex flex-col justify-center min-w-[110px] md:min-w-[140px]">
+                        <span className="text-[8px] md:text-[9px] tracking-[.15em] font-extrabold uppercase block leading-tight">
+                            <span className="text-red-500 font-black">METROPOLITAN</span> <span className="text-white">UNIVERSITY</span>
+                        </span>
+                        <span className="block text-[7px] md:text-[8px] tracking-[.25em] text-gray-400 font-medium mt-0.5">
+                            SYLHET
+                        </span>
+                    </div>
+
+
+                    <div className="w-10 h-10 md:w-11 md:h-11 rounded-xl overflow-hidden shadow-lg bg-white flex items-center justify-center p-0.5 shrink-0">
                         <img 
                             src="https://imgur.com/SGXqF5C.jpg" 
                             alt="MU Logo" 
                             className="w-full h-full object-contain" 
                         />
                     </div>
-                    
-
-                    <div className="w-10 h-10 md:w-11 md:h-11 rounded-xl overflow-hidden shadow-lg shadow-amber-500/10 bg-white flex items-center justify-center p-0.5">
-                        <img 
-                            src="https://imgur.com/RBtBKlX.jpg" 
-                            alt="Club Logo" 
-                            className="w-full h-full object-contain" 
-                        />
-                    </div>
-                </div>
-                
-
-                <div className="flex flex-col justify-center min-w-[150px] md:min-w-[190px]">
-                    <span className="text-sm md:text-lg font-black tracking-widest block text-white leading-none mb-0.5 transition-all">
-                        MU SPORTS CLUB
-                    </span>
-                    <span className="text-[8px] md:text-[9px] tracking-[.18em] font-extrabold uppercase block leading-tight transition-all">
-                        <span className="text-red-500 font-black">METROPOLITAN</span> <span className="text-white">UNIVERSITY</span>
-                        <span className="block text-[7px] md:text-[8px] tracking-[.25em] text-gray-400 font-medium mt-0.5">SYLHET</span>
-                    </span>
                 </div>
 
-            </div>  
-                               <div className="hidden md:flex items-center space-x-7 text-sm font-bold text-white">
-                            {['home','about','committee','events'].map(tab => (
-                                <button key={tab} onClick={() => goTo(tab)} className={`nav-link capitalize hover:text-amber-400 transition-colors duration-200 ${currentTab === tab ? 'text-amber-400 active' : ''}`}>
-                                    {tab==='committee'?'Executive Panel':tab==='events'?'Tournaments':tab.charAt(0).toUpperCase()+tab.slice(1)}
-                                </button>
-                            ))}
-                            <button onClick={() => setDarkMode(!d)} className="p-2 bg-slate-800 hover:bg-slate-700 rounded-xl transition-all text-white">{d?'☀️':'🌙'}</button>
-                            <button onClick={() => goTo('register')} className="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 px-5 py-2.5 rounded-xl hover:from-amber-400 hover:to-amber-500 transition-all font-black text-[11px] uppercase tracking-wider shadow-lg shadow-amber-500/20 animate-pulse-glow">Register Now</button>
-                        </div>
-                        <div className="flex items-center space-x-3 md:hidden">
-                            <button onClick={() => setDarkMode(!d)} className="p-2 bg-slate-800 rounded-xl text-white">{d?'☀️':'🌙'}</button>
-                            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-400 hover:text-white p-2">
-                                <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    {isMenuOpen?<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"/>:<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16"/>}
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                {isMenuOpen && (
-                    <div className="md:hidden bg-slate-900/98 border-t border-slate-800 px-4 pt-3 pb-5 space-y-1 text-base font-semibold text-white" style={{ backdropFilter:'blur(20px)' }}>
-                        {[['home','Home'],['about','About'],['committee','Executive Panel'],['events','Tournaments']].map(([tab,label]) => (
-                            <button key={tab} onClick={() => goTo(tab)} className={`block w-full text-left py-2.5 px-3 rounded-lg transition-colors ${currentTab===tab?'text-amber-400 bg-amber-400/10':'hover:text-amber-400 hover:bg-white/5'}`}>{label}</button>
-                        ))}
-                        <button onClick={() => goTo('register')} className="block w-full text-center bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black py-3 rounded-xl mt-3 shadow-lg">Register Now 🚀</button>
-                    </div>
-                )}
-            </nav>
+            </div>
+
+        </div>
+    </div>
+</nav>
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
