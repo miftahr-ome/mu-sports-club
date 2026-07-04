@@ -2307,7 +2307,7 @@ const committeeList = [...defaultCommittee, ...dbUsers];
 
         <div className={`min-h-screen font-sans antialiased transition-colors duration-300 ${d ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
 
-        <nav className={`shadow-2xl sticky top-0 z-50 border-b transition-colors duration-300 ${d ? 'bg-slate-900/95 border-slate-800' : 'bg-slate-950/95 border-amber-500/20'}`} style={{ backdropFilter:'blur(20px)' }}>
+       <nav className={`shadow-2xl sticky top-0 z-50 border-b transition-colors duration-300 ${d ? 'bg-slate-900/95 border-slate-800' : 'bg-slate-950/95 border-amber-500/20'}`} style={{ backdropFilter:'blur(20px)' }}>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
             
@@ -2331,17 +2331,23 @@ const committeeList = [...defaultCommittee, ...dbUsers];
             </div>
 
 
-
-            <div className="hidden md:flex items-center space-x-6">
-
+            <div className="hidden lg:flex items-center space-x-6 text-sm font-semibold text-gray-300">
+                <button onClick={() => goTo('home')} className="text-amber-500 hover:text-amber-400 transition">Home</button>
+                <button onClick={() => goTo('about')} className="hover:text-white transition">About</button>
+                <button onClick={() => goTo('panel')} className="hover:text-white transition">Executive Panel</button>
+                <button onClick={() => goTo('tournaments')} className="hover:text-white transition">Tournaments</button>
             </div>
+
 
             <div className="flex items-center space-x-4 shrink-0">
                 
 
                 <div className="flex items-center space-x-3">
-                    <button className="text-amber-400">🌙</button>
-                    <button className="bg-amber-500 text-slate-950 font-bold px-4 py-2 rounded-lg text-xs md:text-sm uppercase tracking-wider">
+
+                    <button className="text-amber-400 text-lg hover:scale-110 transition-transform">
+                        {d ? '☀️' : '🌙'}
+                    </button>
+                    <button className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2 md:px-5 md:py-2.5 rounded-lg text-xs md:text-sm uppercase tracking-wider transition shadow-lg shadow-amber-500/10">
                         Register Now
                     </button>
                 </div>
