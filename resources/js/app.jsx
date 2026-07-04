@@ -2215,7 +2215,7 @@ function MUSportsClubApp() {
         { id:'c8',  name:"MD.Sodrul Hasan Sohi",  committee_role:"OFFICE SECRETARY",     email:"sohi@mu.edu",       phone:"01316586392", profile_picture:"https://imgur.com/p5UAaHB.jpg" },
         { id:'c9',  name:"Muhtasim Labib",  committee_role:"Esports Event Coordinator",     email:"labib@mu.edu",       phone:"", profile_picture:"https://imgur.com/zNFGArI.jpg" },
         { id:'c10', name:"Mifrat Hussain Chahat",  committee_role:"Public Relations Secretary",     email:"chahat@mu.edu",       phone:"", profile_picture:"https://imgur.com/CrHZ8B8.jpg" },
-        { id:'c11', name:"Tajul Islam",  committee_role:"PRESS SECRETARY",     email:"taj@mu.edu",       phone:"", profile_picture:"https://imgur.com/wYFDVb4" },
+        { id:'c11', name:"Tajul Islam",  committee_role:"PRESS SECRETARY",     email:"taj@mu.edu",       phone:"", profile_picture:"https://imgur.com/wYFDVb4.jpg" },
         { id:'c13',  name:"Md.Mahiyan Noor Mahi",  committee_role:"PRESS SECRETARY",      email:"motu@mu.edu",       phone:"01756510942", profile_picture:"https://imgur.com/PIsCE4u.jpg" },
         { id:'c14', name:"Miftahur Rahman Omi",   committee_role:"CHIEF PHOTOGRAPHER",   email:"leo@mu.edu",        phone:"01887457293", profile_picture:"https://imgur.com/sgjKYoV.jpg" },
         { id:'c15', name:"Bijay Paul",   committee_role:"Logistics Secretary",   email:"paul@mu.edu",        phone:"", profile_picture:"https://imgur.com/9TeyKxy.jpg" },
