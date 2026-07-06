@@ -183,3 +183,90 @@ Route::delete('/admin/members/{id}', function (Request $request, $id) {
     DB::table('users')->where('id', $id)->delete();
     return response()->json(['success' => true]);
 });
+
+Route::post('/admin/members', function (Request $request) {
+    if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) return response()->json(['error' => 'Unauthorized'], 401);
+    DB::table('users')->insert([
+        'name' => $request->name, 'email' => $request->email,
+        'committee_role' => $request->committee_role, 'phone' => $request->phone,
+        'password' => bcrypt('musc2026'), 'created_at' => now(), 'updated_at' => now(),
+    ]);
+    return response()->json(['success' => true]);
+});
+
+Route::put('/admin/members/{id}', function (Request $request, $id) {
+    if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) return response()->json(['error' => 'Unauthorized'], 401);
+    DB::table('users')->where('id', $id)->update([
+        'name' => $request->name, 'committee_role' => $request->committee_role,
+        'phone' => $request->phone, 'updated_at' => now(),
+    ]);
+    return response()->json(['success' => true]);
+});
+
+Route::delete('/admin/members/{id}', function (Request $request, $id) {
+    if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) return response()->json(['error' => 'Unauthorized'], 401);
+    DB::table('users')->where('id', $id)->delete();
+    return response()->json(['success' => true]);
+});
+
+
+Route::get('/news', function () {
+    return response()->json(['success' => true, 'data' => DB::table('news')->orderBy('is_pinned','desc')->orderBy('created_at','desc')->get()]);
+});
+
+Route::get('/admin/news', function (Request $request) {
+    if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) return response()->json(['error' => 'Unauthorized'], 401);
+    return response()->json(['success' => true, 'data' => DB::table('news')->orderBy('created_at','desc')->get()]);
+});
+
+Route::post('/admin/news', function (Request $request) {
+    if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) return response()->json(['error' => 'Unauthorized'], 401);
+    DB::table('news')->insert([
+        'title' => $request->title, 'content' => $request->content,
+        'image' => $request->image ?? null, 'is_pinned' => $request->is_pinned ?? false,
+        'created_at' => now(), 'updated_at' => now(),
+    ]);
+    return response()->json(['success' => true]);
+});
+
+Route::delete('/admin/news/{id}', function (Request $request, $id) {
+    if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) return response()->json(['error' => 'Unauthorized'], 401);
+    DB::table('news')->where('id', $id)->delete();
+    return response()->json(['success' => true]);
+});
+
+
+Route::get('/match-gallery/{tournament}', function ($tournament) {
+    return response()->json(['success' => true, 'data' => DB::table('match_gallery')->where('tournament_name', $tournament)->orderBy('created_at','desc')->get()]);
+});
+
+Route::get('/match-gallery', function () {
+    return response()->json(['success' => true, 'data' => DB::table('match_gallery')->orderBy('created_at','desc')->get()]);
+});
+
+Route::get('/admin/match-gallery', function (Request $request) {
+    if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) return response()->json(['error' => 'Unauthorized'], 401);
+    return response()->json(['success' => true, 'data' => DB::table('match_gallery')->orderBy('created_at','desc')->get()]);
+});
+
+Route::post('/admin/match-gallery', function (Request $request) {
+    if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) return response()->json(['error' => 'Unauthorized'], 401);
+    DB::table('match_gallery')->insert([
+        'tournament_name' => $request->tournament_name, 'image_url' => $request->image_url,
+        'caption' => $request->caption ?? '', 'created_at' => now(), 'updated_at' => now(),
+    ]);
+    return response()->json(['success' => true]);
+});
+
+Route::delete('/admin/match-gallery/{id}', function (Request $request, $id) {
+    if ($request->header('X-Admin-Key') !== env('ADMIN_SECRET_KEY', 'musc2026admin')) return response()->json(['error' => 'Unauthorized'], 401);
+    DB::table('match_gallery')->where('id', $id)->delete();
+    return response()->json(['success' => true]);
+});
+
+
+Route::get('/member-card/{identifier}', function ($identifier) {
+    $member = DB::table('members')->where('student_id', $identifier)->orWhere('email', $identifier)->first();
+    if (!$member) return response()->json(['success' => false, 'message' => 'Member not found']);
+    return response()->json(['success' => true, 'data' => $member]);
+});

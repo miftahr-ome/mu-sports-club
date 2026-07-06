@@ -1761,7 +1761,39 @@ function AdminPanel({ onLogout, dark }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [eventForm, setEventForm] = useState({ title: '', type: 'Tournament', date: '', details: '' });
     const [editingEvent, setEditingEvent] = useState(null);
+    const [newsItems, setNewsItems] = useState([]);
+const [galleryPhotos, setGalleryPhotos] = useState([]);
+const [newsForm, setNewsForm] = useState({ title: '', content: '', is_pinned: false });
+const [galleryForm, setGalleryForm] = useState({ tournament_name: '', image_url: '', caption: '' });
     const [gameForm, setGameForm] = useState({ tournament_name: '', game_name: '', game_icon: '🎯', entry_type: 'solo', max_players: 1 });
+    const EMPTY_MEMBER = { name: '', email: '', phone: '', committee_role: '' };
+const [memberForm, setMemberForm] = useState(EMPTY_MEMBER);
+const [editingMember, setEditingMember] = useState(null);
+
+const saveMember = async () => {
+    if (!memberForm.name || !memberForm.email) return showToast('Name and email required', 'error');
+    const url = editingMember ? `/admin/members/${editingMember.id}` : '/admin/members';
+    const method = editingMember ? 'PUT' : 'POST';
+    const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json', 'X-Admin-Key': ADMIN_PASSWORD, 'X-CSRF-TOKEN': csrfToken() }, body: JSON.stringify(memberForm) });
+    const data = await res.json();
+    if (data.success) {
+        showToast(editingMember ? 'Member updated!' : 'Member added!');
+        setMemberForm(EMPTY_MEMBER); setEditingMember(null);
+        fetchData('members');
+    } else showToast('Save failed', 'error');
+};
+
+const deleteMember = async (id) => {
+    if (!confirm('Remove this member?')) return;
+    await fetch(`/admin/members/${id}`, { method: 'DELETE', headers: { 'X-Admin-Key': ADMIN_PASSWORD, 'X-CSRF-TOKEN': csrfToken() } });
+    showToast('Removed!'); fetchData('members');
+};
+
+const startEditMember = (m) => {
+    setEditingMember(m);
+    setMemberForm({ name: m.name || '', email: m.email || '', phone: m.phone || '', committee_role: m.committee_role || '' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
 
     const showToast = (msg, type = 'success') => setToast({ message: msg, type });
     const csrfToken = () => document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
@@ -1780,6 +1812,8 @@ function AdminPanel({ onLogout, dark }) {
             else if (tab === 'teams') { const d = await fetcher('/admin/team-registrations'); if (d.success) setTeamRegs(d.data); }
             else if (tab === 'events') { const d = await fetcher('/admin/events'); if (d.success) setEvents(d.data); }
             else if (tab === 'games') { const d = await fetcher('/admin/tournament-games'); if (d.success) setTournamentGames(d.data); }
+            else if (tab === 'news') { const d = await fetcher('/admin/news'); if (d.success) setNewsItems(d.data); }
+else if (tab === 'gallery') { const d = await fetcher('/admin/match-gallery'); if (d.success) setGalleryPhotos(d.data); }
         } catch { showToast('Failed to load data', 'error'); }
         setLoading(false);
     };
@@ -1823,6 +1857,26 @@ function AdminPanel({ onLogout, dark }) {
         showToast('Deleted!');
         fetchData('games');
     };
+    const saveNews = async () => {
+    if (!newsForm.title || !newsForm.content) return showToast('Title and content required', 'error');
+    await fetch('/admin/news', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Admin-Key': ADMIN_PASSWORD, 'X-CSRF-TOKEN': csrfToken() }, body: JSON.stringify(newsForm) });
+    showToast('News posted!'); setNewsForm({ title: '', content: '', is_pinned: false }); fetchData('news');
+};
+const deleteNews = async (id) => {
+    if (!confirm('Delete this news post?')) return;
+    await fetch(`/admin/news/${id}`, { method: 'DELETE', headers: { 'X-Admin-Key': ADMIN_PASSWORD, 'X-CSRF-TOKEN': csrfToken() } });
+    showToast('Deleted!'); fetchData('news');
+};
+const saveGalleryPhoto = async () => {
+    if (!galleryForm.tournament_name || !galleryForm.image_url) return showToast('Tournament and image URL required', 'error');
+    await fetch('/admin/match-gallery', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Admin-Key': ADMIN_PASSWORD, 'X-CSRF-TOKEN': csrfToken() }, body: JSON.stringify(galleryForm) });
+    showToast('Photo added!'); setGalleryForm({ tournament_name: '', image_url: '', caption: '' }); fetchData('gallery');
+};
+const deleteGalleryPhoto = async (id) => {
+    if (!confirm('Delete this photo?')) return;
+    await fetch(`/admin/match-gallery/${id}`, { method: 'DELETE', headers: { 'X-Admin-Key': ADMIN_PASSWORD, 'X-CSRF-TOKEN': csrfToken() } });
+    showToast('Deleted!'); fetchData('gallery');
+};
 
     const d = dark;
 
@@ -1833,6 +1887,8 @@ function AdminPanel({ onLogout, dark }) {
         { key: 'members',       label: 'Committee',          icon: '👥', count: members.length },
         { key: 'events',        label: 'Events',             icon: '🏆', count: events.length },
         { key: 'games',         label: 'Tournament Games',   icon: '🎮', count: tournamentGames.length },
+        { key: 'news',          label: 'News',               icon: '📰', count: newsItems.length },
+        { key: 'gallery',       label: 'Match Gallery',      icon: '📸', count: galleryPhotos.length },
     ];
 
     const inputCls = `p-3 border rounded-xl text-sm outline-none w-full ${d ? 'bg-slate-800 border-slate-700 text-white focus:border-amber-500' : 'border-slate-200 focus:border-blue-400 text-slate-800 bg-white'}`;
@@ -1957,6 +2013,60 @@ function AdminPanel({ onLogout, dark }) {
                                     </div>
                                 </>
                             )}
+                          {adminTab === 'news' && (
+    <div className="animate-fade-in-up space-y-5">
+        <div className={`p-5 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+            <h3 className={`font-black text-base mb-4 ${d ? 'text-white' : 'text-slate-800'}`}>📰 Post News</h3>
+            <input type="text" placeholder="Title *" value={newsForm.title} onChange={e => setNewsForm({...newsForm, title: e.target.value})} className={`${inputCls} mb-3`} />
+            <textarea placeholder="Content *" rows="3" value={newsForm.content} onChange={e => setNewsForm({...newsForm, content: e.target.value})} className={`${inputCls} mb-3`}></textarea>
+            <label className="flex items-center gap-2 text-xs mb-3">
+                <input type="checkbox" checked={newsForm.is_pinned} onChange={e => setNewsForm({...newsForm, is_pinned: e.target.checked})} />
+                <span className={d ? 'text-slate-300' : 'text-slate-600'}>📌 Pin this post</span>
+            </label>
+            <button onClick={saveNews} className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl">➕ Post News</button>
+        </div>
+        <div className="flex justify-between items-center">
+            <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-slate-800'}`}>All News <span className="text-amber-500">({newsItems.length})</span></h2>
+            <button onClick={() => fetchData('news')} className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl">🔄 Refresh</button>
+        </div>
+        {newsItems.map(n => (
+            <div key={n.id} className={`p-4 rounded-2xl border flex justify-between items-start ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+                <div className="flex-1">
+                    {n.is_pinned && <span className="bg-amber-100 text-amber-800 text-[9px] font-black uppercase px-2 py-0.5 rounded-lg mr-2">📌</span>}
+                    <span className={`font-black text-sm ${d ? 'text-white' : 'text-slate-800'}`}>{n.title}</span>
+                    <p className={`text-xs mt-1 ${d ? 'text-slate-400' : 'text-slate-500'}`}>{n.content}</p>
+                </div>
+                <button onClick={() => deleteNews(n.id)} className="text-[10px] font-black bg-red-100 hover:bg-red-200 text-red-700 px-2.5 py-1 rounded-lg">🗑</button>
+            </div>
+        ))}
+    </div>
+)}
+
+{adminTab === 'gallery' && (
+    <div className="animate-fade-in-up space-y-5">
+        <div className={`p-5 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+            <h3 className={`font-black text-base mb-4 ${d ? 'text-white' : 'text-slate-800'}`}>📸 Add Match Photo</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                <input type="text" placeholder="Tournament Name (exact)" value={galleryForm.tournament_name} onChange={e => setGalleryForm({...galleryForm, tournament_name: e.target.value})} className={inputCls} />
+                <input type="text" placeholder="Image URL (imgbb link)" value={galleryForm.image_url} onChange={e => setGalleryForm({...galleryForm, image_url: e.target.value})} className={inputCls} />
+                <input type="text" placeholder="Caption" value={galleryForm.caption} onChange={e => setGalleryForm({...galleryForm, caption: e.target.value})} className={`${inputCls} sm:col-span-2`} />
+            </div>
+            <button onClick={saveGalleryPhoto} className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl">➕ Add Photo</button>
+        </div>
+        <div className="flex justify-between items-center">
+            <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-slate-800'}`}>Gallery Photos <span className="text-amber-500">({galleryPhotos.length})</span></h2>
+            <button onClick={() => fetchData('gallery')} className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl">🔄 Refresh</button>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {galleryPhotos.map(p => (
+                <div key={p.id} className={`rounded-2xl border overflow-hidden relative ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+                    <img src={p.image_url} className="w-full h-24 object-cover" alt={p.caption} />
+                    <button onClick={() => deleteGalleryPhoto(p.id)} className="absolute top-1 right-1 text-[10px] font-black bg-red-600 text-white px-2 py-0.5 rounded-lg">🗑</button>
+                </div>
+            ))}
+        </div>
+    </div>
+)}  
                         </div>
                     )}
 
@@ -2035,34 +2145,51 @@ function AdminPanel({ onLogout, dark }) {
                         </div>
                     )}
 
-                    {adminTab === 'members' && (
-                        <div className="animate-fade-in-up space-y-4">
-                            <div className="flex justify-between items-center">
-                                <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-slate-800'}`}>Committee <span className="text-amber-500">({members.length})</span></h2>
-                                <button onClick={() => fetchData('members')} className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl">🔄 Refresh</button>
-                            </div>
-                            {loading ? <div className="flex justify-center py-20"><div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div></div>
-                            : (
-                                <div className={`overflow-x-auto rounded-2xl border ${d ? 'border-slate-800' : 'border-slate-200'}`}>
-                                    <table className={`w-full text-sm ${d ? 'bg-slate-900' : 'bg-white'}`}>
-                                        <thead><tr className={`text-[10px] font-black uppercase tracking-wider ${d ? 'bg-slate-800 text-slate-400' : 'bg-slate-50 text-slate-500'}`}>
-                                            {['#','Name','Email','Role','Phone'].map(h => <th key={h} className="px-4 py-3 text-left">{h}</th>)}
-                                        </tr></thead>
-                                        <tbody>{members.map((m, i) => (
-                                            <tr key={m.id} className={`border-t ${d ? 'border-slate-800 hover:bg-slate-800/50' : 'border-slate-100 hover:bg-slate-50'}`}>
-                                                <td className={`px-4 py-3 text-xs font-black ${d ? 'text-slate-500' : 'text-slate-400'}`}>{i+1}</td>
-                                                <td className={`px-4 py-3 font-bold ${d ? 'text-white' : 'text-slate-800'}`}>{m.name}</td>
-                                                <td className={`px-4 py-3 text-xs ${d ? 'text-slate-300' : 'text-slate-600'}`}>{m.email}</td>
-                                                <td className="px-4 py-3"><span className="bg-blue-100 text-blue-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg">{m.committee_role || m.system_role || 'Member'}</span></td>
-                                                <td className={`px-4 py-3 text-xs ${d ? 'text-slate-300' : 'text-slate-600'}`}>{m.phone || '—'}</td>
-                                            </tr>
-                                        ))}</tbody>
-                                    </table>
-                                </div>
-                            )}
-                        </div>
-                    )}
+                  {adminTab === 'members' && (
+    <div className="animate-fade-in-up space-y-5">
+        <div className={`p-5 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+            <h3 className={`font-black text-base mb-4 ${d ? 'text-white' : 'text-slate-800'}`}>{editingMember ? '✏️ Edit Member' : '➕ Add Committee Member'}</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                <input type="text" placeholder="Full Name *" value={memberForm.name} onChange={e => setMemberForm({...memberForm, name: e.target.value})} className={inputCls} />
+                <input type="email" placeholder="Email *" value={memberForm.email} onChange={e => setMemberForm({...memberForm, email: e.target.value})} className={inputCls} />
+                <input type="text" placeholder="Phone" value={memberForm.phone} onChange={e => setMemberForm({...memberForm, phone: e.target.value})} className={inputCls} />
+                <input type="text" placeholder="Committee Role (e.g. PRESIDENT)" value={memberForm.committee_role} onChange={e => setMemberForm({...memberForm, committee_role: e.target.value})} className={inputCls} />
+            </div>
+            <div className="flex gap-3">
+                <button onClick={saveMember} className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl">{editingMember ? '💾 Update' : '➕ Add'}</button>
+                {editingMember && <button onClick={() => { setEditingMember(null); setMemberForm(EMPTY_MEMBER); }} className={`px-5 py-2.5 font-black text-xs rounded-xl ${d ? 'bg-slate-700 text-white' : 'bg-slate-100 text-slate-700'}`}>Cancel</button>}
+            </div>
+        </div>
 
+        <div className="flex justify-between items-center">
+            <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-slate-800'}`}>Committee <span className="text-amber-500">({members.length})</span></h2>
+            <button onClick={() => fetchData('members')} className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl">🔄 Refresh</button>
+        </div>
+        {loading ? <div className="flex justify-center py-20"><div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div></div>
+        : (
+            <div className={`overflow-x-auto rounded-2xl border ${d ? 'border-slate-800' : 'border-slate-200'}`}>
+                <table className={`w-full text-sm ${d ? 'bg-slate-900' : 'bg-white'}`}>
+                    <thead><tr className={`text-[10px] font-black uppercase tracking-wider ${d ? 'bg-slate-800 text-slate-400' : 'bg-slate-50 text-slate-500'}`}>
+                        {['#','Name','Email','Role','Phone','Actions'].map(h => <th key={h} className="px-4 py-3 text-left">{h}</th>)}
+                    </tr></thead>
+                    <tbody>{members.map((m, i) => (
+                        <tr key={m.id} className={`border-t ${d ? 'border-slate-800 hover:bg-slate-800/50' : 'border-slate-100 hover:bg-slate-50'}`}>
+                            <td className={`px-4 py-3 text-xs font-black ${d ? 'text-slate-500' : 'text-slate-400'}`}>{i+1}</td>
+                            <td className={`px-4 py-3 font-bold ${d ? 'text-white' : 'text-slate-800'}`}>{m.name}</td>
+                            <td className={`px-4 py-3 text-xs ${d ? 'text-slate-300' : 'text-slate-600'}`}>{m.email}</td>
+                            <td className="px-4 py-3"><span className="bg-blue-100 text-blue-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg">{m.committee_role || m.system_role || 'Member'}</span></td>
+                            <td className={`px-4 py-3 text-xs ${d ? 'text-slate-300' : 'text-slate-600'}`}>{m.phone || '—'}</td>
+                            <td className="px-4 py-3 flex gap-2">
+                                <button onClick={() => startEditMember(m)} className="text-[10px] font-black bg-blue-100 hover:bg-blue-200 text-blue-700 px-2.5 py-1 rounded-lg">✏️</button>
+                                <button onClick={() => deleteMember(m.id)} className="text-[10px] font-black bg-red-100 hover:bg-red-200 text-red-700 px-2.5 py-1 rounded-lg">🗑</button>
+                            </td>
+                        </tr>
+                    ))}</tbody>
+                </table>
+            </div>
+        )}
+    </div>
+)}
                     {adminTab === 'events' && (
                         <div className="animate-fade-in-up space-y-5">
                             <div className={`p-5 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
@@ -2169,6 +2296,180 @@ function AdminLogin({ onLogin, dark }) {
     );
 }
 
+
+function DigitalIDCard({ dark }) {
+    const [identifier, setIdentifier] = useState('');
+    const [member, setMember] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const d = dark;
+
+    const lookupMember = async () => {
+        if (!identifier.trim()) return;
+        setLoading(true); setError('');
+        try {
+            const res = await fetch(`/member-card/${encodeURIComponent(identifier)}`);
+            const data = await res.json();
+            if (data.success) setMember(data.data);
+            else { setError('No member found with that Student ID or Email'); setMember(null); }
+        } catch { setError('Connection failed'); }
+        setLoading(false);
+    };
+
+    const qrUrl = member ? `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(member.student_id + '|' + member.name)}` : '';
+
+    return (
+        <div className="max-w-md mx-auto space-y-6 animate-fade-in-up">
+            <div className="text-center">
+                <p className={`text-xs font-black uppercase tracking-widest mb-1 ${d ? 'text-blue-400' : 'text-blue-600'}`}>Member Services</p>
+                <h1 className={`text-2xl font-black tracking-tight uppercase ${d ? 'text-white' : 'text-blue-950'}`}>Digital ID Card</h1>
+                <p className={`text-xs mt-2 ${d ? 'text-slate-400' : 'text-slate-500'}`}>Enter your Student ID or Email to view your card</p>
+            </div>
+
+            <div className="flex gap-2">
+                <input type="text" value={identifier} onChange={e => setIdentifier(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && lookupMember()}
+                    placeholder="Student ID or Email" 
+                    className={`flex-1 p-3.5 border rounded-xl outline-none text-sm ${d ? 'bg-slate-800 border-slate-700 text-white focus:border-amber-500' : 'border-blue-100 focus:border-blue-500'}`} />
+                <button onClick={lookupMember} disabled={loading}
+                    className="px-6 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl transition-all">
+                    {loading ? '⏳' : '🔍 Find'}
+                </button>
+            </div>
+            {error && <p className="text-red-500 text-xs font-bold text-center">{error}</p>}
+
+            {member && (
+                <div className="rounded-3xl overflow-hidden shadow-2xl animate-fade-in-up" style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%)' }}>
+                    <div className="p-6 text-white relative">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-amber-400/10 rounded-full blur-2xl"></div>
+                        <div className="flex justify-between items-start mb-6 relative z-10">
+                            <div>
+                                <p className="text-[9px] font-black uppercase tracking-widest text-amber-400">Official Member Card</p>
+                                <p className="text-lg font-black tracking-wider">MU SPORTS CLUB</p>
+                            </div>
+                            <span className="text-2xl">🎽</span>
+                        </div>
+                        <div className="flex items-center gap-4 relative z-10">
+                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-black text-xl flex-shrink-0">
+                                {member.name?.charAt(0)}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <p className="font-black text-base truncate">{member.name}</p>
+                                <p className="text-blue-300 text-xs">{member.department} · {member.semester} Semester</p>
+                                <p className="text-blue-300 text-xs">ID: {member.student_id}</p>
+                            </div>
+                            <div className="w-16 h-16 bg-white rounded-lg p-1 flex-shrink-0">
+                                <img src={qrUrl} alt="QR Code" className="w-full h-full" />
+                            </div>
+                        </div>
+                        <div className="mt-4 pt-4 border-t border-white/10 flex justify-between text-[10px] text-blue-300 relative z-10">
+                            <span>📧 {member.email}</span>
+                            <span>📞 {member.phone}</span>
+                        </div>
+                    </div>
+                    <div className="bg-amber-500 text-slate-950 text-center py-2 text-[10px] font-black uppercase tracking-widest">
+                        Metropolitan University, Sylhet
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
+
+
+function MatchGallery({ dark, clubEvents }) {
+    const [selectedTournament, setSelectedTournament] = useState('All');
+    const [photos, setPhotos] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [lightbox, setLightbox] = useState(null);
+    const d = dark;
+
+    useEffect(() => {
+        setLoading(true);
+        const url = selectedTournament === 'All' ? '/match-gallery' : `/match-gallery/${encodeURIComponent(selectedTournament)}`;
+        fetch(url).then(r => r.json()).then(d => setPhotos(d.data || [])).catch(() => setPhotos([])).finally(() => setLoading(false));
+    }, [selectedTournament]);
+
+    return (
+        <div className="space-y-6 animate-fade-in-up">
+            <div className="text-center">
+                <p className={`text-xs font-black uppercase tracking-widest mb-1 ${d ? 'text-blue-400' : 'text-blue-600'}`}>Captured Moments</p>
+                <h1 className={`text-3xl font-black tracking-tight uppercase ${d ? 'text-white' : 'text-blue-950'}`}>Match Gallery</h1>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-2">
+                {['All', ...clubEvents.map(e => e.title)].map(t => (
+                    <button key={t} onClick={() => setSelectedTournament(t)}
+                        className={`text-[10px] font-black uppercase tracking-wider px-4 py-2 rounded-full border transition-all ${selectedTournament === t
+                            ? (d ? 'bg-amber-500 text-slate-950 border-amber-500' : 'bg-blue-950 text-white border-blue-950')
+                            : (d ? 'border-slate-700 text-slate-400' : 'border-blue-200 text-slate-500')}`}>
+                        {t}
+                    </button>
+                ))}
+            </div>
+
+            {loading ? (
+                <div className="flex justify-center py-20"><div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div></div>
+            ) : photos.length === 0 ? (
+                <div className={`text-center py-20 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+                    <p className="text-5xl mb-3">📸</p>
+                    <p className={`font-black text-sm ${d ? 'text-slate-400' : 'text-slate-500'}`}>No photos yet for this tournament</p>
+                </div>
+            ) : (
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {photos.map((p, i) => (
+                        <div key={p.id} className="gallery-item relative rounded-2xl overflow-hidden cursor-pointer border h-40 animate-fade-in-up"
+                            style={{ animationDelay: `${i * 40}ms` }} onClick={() => setLightbox(p)}>
+                            <img src={p.image_url} alt={p.caption} className="w-full h-full object-cover" />
+                            {p.caption && (
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-2">
+                                    <span className="text-white text-[9px] font-black">{p.caption}</span>
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {lightbox && (
+                <div className="fixed inset-0 z-[9998] bg-slate-950/95 flex items-center justify-center p-4" onClick={() => setLightbox(null)}>
+                    <div className="relative max-w-2xl w-full" onClick={e => e.stopPropagation()}>
+                        <button onClick={() => setLightbox(null)} className="absolute -top-10 right-0 text-white text-3xl font-black">×</button>
+                        <img src={lightbox.image_url} alt={lightbox.caption} className="w-full rounded-2xl" />
+                        {lightbox.caption && <p className="text-center text-white text-sm mt-3">{lightbox.caption}</p>}
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
+
+function NewsFeed({ dark }) {
+    const [news, setNews] = useState([]);
+    useEffect(() => { fetch('/news').then(r => r.json()).then(d => setNews(d.data || [])).catch(() => {}); }, []);
+    if (news.length === 0) return null;
+    const d = dark;
+
+    return (
+        <div className="space-y-6">
+            <div className="text-center">
+                <p className={`text-xs font-black uppercase tracking-widest mb-1 ${d ? 'text-blue-400' : 'text-blue-600'}`}>Stay Updated</p>
+                <h2 className={`text-3xl font-black tracking-tight uppercase ${d ? 'text-white' : 'text-blue-950'}`}>Latest News</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {news.slice(0, 4).map((n, i) => (
+                    <div key={n.id} className={`p-5 rounded-2xl border animate-fade-in-up ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-blue-100 shadow-sm'}`} style={{ animationDelay: `${i * 60}ms` }}>
+                        {n.is_pinned && <span className="inline-block bg-amber-100 text-amber-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg mb-2">📌 Pinned</span>}
+                        <h3 className={`font-black text-base ${d ? 'text-white' : 'text-blue-950'}`}>{n.title}</h3>
+                        <p className={`text-xs mt-2 leading-relaxed ${d ? 'text-slate-400' : 'text-slate-500'}`}>{n.content}</p>
+                        <p className={`text-[10px] mt-3 ${d ? 'text-slate-500' : 'text-slate-400'}`}>{new Date(n.created_at).toLocaleDateString()}</p>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
 function MUSportsClubApp() {
     const dbEvents = window.backendEvents || [];
     const dbUsers  = window.backendUsers  || [];
@@ -2261,12 +2562,13 @@ function MUSportsClubApp() {
     if (showAdminLogin && !isAdmin) return <AdminLogin dark={d} onLogin={() => setIsAdmin(true)} />;
     if (isAdmin) return <AdminPanel dark={d} onLogout={() => { setIsAdmin(false); setShowAdminLogin(false); window.location.hash = ''; }} />;
 
-    // Nav items: label + the actual tab key used by the `currentTab === '...'` checks below.
     const navItems = [
         { key: 'home',      label: 'Home' },
         { key: 'about',     label: 'About' },
         { key: 'committee', label: 'Executive Panel' },
         { key: 'events',    label: 'Tournaments' },
+        { key: 'news',    label: 'News',          icon: '📰', count: 0 },
+{ key: 'gallery', label: 'Match Gallery', icon: '📸', count: 0 },
     ];
 
     return (
@@ -2331,7 +2633,7 @@ function MUSportsClubApp() {
                             </div>
                         </div>
 
-                        {/* Desktop nav links */}
+
                         <div className="hidden lg:flex items-center space-x-6 text-sm font-semibold text-gray-300">
                             {navItems.map(item => (
                                 <button key={item.key} onClick={() => goTo(item.key)}
@@ -2372,7 +2674,7 @@ function MUSportsClubApp() {
                                 </div>
                             </div>
 
-                            {/* Mobile hamburger toggle */}
+
                             <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden text-white p-2 -mr-2">
                                 <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     {isMenuOpen
@@ -2695,6 +2997,13 @@ function MUSportsClubApp() {
                         </div>
                     </div>
                 )}
+                {currentTab === 'gallery' && <MatchGallery dark={d} clubEvents={clubEvents} />}
+{currentTab === 'idcard' && <DigitalIDCard dark={d} />}
+{currentTab === 'news' && (
+    <div className="max-w-3xl mx-auto">
+        <NewsFeed dark={d} />
+    </div>
+)}
 
                 {/* REGISTER — 3-tab portal */}
                 {currentTab === 'register' && (
