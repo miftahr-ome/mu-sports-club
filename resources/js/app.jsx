@@ -4800,9 +4800,7 @@ function MUSportsClubApp() {
                                 className="flex items-center space-x-2 md:space-x-3 cursor-pointer group min-w-max shrink-0"
                                 onClick={() => goTo("home")}
                             >
-                                <div className="w-10 h-10 md:w-12 md:h-12 shrink-0">
-                                    <img src="https://imgur.com/RBtBKlX.jpg" alt="Club Logo" className="w-full h-full object-contain drop-shadow-lg" />
-                                </div>
+                               <img src="https://imgur.com/RBtBKlX.jpg" alt="Club Logo" className="w-12 h-12 md:w-14 md:h-14 object-contain shrink-0" />
                                 <span className="text-sm md:text-lg font-black tracking-widest text-white leading-none">
                                     MU SPORTS CLUB
                                 </span>
@@ -4832,9 +4830,7 @@ function MUSportsClubApp() {
                                     Register Now
                                 </button>
                                 <div className="hidden sm:flex items-center gap-2">
-                                   <div className="w-10 h-10 md:w-12 md:h-12 shrink-0">
-    <img src="https://imgur.com/SGXqF5C.jpg" alt="MU Logo" className="w-full h-full object-contain drop-shadow-lg" />
-</div>
+                                   <img src="https://imgur.com/SGXqF5C.jpg" alt="MU Logo" className="w-12 h-12 md:w-14 md:h-14 object-contain shrink-0" />
                                 </div>
                                 <button
                                     onClick={() => setIsMenuOpen(!isMenuOpen)}
