@@ -93,7 +93,20 @@ Route::get('/match-gallery', function () {
 });
 
 Route::get('/match-gallery/{tournament}', function ($tournament) {
-    return response()->json(['success' => true, 'data' => DB::table('match_gallery')->where('tournament_name', $tournament)->orderBy('created_at','desc')->get()]);
+    try {
+        $data = DB::table('match_gallery')->where('tournament_name', $tournament)->orderBy('created_at','desc')->get();
+        return response()->json(['success' => true, 'data' => $data]);
+    } catch (\Exception $e) {
+        return response()->json(['success' => true, 'data' => [], 'error' => $e->getMessage()]);
+    }
+});
+
+Route::get('/news', function () {
+    try {
+        return response()->json(['success' => true, 'data' => DB::table('news')->orderBy('is_pinned','desc')->orderBy('created_at','desc')->get()]);
+    } catch (\Exception $e) {
+        return response()->json(['success' => true, 'data' => []]);
+    }
 });
 
 Route::get('/member-card/{identifier}', function ($identifier) {

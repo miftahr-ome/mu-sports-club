@@ -4800,8 +4800,7 @@ function MUSportsClubApp() {
                                 className="flex items-center space-x-2 md:space-x-3 cursor-pointer group min-w-max shrink-0"
                                 onClick={() => goTo("home")}
                             >
-                               <img src="https://imgur.com/RBtBKlX.jpg" alt="Club Logo" className="w-12 h-12 md:w-14 md:h-14 object-contain shrink-0" />
-                                <span className="text-sm md:text-lg font-black tracking-widest text-white leading-none">
+<img src="https://imgur.com/RBtBKlX.jpg" alt="Club Logo" className="w-12 h-12 md:w-14 md:h-14 object-contain shrink-0" style={{ mixBlendMode: 'screen' }} />                                <span className="text-sm md:text-lg font-black tracking-widest text-white leading-none">
                                     MU SPORTS CLUB
                                 </span>
                             </div>
@@ -4829,9 +4828,7 @@ function MUSportsClubApp() {
                                 >
                                     Register Now
                                 </button>
-                                <div className="hidden sm:flex items-center gap-2">
-                                   <img src="https://imgur.com/SGXqF5C.jpg" alt="MU Logo" className="w-12 h-12 md:w-14 md:h-14 object-contain shrink-0" />
-                                </div>
+                               <img src="https://imgur.com/SGXqF5C.jpg" alt="MU Logo" className="w-12 h-12 md:w-14 md:h-14 object-contain shrink-0" style={{ mixBlendMode: 'screen' }} />
                                 <button
                                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                                     className="lg:hidden text-white p-2"
@@ -4887,10 +4884,10 @@ function MUSportsClubApp() {
                 </nav>
 
                 <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                    {/* HOME */}
+
                     {currentTab === "home" && (
                         <div className="space-y-20">
-                            {/* Hero */}
+
                             <div
                                 className={`relative rounded-3xl overflow-hidden text-center text-white py-20 md:py-28 px-6 ${d ? "hero-gradient-dark" : "hero-gradient"}`}
                             >
