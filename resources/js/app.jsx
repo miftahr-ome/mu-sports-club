@@ -4801,8 +4801,7 @@ function MUSportsClubApp() {
                                 onClick={() => goTo("home")}
                             >
                                 <div className="w-10 h-10 md:w-12 md:h-12 shrink-0">
-    <img src="https://imgur.com/RBtBKlX.jpg" alt="Club Logo" className="w-full h-full object-contain drop-shadow-lg" />
-</div>
+                                    <img src="https://imgur.com/RBtBKlX.jpg" alt="Club Logo" className="w-full h-full object-contain drop-shadow-lg" />
                                 </div>
                                 <span className="text-sm md:text-lg font-black tracking-widest text-white leading-none">
                                     MU SPORTS CLUB
