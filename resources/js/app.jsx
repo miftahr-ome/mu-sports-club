@@ -1229,12 +1229,13 @@
 //     root.render(<MUSportsClubApp />);
 // }
 
-import "./bootstrap";
-import "../css/app.css";
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { createRoot } from "react-dom/client";
+import './bootstrap';
+import '../css/app.css';
 
-const ADMIN_PASSWORD = "musc2026admin";
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { createRoot } from 'react-dom/client';
+
+const ADMIN_PASSWORD = 'musc2026admin';
 
 function useCountUp(target, duration = 2000, start = false) {
     const [count, setCount] = useState(0);
@@ -1257,143 +1258,68 @@ function useInView(threshold = 0.2) {
     const ref = useRef(null);
     const [inView, setInView] = useState(false);
     useEffect(() => {
-        const obs = new IntersectionObserver(
-            ([e]) => {
-                if (e.isIntersecting) setInView(true);
-            },
-            { threshold },
-        );
+        const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true); }, { threshold });
         if (ref.current) obs.observe(ref.current);
         return () => obs.disconnect();
     }, [threshold]);
     return [ref, inView];
 }
 
-function StatCard({
-    count,
-    suffix = "",
-    label,
-    icon,
-    dark,
-    delay = 0,
-    trigger,
-}) {
+function StatCard({ count, suffix = '', label, icon, dark, delay = 0, trigger }) {
     const num = useCountUp(count, 2000, trigger);
     return (
-        <div
-            className="stat-card p-6 rounded-2xl border text-center shadow-sm transition-all duration-500 hover:scale-105 hover:shadow-lg"
-            style={{
-                animationDelay: `${delay}ms`,
-                "--card-bg": dark ? "#0f172a" : "#fff",
-            }}
-        >
+        <div className="stat-card p-6 rounded-2xl border text-center shadow-sm transition-all duration-500 hover:scale-105 hover:shadow-lg"
+            style={{ animationDelay: `${delay}ms`, '--card-bg': dark ? '#0f172a' : '#fff' }}>
             <span className="text-2xl block mb-1">{icon}</span>
-            <span
-                className={`text-3xl md:text-4xl font-black block ${dark ? "text-amber-400" : "text-blue-900"}`}
-            >
-                {num}
-                {suffix}
-            </span>
-            <span
-                className={`text-[10px] font-black uppercase tracking-wider block mt-1 ${dark ? "text-slate-400" : "text-slate-500"}`}
-            >
-                {label}
-            </span>
+            <span className={`text-3xl md:text-4xl font-black block ${dark ? 'text-amber-400' : 'text-blue-900'}`}>{num}{suffix}</span>
+            <span className={`text-[10px] font-black uppercase tracking-wider block mt-1 ${dark ? 'text-slate-400' : 'text-slate-500'}`}>{label}</span>
         </div>
     );
 }
 
 function Toast({ message, type, onClose }) {
-    useEffect(() => {
-        const t = setTimeout(onClose, 4000);
-        return () => clearTimeout(t);
-    }, [onClose]);
+    useEffect(() => { const t = setTimeout(onClose, 4000); return () => clearTimeout(t); }, [onClose]);
     return (
-        <div
-            className={`fixed bottom-6 right-6 z-[9999] flex items-center gap-3 px-5 py-4 rounded-2xl shadow-2xl text-sm font-bold animate-slide-up max-w-sm
-            ${type === "success" ? "bg-emerald-500 text-white" : type === "error" ? "bg-red-500 text-white" : "bg-blue-600 text-white"}`}
-        >
-            <span>
-                {type === "success" ? "✅" : type === "error" ? "❌" : "ℹ️"}
-            </span>
+        <div className={`fixed bottom-4 right-4 left-4 sm:left-auto sm:bottom-6 sm:right-6 z-[9999] flex items-center gap-3 px-5 py-4 rounded-2xl shadow-2xl text-sm font-bold animate-slide-up max-w-sm
+            ${type === 'success' ? 'bg-emerald-500 text-white' : type === 'error' ? 'bg-red-500 text-white' : 'bg-blue-600 text-white'}`}>
+            <span>{type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span>
             <span className="flex-1">{message}</span>
-            <button
-                onClick={onClose}
-                className="ml-2 opacity-70 hover:opacity-100 font-black text-lg"
-            >
-                ×
-            </button>
+            <button onClick={onClose} className="ml-2 opacity-70 hover:opacity-100 font-black text-lg">×</button>
         </div>
     );
 }
 
 const testimonials = [
-    {
-        name: "SH AH AN",
-        dept: "CSE 61, MU",
-        text: "MU Sports Club transformed my university experience. The tournaments are world-class and the executive team is incredibly professional.",
-        avatar: "SH",
-    },
-    {
-        name: "AVIZITH",
-        dept: "CSE 61, MU",
-        text: "The energy during INTRA-FUTSAL was absolutely electric!",
-        avatar: "AV",
-    },
-    {
-        name: "MANNA",
-        dept: "CSE 62, MU",
-        text: "The indoor games season is brilliantly organized. Carrom and Chess tournaments with proper brackets — loved every moment.",
-        avatar: "MN",
-    },
-    {
-        name: "SALEH",
-        dept: "English, MU",
-        text: "From futsal to cricket, every event is managed with so much passion and dedication. Proud to be part of this family.",
-        avatar: "SL",
-    },
+    { name: "SH AH AN", dept: "CSE 61, MU", text: "MU Sports Club transformed my university experience. The tournaments are world-class and the executive team is incredibly professional.", avatar: "SH" },
+    { name: "AVIZITH", dept: "CSE 61, MU", text: "The energy during INTRA-FUTSAL was absolutely electric!", avatar: "AV" },
+    { name: "MANNA", dept: "CSE 62, MU", text: "The indoor games season is brilliantly organized. Carrom and Chess tournaments with proper brackets — loved every moment.", avatar: "MN" },
+    { name: "SALEH", dept: "English, MU", text: "From futsal to cricket, every event is managed with so much passion and dedication. Proud to be part of this family.", avatar: "SL" },
 ];
 
 function TestimonialCarousel({ dark }) {
     const [active, setActive] = useState(0);
     useEffect(() => {
-        const t = setInterval(
-            () => setActive((p) => (p + 1) % testimonials.length),
-            4000,
-        );
+        const t = setInterval(() => setActive(p => (p + 1) % testimonials.length), 4000);
         return () => clearInterval(t);
     }, []);
     const t = testimonials[active];
     return (
-        <div
-            className={`rounded-3xl border p-8 md:p-12 relative overflow-hidden ${dark ? "bg-slate-900 border-slate-800" : "bg-gradient-to-br from-blue-950 to-indigo-950"}`}
-        >
+        <div className={`rounded-3xl border p-8 md:p-12 relative overflow-hidden ${dark ? 'bg-slate-900 border-slate-800' : 'bg-gradient-to-br from-blue-950 to-indigo-950'}`}>
             <div className="absolute top-0 left-0 w-48 h-48 bg-amber-400/5 rounded-full blur-3xl pointer-events-none"></div>
             <div className="absolute bottom-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
-            <div className="text-amber-400 text-5xl font-black mb-4 leading-none">
-                "
-            </div>
-            <p className="text-white text-base md:text-lg leading-relaxed font-medium max-w-2xl mb-8 relative z-10">
-                {t.text}
-            </p>
+            <div className="text-amber-400 text-5xl font-black mb-4 leading-none">"</div>
+            <p className="text-white text-base md:text-lg leading-relaxed font-medium max-w-2xl mb-8 relative z-10">{t.text}</p>
             <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center font-black text-slate-950 text-sm shadow-lg">
-                    {t.avatar}
-                </div>
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center font-black text-slate-950 text-sm shadow-lg">{t.avatar}</div>
                 <div>
                     <p className="text-white font-black text-sm">{t.name}</p>
-                    <p className="text-blue-300 text-xs font-medium">
-                        {t.dept}
-                    </p>
+                    <p className="text-blue-300 text-xs font-medium">{t.dept}</p>
                 </div>
             </div>
             <div className="flex gap-2 mt-6">
                 {testimonials.map((_, i) => (
-                    <button
-                        key={i}
-                        onClick={() => setActive(i)}
-                        className={`h-1.5 rounded-full transition-all duration-300 ${i === active ? "w-8 bg-amber-400" : "w-3 bg-white/20 hover:bg-white/40"}`}
-                    />
+                    <button key={i} onClick={() => setActive(i)}
+                        className={`h-1.5 rounded-full transition-all duration-300 ${i === active ? 'w-8 bg-amber-400' : 'w-3 bg-white/20 hover:bg-white/40'}`} />
                 ))}
             </div>
         </div>
@@ -1401,100 +1327,48 @@ function TestimonialCarousel({ dark }) {
 }
 
 const sportsCategories = [
-    {
-        icon: "⚽",
-        name: "Football",
-        desc: "Inter-university 9-a-side leagues and futsal tournaments",
-        tag: "League M · Futsal",
-    },
-    {
-        icon: "🏏",
-        name: "Cricket",
-        desc: "Grand cricket tournaments under international standard rules",
-        tag: "UPL · MPL-15",
-    },
-    {
-        icon: "♟️",
-        name: "Chess & Carrom",
-        desc: "Strategic mind games targeting MUSC member brackets",
-        tag: "Indoor Season",
-    },
-    {
-        icon: "🏸",
-        name: "Badminton",
-        desc: "Fast-paced court action in seasonal knockout cups",
-        tag: "Indoor Season",
-    },
-    {
-        icon: "🎮",
-        name: "Esports",
-        desc: "Next-generation Esports battles — strategy, reflex, dominance ⚡",
-        tag: "Coming Soon",
-    },
-    {
-        icon: "🏋️",
-        name: "Athletics",
-        desc: "Track, field and endurance events for campus athletes",
-        tag: "Coming Soon",
-    },
+    { icon: "⚽", name: "Football", desc: "Inter-university 9-a-side leagues and futsal tournaments", tag: "League M · Futsal" },
+    { icon: "🏏", name: "Cricket", desc: "Grand cricket tournaments under international standard rules", tag: "UPL · MPL-15" },
+    { icon: "♟️", name: "Chess & Carrom", desc: "Strategic mind games targeting MUSC member brackets", tag: "Indoor Season" },
+    { icon: "🏸", name: "Badminton", desc: "Fast-paced court action in seasonal knockout cups", tag: "Indoor Season" },
+    { icon: "🎮", name: "Esports", desc: "Next-generation Esports battles — strategy, reflex, dominance ⚡", tag: "Coming Soon" },
+    { icon: "🏋️", name: "Athletics", desc: "Track, field and endurance events for campus athletes", tag: "Coming Soon" },
 ];
 
-const TEAM_TOURNAMENTS = [
-    "LEAGUE M",
-    "INTRA-MUSC FUTSAL",
-    "INTRA FUTSAL",
-    "UPL",
-    "MPL-15",
-];
-const INDOOR_TOURNAMENTS = ["INDOOR GAMES SEASON-15"];
+const TEAM_TOURNAMENTS = ['LEAGUE M', 'INTRA-MUSC FUTSAL', 'INTRA FUTSAL', 'UPL', 'MPL-15'];
+const INDOOR_TOURNAMENTS = ['INDOOR GAMES SEASON-15'];
+
 const DEFAULT_INDOOR_GAMES = [
-    { id: 1, game_name: "Chess", game_icon: "♟️", entry_type: "solo" },
-    { id: 2, game_name: "Carrom", game_icon: "🎯", entry_type: "solo" },
-    { id: 3, game_name: "Badminton", game_icon: "🏸", entry_type: "solo" },
-    { id: 4, game_name: "Table Tennis", game_icon: "🏓", entry_type: "solo" },
-    { id: 5, game_name: "Ludo", game_icon: "🎲", entry_type: "team" },
-    { id: 6, game_name: "Dart", game_icon: "🎯", entry_type: "solo" },
-    { id: 7, game_name: "eFootball", game_icon: "🎮", entry_type: "solo" },
-    { id: 8, game_name: "FIFA 26", game_icon: "🎮", entry_type: "solo" },
-    { id: 9, game_name: "Arm Wrestling", game_icon: "💪", entry_type: "solo" },
-    { id: 10, game_name: "Carom Snooker", game_icon: "🎱", entry_type: "solo" },
+    { id: 1, game_name: 'Chess', game_icon: '♟️', entry_type: 'solo' },
+    { id: 2, game_name: 'Carrom', game_icon: '🎯', entry_type: 'solo' },
+    { id: 4, game_name: 'Badminton', game_icon: '🏸', entry_type: 'solo' },
+    { id: 6, game_name: 'Ludo', game_icon: '🎲', entry_type: 'team' },
+    { id: 7, game_name: 'Dart', game_icon: '🎯', entry_type: 'solo' },
+    { id: 9, game_name: 'eFootball', game_icon: '🎮', entry_type: 'solo' },
+    { id: 10, game_name: 'fifa26', game_icon: '🎮', entry_type: 'solo' },
 ];
 
-// ── Registration Page ─────────────────────────────────────────────────────────
+// ─── Registration Page ─────────────────────────────────────────────────────────
 function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
-    const [regTab, setRegTab] = useState("tournament");
+    const [regTab, setRegTab] = useState('tournament');
     const d = dark;
-    const csrfToken = () =>
-        document
-            .querySelector('meta[name="csrf-token"]')
-            ?.getAttribute("content") || "";
+    const csrfToken = () => document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 
-    // Solo / Indoor
-    const [formData, setFormData] = useState({
-        player_name: "",
-        email: "",
-        phone: "",
-        event_name: "",
-        game_name: "",
-        department: "",
-    });
+    const [formData, setFormData] = useState({ player_name: '', email: '', phone: '', event_name: '', game_name: '', department: '' });
     const [isSaving, setIsSaving] = useState(false);
     const [indoorGames, setIndoorGames] = useState([]);
     const [loadingGames, setLoadingGames] = useState(false);
 
+    const selectedEvent = clubEvents.find(e => e.title === formData.event_name);
+    const isIndoor = selectedEvent && formData.event_name.toUpperCase().includes('INDOOR');
+
     useEffect(() => {
         if (!formData.event_name) return;
-        if (formData.event_name.toUpperCase().includes("INDOOR")) {
+        if (formData.event_name.toUpperCase().includes('INDOOR')) {
             setLoadingGames(true);
-            fetch(
-                `/tournament-games/${encodeURIComponent(formData.event_name)}`,
-            )
-                .then((r) => r.json())
-                .then((d) =>
-                    setIndoorGames(
-                        d.data?.length > 0 ? d.data : DEFAULT_INDOOR_GAMES,
-                    ),
-                )
+            fetch(`/tournament-games/${encodeURIComponent(formData.event_name)}`)
+                .then(r => r.json())
+                .then(d => { setIndoorGames(d.data?.length > 0 ? d.data : DEFAULT_INDOOR_GAMES); })
                 .catch(() => setIndoorGames(DEFAULT_INDOOR_GAMES))
                 .finally(() => setLoadingGames(false));
         }
@@ -1502,343 +1376,148 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
 
     const handleSoloSubmit = async (e) => {
         e.preventDefault();
-        if (
-            formData.event_name.toUpperCase().includes("INDOOR") &&
-            !formData.game_name
-        )
-            return showToast("Please select a game!", "error");
+        if (isIndoor && !formData.game_name) return showToast('Please select a game!', 'error');
         setIsSaving(true);
         try {
-            const res = await fetch("/register-event", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                    "X-CSRF-TOKEN": csrfToken(),
-                },
-                body: JSON.stringify(formData),
+            const res = await fetch('/register-event', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': csrfToken() },
+                body: JSON.stringify(formData)
             });
             const result = await res.json();
             if (res.ok && result.success) {
-                showToast("Registration successful! 🎯", "success");
-                setFormData({
-                    player_name: "",
-                    email: "",
-                    phone: "",
-                    event_name: "",
-                    game_name: "",
-                    department: "",
-                });
-                goTo("events");
-            } else showToast(result.message || "Registration failed.", "error");
-        } catch {
-            showToast("Connection failed!", "error");
-        } finally {
-            setIsSaving(false);
-        }
+                showToast('Registration successful! 🎯', 'success');
+                setFormData({ player_name: '', email: '', phone: '', event_name: '', game_name: '', department: '' });
+                goTo('events');
+            } else {
+                showToast(result.message || 'Registration failed.', 'error');
+            }
+        } catch { showToast('Connection failed!', 'error'); }
+        finally { setIsSaving(false); }
     };
 
-    // Team
     const [teamForm, setTeamForm] = useState({
-        tournament_name: "",
-        team_name: "",
-        captain_name: "",
-        captain_phone: "",
-        captain_email: "",
-        department: "",
-        players: Array(15)
-            .fill(null)
-            .map((_, i) => ({ name: "", role: i === 0 ? "Captain" : "" })),
+        tournament_name: '', team_name: '', captain_name: '',
+        captain_phone: '', captain_email: '', department: '',
+        players: Array(11).fill('').map((_, i) => ({ name: '', role: i === 0 ? 'Captain' : '' }))
     });
     const [isTeamSaving, setIsTeamSaving] = useState(false);
-    const teamTournaments = clubEvents.filter((e) =>
-        TEAM_TOURNAMENTS.includes(e.title?.toUpperCase?.() || e.title),
-    );
-    const isCricket =
-        teamForm.tournament_name?.includes("UPL") ||
-        teamForm.tournament_name?.includes("MPL");
-    const playerSlots = isCricket ? 15 : 9;
+
+    const teamTournaments = clubEvents.filter(e => TEAM_TOURNAMENTS.includes(e.title));
+    const selectedTeamEvent = clubEvents.find(e => e.title === teamForm.tournament_name);
+    const isCricket = selectedTeamEvent?.title?.includes('UPL') || selectedTeamEvent?.title?.includes('MPL');
+    const playerCount = isCricket ? 11 : 5;
 
     const handleTeamSubmit = async (e) => {
         e.preventDefault();
-        const filledPlayers = teamForm.players.filter((p) => p.name.trim());
-        if (filledPlayers.length < 3)
-            return showToast("Add at least 3 players!", "error");
+        const filledPlayers = teamForm.players.slice(0, playerCount).filter(p => p.name.trim());
+        if (filledPlayers.length < 3) return showToast('Please add at least 3 players!', 'error');
         setIsTeamSaving(true);
         try {
-            const res = await fetch("/register-team", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                    "X-CSRF-TOKEN": csrfToken(),
-                },
-                body: JSON.stringify({ ...teamForm, players: filledPlayers }),
+            const res = await fetch('/register-team', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': csrfToken() },
+                body: JSON.stringify({ ...teamForm, players: filledPlayers })
             });
             const result = await res.json();
             if (res.ok && result.success) {
-                showToast("Team registered! 🏆", "success");
-                setTeamForm({
-                    tournament_name: "",
-                    team_name: "",
-                    captain_name: "",
-                    captain_phone: "",
-                    captain_email: "",
-                    department: "",
-                    players: Array(15)
-                        .fill(null)
-                        .map((_, i) => ({
-                            name: "",
-                            role: i === 0 ? "Captain" : "",
-                        })),
-                });
-                goTo("events");
-            } else
-                showToast(
-                    result.message || "Team registration failed.",
-                    "error",
-                );
-        } catch {
-            showToast("Connection failed!", "error");
-        } finally {
-            setIsTeamSaving(false);
-        }
+                showToast('Team registered successfully! 🏆', 'success');
+                setTeamForm({ tournament_name: '', team_name: '', captain_name: '', captain_phone: '', captain_email: '', department: '', players: Array(11).fill('').map((_, i) => ({ name: '', role: i === 0 ? 'Captain' : '' })) });
+                goTo('events');
+            } else {
+                showToast(result.message || 'Team registration failed.', 'error');
+            }
+        } catch { showToast('Connection failed!', 'error'); }
+        finally { setIsTeamSaving(false); }
     };
 
-    // Club Member
-    const [memberForm, setMemberForm] = useState({
-        name: "",
-        student_id: "",
-        department: "",
-        semester: "",
-        phone: "",
-        email: "",
-    });
+    const [memberForm, setMemberForm] = useState({ name: '', student_id: '', department: '', semester: '', phone: '', email: '' });
     const [isMemberSaving, setIsMemberSaving] = useState(false);
 
     const handleMemberSubmit = async (e) => {
         e.preventDefault();
         setIsMemberSaving(true);
         try {
-            const res = await fetch("/register-member", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                    "X-CSRF-TOKEN": csrfToken(),
-                },
-                body: JSON.stringify(memberForm),
+            const res = await fetch('/register-member', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': csrfToken() },
+                body: JSON.stringify(memberForm)
             });
             const result = await res.json();
             if (res.ok && result.success) {
-                showToast("Welcome to MU Sports Club! 🎉", "success");
-                setMemberForm({
-                    name: "",
-                    student_id: "",
-                    department: "",
-                    semester: "",
-                    phone: "",
-                    email: "",
-                });
-            } else showToast(result.message || "Registration failed.", "error");
-        } catch {
-            showToast("Connection failed!", "error");
-        } finally {
-            setIsMemberSaving(false);
-        }
+                showToast('Welcome to MU Sports Club! 🎉', 'success');
+                setMemberForm({ name: '', student_id: '', department: '', semester: '', phone: '', email: '' });
+            } else {
+                showToast(result.message || 'Registration failed.', 'error');
+            }
+        } catch { showToast('Connection failed!', 'error'); }
+        finally { setIsMemberSaving(false); }
     };
 
-    const inputCls = `w-full p-3.5 border rounded-xl outline-none transition-all text-sm ${d ? "bg-slate-800 border-slate-700 text-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500" : "bg-white border-blue-100 text-slate-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"}`;
-    const labelCls = `block text-[10px] font-black uppercase tracking-wider mb-1.5 ${d ? "text-slate-400" : "text-slate-500"}`;
-    const btnPrimary = `w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl hover:scale-[1.02] ${d ? "bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950" : "bg-gradient-to-r from-blue-800 to-blue-950 text-white"}`;
+    const inputCls = `w-full p-3.5 border rounded-xl outline-none transition-all text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white ${d ? 'border-slate-700 focus:border-amber-500 focus:ring-1 focus:ring-amber-500' : 'border-blue-100 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'}`;
+    const labelCls = `block text-[10px] font-black uppercase tracking-wider mb-1.5 ${d ? 'text-slate-400' : 'text-slate-500'}`;
 
     return (
         <div className="max-w-2xl mx-auto space-y-6 animate-fade-in-up">
             <div className="text-center">
-                <p
-                    className={`text-xs font-black uppercase tracking-widest mb-1 ${d ? "text-blue-400" : "text-blue-600"}`}
-                >
-                    MU Sports Club
-                </p>
-                <h1
-                    className={`text-3xl font-black tracking-tight uppercase ${d ? "text-white" : "text-blue-950"}`}
-                >
-                    Registration Portal
-                </h1>
-                <p
-                    className={`text-xs mt-2 ${d ? "text-slate-400" : "text-slate-500"}`}
-                >
-                    Choose what you'd like to sign up for
-                </p>
+                <p className={`text-xs font-black uppercase tracking-widest mb-1 ${d ? 'text-blue-400' : 'text-blue-600'}`}>MU Sports Club</p>
+                <h1 className={`text-3xl font-black tracking-tight uppercase ${d ? 'text-white' : 'text-blue-950'}`}>Registration Portal</h1>
+                <p className={`text-xs mt-2 ${d ? 'text-slate-400' : 'text-slate-500'}`}>Choose what you'd like to sign up for</p>
             </div>
 
-            {/* Tab switcher */}
-            <div
-                className={`flex rounded-2xl p-1.5 gap-1.5 ${d ? "bg-slate-800" : "bg-slate-100"}`}
-            >
+            <div className={`flex rounded-2xl p-1.5 gap-1.5 ${d ? 'bg-slate-800' : 'bg-slate-100'}`}>
                 {[
-                    {
-                        key: "member",
-                        label: "🎽 Join as Member",
-                        desc: "New club member",
-                    },
-                    {
-                        key: "tournament",
-                        label: "🏅 Solo Tournament",
-                        desc: "Individual entry",
-                    },
-                    {
-                        key: "team",
-                        label: "🏆 Team Entry",
-                        desc: "Football / Cricket",
-                    },
-                ].map((tab) => (
-                    <button
-                        key={tab.key}
-                        onClick={() => setRegTab(tab.key)}
-                        className={`flex-1 py-3 px-2 rounded-xl text-center transition-all ${
-                            regTab === tab.key
-                                ? d
-                                    ? "bg-amber-500 text-slate-950 shadow-md"
-                                    : "bg-white text-blue-950 shadow-md"
-                                : d
-                                  ? "text-slate-400 hover:text-slate-200"
-                                  : "text-slate-500 hover:text-slate-700"
-                        }`}
-                    >
-                        <span className="block text-xs font-black">
-                            {tab.label}
-                        </span>
-                        <span
-                            className={`block text-[9px] mt-0.5 ${regTab === tab.key ? "opacity-70" : "opacity-50"}`}
-                        >
-                            {tab.desc}
-                        </span>
+                    { key: 'member', label: '🎽 Join as Member', desc: 'New club member' },
+                    { key: 'tournament', label: '🏅 Solo Tournament', desc: 'Individual entry' },
+                    { key: 'team', label: '🏆 Team Entry', desc: 'Football / Cricket' },
+                ].map(tab => (
+                    <button key={tab.key} onClick={() => setRegTab(tab.key)}
+                        className={`flex-1 py-3 px-2 rounded-xl text-center transition-all ${regTab === tab.key
+                            ? (d ? 'bg-amber-500 text-slate-950 shadow-md' : 'bg-white text-blue-950 shadow-md')
+                            : (d ? 'text-slate-400 hover:text-slate-200' : 'text-slate-500 hover:text-slate-700')}`}>
+                        <span className="block text-xs font-black">{tab.label}</span>
+                        <span className={`block text-[9px] mt-0.5 ${regTab === tab.key ? 'opacity-70' : 'opacity-50'}`}>{tab.desc}</span>
                     </button>
                 ))}
             </div>
 
-            {/* Club Member Registration */}
-            {regTab === "member" && (
-                <div
-                    className={`p-7 rounded-3xl border shadow-xl ${d ? "bg-slate-900 border-slate-800" : "bg-white border-blue-100"}`}
-                >
+            {regTab === 'member' && (
+                <div className={`p-7 rounded-3xl border shadow-xl ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-blue-100'}`}>
                     <div className="flex items-center gap-3 mb-6">
                         <span className="text-3xl">🎽</span>
                         <div>
-                            <h2
-                                className={`text-xl font-black ${d ? "text-white" : "text-blue-950"}`}
-                            >
-                                Club Member Registration
-                            </h2>
-                            <p
-                                className={`text-xs ${d ? "text-slate-400" : "text-slate-500"}`}
-                            >
-                                Join MUSC as an official member of Metropolitan
-                                University
-                            </p>
+                            <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-blue-950'}`}>Club Member Registration</h2>
+                            <p className={`text-xs ${d ? 'text-slate-400' : 'text-slate-500'}`}>Join MUSC as an official member of Metropolitan University</p>
                         </div>
                     </div>
                     <form onSubmit={handleMemberSubmit} className="space-y-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label className={labelCls}>Full Name *</label>
-                                <input
-                                    type="text"
-                                    value={memberForm.name}
-                                    onChange={(e) =>
-                                        setMemberForm({
-                                            ...memberForm,
-                                            name: e.target.value,
-                                        })
-                                    }
-                                    className={inputCls}
-                                    placeholder="Your full name"
-                                    required
-                                />
+                                <input type="text" value={memberForm.name} onChange={e => setMemberForm({ ...memberForm, name: e.target.value })} className={inputCls} placeholder="Your full name" required />
                             </div>
                             <div>
                                 <label className={labelCls}>Student ID *</label>
-                                <input
-                                    type="text"
-                                    value={memberForm.student_id}
-                                    onChange={(e) =>
-                                        setMemberForm({
-                                            ...memberForm,
-                                            student_id: e.target.value,
-                                        })
-                                    }
-                                    className={inputCls}
-                                    placeholder="e.g. 011223456"
-                                    required
-                                />
+                                <input type="text" value={memberForm.student_id} onChange={e => setMemberForm({ ...memberForm, student_id: e.target.value })} className={inputCls} placeholder="e.g. 011223456" required />
                             </div>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label className={labelCls}>Department *</label>
-                                <select
-                                    value={memberForm.department}
-                                    onChange={(e) =>
-                                        setMemberForm({
-                                            ...memberForm,
-                                            department: e.target.value,
-                                        })
-                                    }
-                                    className={inputCls}
-                                    required
-                                >
+                                <select value={memberForm.department} onChange={e => setMemberForm({ ...memberForm, department: e.target.value })} className={inputCls} required>
                                     <option value="">Select Department</option>
-                                    {[
-                                        "CSE",
-                                        "EEE",
-                                        "BBA",
-                                        "English",
-                                        "Law",
-                                        "Architecture",
-                                        "Civil",
-                                        "Pharmacy",
-                                        "Economics",
-                                        "Sociology",
-                                        "Other",
-                                    ].map((dep) => (
-                                        <option key={dep} value={dep}>
-                                            {dep}
-                                        </option>
+                                    {['CSE', 'EEE', 'BBA', 'English', 'Law', 'Architecture', 'Civil', 'Pharmacy', 'Economics', 'Sociology'].map(dep => (
+                                        <option key={dep} value={dep}>{dep}</option>
                                     ))}
+                                    <option value="Other">Other</option>
                                 </select>
                             </div>
                             <div>
                                 <label className={labelCls}>Semester *</label>
-                                <select
-                                    value={memberForm.semester}
-                                    onChange={(e) =>
-                                        setMemberForm({
-                                            ...memberForm,
-                                            semester: e.target.value,
-                                        })
-                                    }
-                                    className={inputCls}
-                                    required
-                                >
+                                <select value={memberForm.semester} onChange={e => setMemberForm({ ...memberForm, semester: e.target.value })} className={inputCls} required>
                                     <option value="">Select Semester</option>
-                                    {[
-                                        "1st",
-                                        "2nd",
-                                        "3rd",
-                                        "4th",
-                                        "5th",
-                                        "6th",
-                                        "7th",
-                                        "8th",
-                                        "9th",
-                                        "10th",
-                                        "11th",
-                                        "12th",
-                                    ].map((s) => (
-                                        <option key={s} value={s}>
-                                            {s} Semester
-                                        </option>
+                                    {['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th'].map(s => (
+                                        <option key={s} value={s}>{s} Semester</option>
                                     ))}
                                 </select>
                             </div>
@@ -1846,374 +1525,133 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label className={labelCls}>Phone *</label>
-                                <input
-                                    type="text"
-                                    value={memberForm.phone}
-                                    onChange={(e) =>
-                                        setMemberForm({
-                                            ...memberForm,
-                                            phone: e.target.value,
-                                        })
-                                    }
-                                    className={inputCls}
-                                    placeholder="018XXXXXXXX"
-                                    required
-                                />
+                                <input type="text" value={memberForm.phone} onChange={e => setMemberForm({ ...memberForm, phone: e.target.value })} className={inputCls} placeholder="018XXXXXXXX" required />
                             </div>
                             <div>
                                 <label className={labelCls}>Email *</label>
-                                <input
-                                    type="email"
-                                    value={memberForm.email}
-                                    onChange={(e) =>
-                                        setMemberForm({
-                                            ...memberForm,
-                                            email: e.target.value,
-                                        })
-                                    }
-                                    className={inputCls}
-                                    placeholder="you@example.com"
-                                    required
-                                />
+                                <input type="email" value={memberForm.email} onChange={e => setMemberForm({ ...memberForm, email: e.target.value })} className={inputCls} placeholder="you@example.com" required />
                             </div>
                         </div>
-                        <button
-                            type="submit"
-                            disabled={isMemberSaving}
-                            className={`${btnPrimary} ${isMemberSaving ? "opacity-60 cursor-not-allowed" : ""}`}
-                        >
-                            {isMemberSaving
-                                ? "⏳ Processing..."
-                                : "🎽 Join MU Sports Club"}
+                        <button type="submit" disabled={isMemberSaving}
+                            className={`w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl mt-2 ${isMemberSaving ? 'opacity-60 cursor-not-allowed' : 'hover:scale-[1.02]'} ${d ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950' : 'bg-gradient-to-r from-blue-800 to-blue-950 text-white'}`}>
+                            {isMemberSaving ? '⏳ Processing...' : '🎽 Join MU Sports Club'}
                         </button>
                     </form>
                 </div>
             )}
 
-            {/* Solo / Indoor Tournament Registration */}
-            {regTab === "tournament" && (
-                <div
-                    className={`p-7 rounded-3xl border shadow-xl ${d ? "bg-slate-900 border-slate-800" : "bg-white border-blue-100"}`}
-                >
+            {regTab === 'tournament' && (
+                <div className={`p-7 rounded-3xl border shadow-xl ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-blue-100'}`}>
                     <div className="flex items-center gap-3 mb-6">
                         <span className="text-3xl">🏅</span>
                         <div>
-                            <h2
-                                className={`text-xl font-black ${d ? "text-white" : "text-blue-950"}`}
-                            >
-                                Tournament Registration
-                            </h2>
-                            <p
-                                className={`text-xs ${d ? "text-slate-400" : "text-slate-500"}`}
-                            >
-                                Individual entry for solo and indoor events
-                            </p>
+                            <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-blue-950'}`}>Tournament Registration</h2>
+                            <p className={`text-xs ${d ? 'text-slate-400' : 'text-slate-500'}`}>Individual entry for solo and indoor events</p>
                         </div>
                     </div>
                     <form onSubmit={handleSoloSubmit} className="space-y-4">
                         <div>
                             <label className={labelCls}>Full Name *</label>
-                            <input
-                                type="text"
-                                value={formData.player_name}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        player_name: e.target.value,
-                                    })
-                                }
-                                className={inputCls}
-                                placeholder="e.g. Leo Messi"
-                                required
-                            />
+                            <input type="text" value={formData.player_name} onChange={e => setFormData({ ...formData, player_name: e.target.value })} className={inputCls} placeholder="e.g. Leo Messi" required />
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label className={labelCls}>Email *</label>
-                                <input
-                                    type="email"
-                                    value={formData.email}
-                                    onChange={(e) =>
-                                        setFormData({
-                                            ...formData,
-                                            email: e.target.value,
-                                        })
-                                    }
-                                    className={inputCls}
-                                    placeholder="you@example.com"
-                                    required
-                                />
+                                <input type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className={inputCls} placeholder="you@example.com" required />
                             </div>
                             <div>
                                 <label className={labelCls}>Phone *</label>
-                                <input
-                                    type="text"
-                                    value={formData.phone}
-                                    onChange={(e) =>
-                                        setFormData({
-                                            ...formData,
-                                            phone: e.target.value,
-                                        })
-                                    }
-                                    className={inputCls}
-                                    placeholder="018XXXXXXXX"
-                                    required
-                                />
+                                <input type="text" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} className={inputCls} placeholder="018XXXXXXXX" required />
                             </div>
                         </div>
                         <div>
-                            <label className={labelCls}>
-                                Department / Institution *
-                            </label>
-                            <input
-                                type="text"
-                                value={formData.department}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        department: e.target.value,
-                                    })
-                                }
-                                className={inputCls}
-                                placeholder="e.g. CSE, MU"
-                                required
-                            />
+                            <label className={labelCls}>Department / Institution *</label>
+                            <input type="text" value={formData.department} onChange={e => setFormData({ ...formData, department: e.target.value })} className={inputCls} placeholder="e.g. CSE, MU" required />
                         </div>
                         <div>
-                            <label className={labelCls}>
-                                Select Tournament *
-                            </label>
-                            <select
-                                value={formData.event_name}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        event_name: e.target.value,
-                                        game_name: "",
-                                    })
-                                }
-                                className={inputCls}
-                                required
-                            >
-                                <option value="">
-                                    -- Select Tournament --
-                                </option>
-                                {clubEvents
-                                    .filter(
-                                        (ev) =>
-                                            !TEAM_TOURNAMENTS.includes(
-                                                ev.title?.toUpperCase?.() ||
-                                                    ev.title,
-                                            ),
-                                    )
-                                    .map((ev, i) => (
-                                        <option key={i} value={ev.title}>
-                                            {ev.title} ·{" "}
-                                            {ev.date || ev.event_date}
-                                        </option>
-                                    ))}
+                            <label className={labelCls}>Select Tournament *</label>
+                            <select value={formData.event_name} onChange={e => setFormData({ ...formData, event_name: e.target.value, game_name: '' })} className={inputCls} required>
+                                <option value="">-- Select Tournament --</option>
+                                {clubEvents.filter(ev => !TEAM_TOURNAMENTS.includes(ev.title)).map((ev, i) => (
+                                    <option key={i} value={ev.title}>{ev.title} · {ev.date || ev.event_date}</option>
+                                ))}
                             </select>
                         </div>
 
-                        {/* Indoor game picker */}
-                        {formData.event_name &&
-                            formData.event_name
-                                .toUpperCase()
-                                .includes("INDOOR") && (
-                                <div className="space-y-3">
-                                    <label className={labelCls}>
-                                        Select Your Game *
-                                    </label>
-                                    {loadingGames ? (
-                                        <div className="flex items-center gap-2 py-4">
-                                            <div className="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
-                                            <span
-                                                className={`text-sm ${d ? "text-slate-400" : "text-slate-500"}`}
-                                            >
-                                                Loading games...
-                                            </span>
-                                        </div>
-                                    ) : (
-                                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                            {indoorGames.map((game) => (
-                                                <button
-                                                    type="button"
-                                                    key={game.id}
-                                                    onClick={() =>
-                                                        setFormData({
-                                                            ...formData,
-                                                            game_name:
-                                                                game.game_name,
-                                                        })
-                                                    }
-                                                    className={`p-3 rounded-xl border-2 text-center transition-all hover:scale-105 ${
-                                                        formData.game_name ===
-                                                        game.game_name
-                                                            ? d
-                                                                ? "border-amber-500 bg-amber-500/20"
-                                                                : "border-blue-600 bg-blue-50"
-                                                            : d
-                                                              ? "border-slate-700 hover:border-slate-500 bg-slate-800"
-                                                              : "border-slate-200 hover:border-blue-300 bg-white"
-                                                    }`}
-                                                >
-                                                    <span className="text-2xl block mb-1">
-                                                        {game.game_icon}
-                                                    </span>
-                                                    <span
-                                                        className={`text-[10px] font-black uppercase block ${formData.game_name === game.game_name ? (d ? "text-amber-400" : "text-blue-700") : d ? "text-slate-300" : "text-slate-600"}`}
-                                                    >
-                                                        {game.game_name}
-                                                    </span>
-                                                    <span
-                                                        className={`text-[9px] mt-0.5 block ${d ? "text-slate-500" : "text-slate-400"}`}
-                                                    >
-                                                        {game.entry_type ===
-                                                        "team"
-                                                            ? "👥 Team"
-                                                            : "👤 Solo"}
-                                                    </span>
-                                                </button>
-                                            ))}
-                                        </div>
-                                    )}
-                                    {formData.game_name && (
-                                        <div
-                                            className={`flex items-center gap-2 p-3 rounded-xl ${d ? "bg-amber-500/10 border border-amber-500/30" : "bg-blue-50 border border-blue-200"}`}
-                                        >
-                                            <span className="text-lg">
-                                                {
-                                                    indoorGames.find(
-                                                        (g) =>
-                                                            g.game_name ===
-                                                            formData.game_name,
-                                                    )?.game_icon
-                                                }
-                                            </span>
-                                            <span
-                                                className={`text-xs font-black ${d ? "text-amber-400" : "text-blue-700"}`}
-                                            >
-                                                Selected: {formData.game_name}
-                                            </span>
-                                            <button
-                                                type="button"
-                                                onClick={() =>
-                                                    setFormData({
-                                                        ...formData,
-                                                        game_name: "",
-                                                    })
-                                                }
-                                                className="ml-auto text-slate-400 hover:text-red-500"
-                                            >
-                                                ×
+                        {isIndoor && (
+                            <div className="space-y-3">
+                                <label className={labelCls}>Select Your Game *</label>
+                                {loadingGames ? (
+                                    <div className="flex items-center gap-2 py-4">
+                                        <div className="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+                                        <span className={`text-sm ${d ? 'text-slate-400' : 'text-slate-500'}`}>Loading games...</span>
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                        {indoorGames.map((game) => (
+                                            <button type="button" key={game.id}
+                                                onClick={() => setFormData({ ...formData, game_name: game.game_name })}
+                                                className={`p-3 rounded-xl border-2 text-center transition-all hover:scale-105 ${formData.game_name === game.game_name
+                                                    ? (d ? 'border-amber-500 bg-amber-500/20' : 'border-blue-600 bg-blue-50')
+                                                    : (d ? 'border-slate-700 hover:border-slate-500 bg-slate-800' : 'border-slate-200 hover:border-blue-300 bg-white')}`}>
+                                                <span className="text-2xl block mb-1">{game.game_icon}</span>
+                                                <span className={`text-[10px] font-black uppercase tracking-wider block ${formData.game_name === game.game_name ? (d ? 'text-amber-400' : 'text-blue-700') : (d ? 'text-slate-300' : 'text-slate-600')}`}>{game.game_name}</span>
+                                                <span className={`text-[9px] mt-0.5 block ${d ? 'text-slate-500' : 'text-slate-400'}`}>{game.entry_type === 'team' ? '👥 Team' : '👤 Solo'}</span>
                                             </button>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
+                                        ))}
+                                    </div>
+                                )}
+                                {formData.game_name && (
+                                    <div className={`flex items-center gap-2 p-3 rounded-xl ${d ? 'bg-amber-500/10 border border-amber-500/30' : 'bg-blue-50 border border-blue-200'}`}>
+                                        <span className="text-lg">{indoorGames.find(g => g.game_name === formData.game_name)?.game_icon}</span>
+                                        <span className={`text-xs font-black ${d ? 'text-amber-400' : 'text-blue-700'}`}>Selected: {formData.game_name}</span>
+                                        <button type="button" onClick={() => setFormData({ ...formData, game_name: '' })} className="ml-auto text-slate-400 hover:text-red-500 text-sm">×</button>
+                                    </div>
+                                )}
+                            </div>
+                        )}
 
-                        {/* Team tournament warning */}
-                        {formData.event_name &&
-                            TEAM_TOURNAMENTS.includes(
-                                formData.event_name?.toUpperCase?.() ||
-                                    formData.event_name,
-                            ) && (
-                                <div
-                                    className={`p-4 rounded-xl border ${d ? "bg-blue-950 border-blue-900" : "bg-blue-50 border-blue-200"}`}
-                                >
-                                    <p
-                                        className={`text-xs font-black ${d ? "text-blue-300" : "text-blue-700"}`}
-                                    >
-                                        ⚽ This is a team tournament! Please use
-                                        the <strong>Team Entry</strong> tab.
-                                    </p>
-                                    <button
-                                        type="button"
-                                        onClick={() => setRegTab("team")}
-                                        className="mt-2 text-xs font-black bg-blue-600 text-white px-4 py-1.5 rounded-lg hover:bg-blue-500 transition-colors"
-                                    >
-                                        Switch to Team Entry →
-                                    </button>
-                                </div>
-                            )}
+                        {formData.event_name && TEAM_TOURNAMENTS.includes(formData.event_name) && (
+                            <div className={`p-4 rounded-xl border ${d ? 'bg-blue-950 border-blue-900' : 'bg-blue-50 border-blue-200'}`}>
+                                <p className={`text-xs font-black ${d ? 'text-blue-300' : 'text-blue-700'}`}>⚽ This is a team tournament! Please use the <strong>Team Entry</strong> tab instead.</p>
+                                <button type="button" onClick={() => setRegTab('team')} className="mt-2 text-xs font-black bg-blue-600 text-white px-4 py-1.5 rounded-lg hover:bg-blue-500 transition-colors">
+                                    Switch to Team Entry →
+                                </button>
+                            </div>
+                        )}
 
-                        <button
-                            type="submit"
-                            disabled={
-                                isSaving ||
-                                TEAM_TOURNAMENTS.includes(
-                                    formData.event_name?.toUpperCase?.() ||
-                                        formData.event_name,
-                                )
-                            }
-                            className={`${btnPrimary} ${isSaving || TEAM_TOURNAMENTS.includes(formData.event_name) ? "opacity-60 cursor-not-allowed" : ""}`}
-                        >
-                            {isSaving
-                                ? "⏳ Processing..."
-                                : "🏅 Submit Registration"}
+                        <button type="submit" disabled={isSaving || TEAM_TOURNAMENTS.includes(formData.event_name)}
+                            className={`w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl ${(isSaving || TEAM_TOURNAMENTS.includes(formData.event_name)) ? 'opacity-60 cursor-not-allowed' : 'hover:scale-[1.02]'} ${d ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950' : 'bg-gradient-to-r from-blue-800 to-blue-950 text-white'}`}>
+                            {isSaving ? '⏳ Processing...' : '🏅 Submit Registration'}
                         </button>
                     </form>
                 </div>
             )}
 
-            {/* Team Registration */}
-            {regTab === "team" && (
-                <div
-                    className={`p-7 rounded-3xl border shadow-xl ${d ? "bg-slate-900 border-slate-800" : "bg-white border-blue-100"}`}
-                >
+            {regTab === 'team' && (
+                <div className={`p-7 rounded-3xl border shadow-xl ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-blue-100'}`}>
                     <div className="flex items-center gap-3 mb-6">
                         <span className="text-3xl">🏆</span>
                         <div>
-                            <h2
-                                className={`text-xl font-black ${d ? "text-white" : "text-blue-950"}`}
-                            >
-                                Team Registration
-                            </h2>
-                            <p
-                                className={`text-xs ${d ? "text-slate-400" : "text-slate-500"}`}
-                            >
-                                Register your team for Football, Futsal or
-                                Cricket
-                            </p>
+                            <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-blue-950'}`}>Team Registration</h2>
+                            <p className={`text-xs ${d ? 'text-slate-400' : 'text-slate-500'}`}>Register your team for Football, Futsal or Cricket</p>
                         </div>
                     </div>
                     <form onSubmit={handleTeamSubmit} className="space-y-5">
                         <div>
-                            <label className={labelCls}>
-                                Select Tournament *
-                            </label>
-                            <select
-                                value={teamForm.tournament_name}
-                                onChange={(e) =>
-                                    setTeamForm({
-                                        ...teamForm,
-                                        tournament_name: e.target.value,
-                                    })
-                                }
-                                className={inputCls}
-                                required
-                            >
-                                <option value="">
-                                    -- Select Team Tournament --
-                                </option>
+                            <label className={labelCls}>Select Tournament *</label>
+                            <select value={teamForm.tournament_name} onChange={e => setTeamForm({ ...teamForm, tournament_name: e.target.value })} className={inputCls} required>
+                                <option value="">-- Select Team Tournament --</option>
                                 {teamTournaments.map((ev, i) => (
-                                    <option key={i} value={ev.title}>
-                                        {ev.title} · {ev.date || ev.event_date}
-                                    </option>
+                                    <option key={i} value={ev.title}>{ev.title} · {ev.date || ev.event_date}</option>
                                 ))}
                             </select>
                         </div>
 
                         {teamForm.tournament_name && (
-                            <div
-                                className={`p-3 rounded-xl ${d ? "bg-slate-800 border border-slate-700" : "bg-blue-50 border border-blue-100"}`}
-                            >
-                                <p
-                                    className={`text-xs font-black ${d ? "text-blue-400" : "text-blue-700"}`}
-                                >
-                                    {isCricket
-                                        ? "🏏 Cricket — Register full squad (11 players + subs)"
-                                        : "⚽ Football/Futsal — Register your squad (min 5 players)"}
+                            <div className={`p-3 rounded-xl ${d ? 'bg-slate-800 border border-slate-700' : 'bg-blue-50 border border-blue-100'}`}>
+                                <p className={`text-xs font-black ${d ? 'text-blue-400' : 'text-blue-700'}`}>
+                                    {isCricket ? '🏏 Cricket — Register full squad (11 players + subs)' : '⚽ Football/Futsal — Register your team (min 5 players)'}
                                 </p>
                             </div>
                         )}
@@ -2221,210 +1659,75 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label className={labelCls}>Team Name *</label>
-                                <input
-                                    type="text"
-                                    value={teamForm.team_name}
-                                    onChange={(e) =>
-                                        setTeamForm({
-                                            ...teamForm,
-                                            team_name: e.target.value,
-                                        })
-                                    }
-                                    className={inputCls}
-                                    placeholder="e.g. Thunder FC"
-                                    required
-                                />
+                                <input type="text" value={teamForm.team_name} onChange={e => setTeamForm({ ...teamForm, team_name: e.target.value })} className={inputCls} placeholder="e.g. Thunder FC" required />
                             </div>
                             <div>
-                                <label className={labelCls}>
-                                    Department / Institution *
-                                </label>
-                                <input
-                                    type="text"
-                                    value={teamForm.department}
-                                    onChange={(e) =>
-                                        setTeamForm({
-                                            ...teamForm,
-                                            department: e.target.value,
-                                        })
-                                    }
-                                    className={inputCls}
-                                    placeholder="e.g. CSE, MU"
-                                    required
-                                />
+                                <label className={labelCls}>Department / Institution *</label>
+                                <input type="text" value={teamForm.department} onChange={e => setTeamForm({ ...teamForm, department: e.target.value })} className={inputCls} placeholder="e.g. CSE, MU" required />
                             </div>
                         </div>
 
-                        {/* Captain info */}
-                        <div
-                            className={`p-4 rounded-2xl border space-y-3 ${d ? "bg-slate-800 border-slate-700" : "bg-slate-50 border-slate-200"}`}
-                        >
-                            <p
-                                className={`text-xs font-black uppercase tracking-wider ${d ? "text-amber-400" : "text-blue-700"}`}
-                            >
-                                👑 Captain Information
-                            </p>
+                        <div className={`p-4 rounded-2xl border space-y-3 ${d ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+                            <p className={`text-xs font-black uppercase tracking-wider ${d ? 'text-amber-400' : 'text-blue-700'}`}>👑 Captain Information</p>
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                 <div>
-                                    <label className={labelCls}>
-                                        Captain Name *
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={teamForm.captain_name}
-                                        onChange={(e) =>
-                                            setTeamForm({
-                                                ...teamForm,
-                                                captain_name: e.target.value,
-                                            })
-                                        }
-                                        className={inputCls}
-                                        placeholder="Captain's name"
-                                        required
-                                    />
+                                    <label className={labelCls}>Captain Name *</label>
+                                    <input type="text" value={teamForm.captain_name} onChange={e => setTeamForm({ ...teamForm, captain_name: e.target.value })} className={inputCls} placeholder="Captain's name" required />
                                 </div>
                                 <div>
-                                    <label className={labelCls}>
-                                        Captain Phone *
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={teamForm.captain_phone}
-                                        onChange={(e) =>
-                                            setTeamForm({
-                                                ...teamForm,
-                                                captain_phone: e.target.value,
-                                            })
-                                        }
-                                        className={inputCls}
-                                        placeholder="018XXXXXXXX"
-                                        required
-                                    />
+                                    <label className={labelCls}>Captain Phone *</label>
+                                    <input type="text" value={teamForm.captain_phone} onChange={e => setTeamForm({ ...teamForm, captain_phone: e.target.value })} className={inputCls} placeholder="018XXXXXXXX" required />
                                 </div>
                                 <div>
-                                    <label className={labelCls}>
-                                        Captain Email *
-                                    </label>
-                                    <input
-                                        type="email"
-                                        value={teamForm.captain_email}
-                                        onChange={(e) =>
-                                            setTeamForm({
-                                                ...teamForm,
-                                                captain_email: e.target.value,
-                                            })
-                                        }
-                                        className={inputCls}
-                                        placeholder="captain@example.com"
-                                        required
-                                    />
+                                    <label className={labelCls}>Captain Email *</label>
+                                    <input type="email" value={teamForm.captain_email} onChange={e => setTeamForm({ ...teamForm, captain_email: e.target.value })} className={inputCls} placeholder="captain@example.com" required />
                                 </div>
                             </div>
                         </div>
 
-                        {/* Players list */}
                         <div className="space-y-3">
-                            <p
-                                className={`text-xs font-black uppercase tracking-wider ${d ? "text-amber-400" : "text-blue-700"}`}
-                            >
-                                👥 Squad (
-                                {isCricket
-                                    ? "11 players + up to 4 subs"
-                                    : "up to 9 players"}
-                                )
+                            <p className={`text-xs font-black uppercase tracking-wider ${d ? 'text-amber-400' : 'text-blue-700'}`}>
+                                👥 Squad Players ({isCricket ? '11 players + subs' : 'up to ' + playerCount + ' players'})
                             </p>
                             <div className="space-y-2">
-                                {Array.from({ length: playerSlots }, (_, i) => (
-                                    <div
-                                        key={i}
-                                        className="flex gap-2 items-center"
-                                    >
-                                        <span
-                                            className={`text-[10px] font-black w-6 text-center flex-shrink-0 ${d ? "text-slate-500" : "text-slate-400"}`}
-                                        >
-                                            {i + 1}
-                                        </span>
+                                {Array.from({ length: isCricket ? 15 : 9 }, (_, i) => (
+                                    <div key={i} className="flex gap-2 items-center">
+                                        <span className={`text-[10px] font-black w-6 flex-shrink-0 text-center ${d ? 'text-slate-500' : 'text-slate-400'}`}>{i + 1}</span>
                                         <input
                                             type="text"
-                                            value={
-                                                teamForm.players[i]?.name || ""
-                                            }
-                                            onChange={(e) => {
-                                                const p = [...teamForm.players];
-                                                p[i] = {
-                                                    ...p[i],
-                                                    name: e.target.value,
-                                                };
-                                                setTeamForm({
-                                                    ...teamForm,
-                                                    players: p,
-                                                });
+                                            value={teamForm.players[i]?.name || ''}
+                                            onChange={e => {
+                                                const newPlayers = [...teamForm.players];
+                                                newPlayers[i] = { ...newPlayers[i], name: e.target.value };
+                                                setTeamForm({ ...teamForm, players: newPlayers });
                                             }}
-                                            className={`flex-1 p-2.5 border rounded-xl outline-none text-sm ${d ? "bg-slate-800 border-slate-700 text-white focus:border-amber-500" : "bg-white border-slate-200 text-slate-800 focus:border-blue-400"}`}
-                                            placeholder={
-                                                i === 0
-                                                    ? "Player 1 (Captain)"
-                                                    : i < (isCricket ? 11 : 5)
-                                                      ? `Player ${i + 1}`
-                                                      : `Sub ${i - (isCricket ? 10 : 4)}`
-                                            }
+                                            className={`flex-1 p-2.5 border rounded-xl outline-none transition-all text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white ${d ? 'border-slate-700 focus:border-amber-500' : 'border-slate-200 focus:border-blue-400'}`}
+                                            placeholder={i === 0 ? 'Player 1 (Captain)' : i < (isCricket ? 11 : playerCount) ? `Player ${i + 1}` : `Sub ${i - (isCricket ? 10 : playerCount - 1)}`}
                                         />
-                                        <select
-                                            value={
-                                                teamForm.players[i]?.role || ""
-                                            }
-                                            onChange={(e) => {
-                                                const p = [...teamForm.players];
-                                                p[i] = {
-                                                    ...p[i],
-                                                    role: e.target.value,
-                                                };
-                                                setTeamForm({
-                                                    ...teamForm,
-                                                    players: p,
-                                                });
-                                            }}
-                                            className={`w-32 p-2.5 border rounded-xl outline-none text-xs ${d ? "bg-slate-800 border-slate-700 text-white" : "bg-white border-slate-200 text-slate-800"}`}
-                                        >
-                                            <option value="">Role</option>
-                                            {isCricket
-                                                ? [
-                                                      "Batsman",
-                                                      "Bowler",
-                                                      "All-rounder",
-                                                      "Wicketkeeper",
-                                                      "Captain",
-                                                      "Vice Captain",
-                                                  ].map((r) => (
-                                                      <option key={r}>
-                                                          {r}
-                                                      </option>
-                                                  ))
-                                                : [
-                                                      "Forward",
-                                                      "Midfielder",
-                                                      "Defender",
-                                                      "Goalkeeper",
-                                                      "Captain",
-                                                  ].map((r) => (
-                                                      <option key={r}>
-                                                          {r}
-                                                      </option>
-                                                  ))}
-                                        </select>
+                                        {i < (isCricket ? 11 : playerCount) && (
+                                            <select
+                                                value={teamForm.players[i]?.role || ''}
+                                                onChange={e => {
+                                                    const newPlayers = [...teamForm.players];
+                                                    newPlayers[i] = { ...newPlayers[i], role: e.target.value };
+                                                    setTeamForm({ ...teamForm, players: newPlayers });
+                                                }}
+                                                className={`w-28 p-2.5 border rounded-xl outline-none text-xs bg-white dark:bg-slate-800 text-slate-900 dark:text-white ${d ? 'border-slate-700' : 'border-slate-200'}`}>
+                                                <option value="">Role</option>
+                                                {isCricket
+                                                    ? ['Batsman', 'Bowler', 'All-rounder', 'Wicketkeeper', 'Captain', 'Vice Captain'].map(r => <option key={r} value={r}>{r}</option>)
+                                                    : ['Forward', 'Midfielder', 'Defender', 'Goalkeeper', 'Captain'].map(r => <option key={r} value={r}>{r}</option>)
+                                                }
+                                            </select>
+                                        )}
                                     </div>
                                 ))}
                             </div>
                         </div>
 
-                        <button
-                            type="submit"
-                            disabled={isTeamSaving}
-                            className={`${btnPrimary} ${isTeamSaving ? "opacity-60 cursor-not-allowed" : ""}`}
-                        >
-                            {isTeamSaving
-                                ? "⏳ Registering Team..."
-                                : "🏆 Register Team"}
+                        <button type="submit" disabled={isTeamSaving}
+                            className={`w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl ${isTeamSaving ? 'opacity-60 cursor-not-allowed' : 'hover:scale-[1.02]'} ${d ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950' : 'bg-gradient-to-r from-blue-800 to-blue-950 text-white'}`}>
+                            {isTeamSaving ? '⏳ Registering Team...' : '🏆 Register Team'}
                         </button>
                     </form>
                 </div>
@@ -2433,9 +1736,11 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
     );
 }
 
-// ── Admin Panel ───────────────────────────────────────────────────────────────
+// ─── Admin Panel ──────────────────────────────────────────────────────────────
+const EMPTY_MEMBER = { name: '', email: '', phone: '', committee_role: '' };
+
 function AdminPanel({ onLogout, dark }) {
-    const [adminTab, setAdminTab] = useState("registrations");
+    const [adminTab, setAdminTab] = useState('registrations');
     const [registrations, setRegistrations] = useState([]);
     const [members, setMembers] = useState([]);
     const [clubMembers, setClubMembers] = useState([]);
@@ -2446,1799 +1751,613 @@ function AdminPanel({ onLogout, dark }) {
     const [galleryPhotos, setGalleryPhotos] = useState([]);
     const [loading, setLoading] = useState(false);
     const [toast, setToast] = useState(null);
-    const [searchTerm, setSearchTerm] = useState("");
+    const [searchTerm, setSearchTerm] = useState('');
     const [sidebarOpen, setSidebarOpen] = useState(false);
-
-    // Forms
-    const [eventForm, setEventForm] = useState({
-        title: "",
-        type: "Tournament",
-        date: "",
-        details: "",
-    });
+    const [eventForm, setEventForm] = useState({ title: '', type: 'Tournament', date: '', details: '' });
     const [editingEvent, setEditingEvent] = useState(null);
-    const [gameForm, setGameForm] = useState({
-        tournament_name: "",
-        game_name: "",
-        game_icon: "🎯",
-        entry_type: "solo",
-        max_players: 1,
-    });
-    const [newsForm, setNewsForm] = useState({
-        title: "",
-        content: "",
-        is_pinned: false,
-    });
-    const [editingNews, setEditingNews] = useState(null);
-    const [galleryForm, setGalleryForm] = useState({
-        tournament_name: "",
-        image_url: "",
-        caption: "",
-    });
-    const EMPTY_MEMBER = {
-        name: "",
-        email: "",
-        phone: "",
-        committee_role: "",
-        system_role: "member",
-        profile_picture: "",
-    };
+    const [gameForm, setGameForm] = useState({ tournament_name: '', game_name: '', game_icon: '🎯', entry_type: 'solo', max_players: 1 });
     const [memberForm, setMemberForm] = useState(EMPTY_MEMBER);
     const [editingMember, setEditingMember] = useState(null);
+    const [newsForm, setNewsForm] = useState({ title: '', content: '', is_pinned: false });
+    const [editingNews, setEditingNews] = useState(null);
+    const [galleryForm, setGalleryForm] = useState({ tournament_name: '', image_url: '', caption: '' });
 
-    const showToast = (msg, type = "success") =>
-        setToast({ message: msg, type });
-    const csrfToken = () =>
-        document
-            .querySelector('meta[name="csrf-token"]')
-            ?.getAttribute("content") || "";
+    const showToast = (msg, type = 'success') => setToast({ message: msg, type });
+    const csrfToken = () => document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+
+    // fetcher now checks response.ok and surfaces the real error instead of a generic failure
     const fetcher = async (url) => {
-        const res = await fetch(url, {
-            headers: { "X-Admin-Key": ADMIN_PASSWORD },
-        });
+        const res = await fetch(url, { headers: { 'X-Admin-Key': ADMIN_PASSWORD } });
+        if (!res.ok) {
+            let msg = `Request failed (${res.status})`;
+            try { const errData = await res.json(); if (errData.error) msg = errData.error; } catch {}
+            throw new Error(msg);
+        }
         return res.json();
     };
-    const poster = (url, method, body) =>
-        fetch(url, {
-            method,
-            headers: {
-                "Content-Type": "application/json",
-                "X-Admin-Key": ADMIN_PASSWORD,
-                "X-CSRF-TOKEN": csrfToken(),
-            },
-            body: JSON.stringify(body),
-        }).then((r) => r.json());
 
     const fetchData = async (tab) => {
         setLoading(true);
         try {
-            const map = {
-                registrations: ["/admin/registrations", setRegistrations],
-                members: ["/admin/members", setMembers],
-                "club-members": ["/admin/club-members", setClubMembers],
-                teams: ["/admin/team-registrations", setTeamRegs],
-                events: ["/admin/events", setEvents],
-                games: ["/admin/tournament-games", setTournamentGames],
-                news: ["/admin/news", setNewsItems],
-                gallery: ["/admin/match-gallery", setGalleryPhotos],
-            };
-            if (map[tab]) {
-                const d = await fetcher(map[tab][0]);
-                if (d.success) map[tab][1](d.data);
-            }
-        } catch {
-            showToast("Failed to load data", "error");
+            if (tab === 'registrations') { const d = await fetcher('/admin/registrations'); if (d.success) setRegistrations(d.data); }
+            else if (tab === 'members') { const d = await fetcher('/admin/members'); if (d.success) setMembers(d.data); }
+            else if (tab === 'club-members') { const d = await fetcher('/admin/club-members'); if (d.success) setClubMembers(d.data); }
+            else if (tab === 'teams') { const d = await fetcher('/admin/team-registrations'); if (d.success) setTeamRegs(d.data); }
+            else if (tab === 'events') { const d = await fetcher('/admin/events'); if (d.success) setEvents(d.data); }
+            else if (tab === 'games') { const d = await fetcher('/admin/tournament-games'); if (d.success) setTournamentGames(d.data); }
+            else if (tab === 'news') { const d = await fetcher('/admin/news'); if (d.success) setNewsItems(d.data); }
+            else if (tab === 'gallery') { const d = await fetcher('/admin/match-gallery'); if (d.success) setGalleryPhotos(d.data); }
+        } catch (err) {
+            showToast(err.message || 'Failed to load data', 'error');
         }
         setLoading(false);
     };
 
-    useEffect(() => {
-        fetchData(adminTab);
-        setSidebarOpen(false);
-    }, [adminTab]);
+    useEffect(() => { fetchData(adminTab); setSidebarOpen(false); }, [adminTab]);
 
-    // Members
+    const deleteReg = async (id) => {
+        if (!confirm('Delete?')) return;
+        await fetch(`/admin/registrations/${id}`, { method: 'DELETE', headers: { 'X-Admin-Key': ADMIN_PASSWORD, 'X-CSRF-TOKEN': csrfToken() } });
+        fetchData('registrations');
+        showToast('Deleted!');
+    };
+
+    const saveEvent = async () => {
+        const url = editingEvent ? `/admin/events/${editingEvent.id}` : '/admin/events';
+        const method = editingEvent ? 'PUT' : 'POST';
+        await fetch(url, { method, headers: { 'Content-Type': 'application/json', 'X-Admin-Key': ADMIN_PASSWORD, 'X-CSRF-TOKEN': csrfToken() }, body: JSON.stringify(eventForm) });
+        showToast(editingEvent ? 'Updated!' : 'Added!');
+        setEventForm({ title: '', type: 'Tournament', date: '', details: '' });
+        setEditingEvent(null);
+        fetchData('events');
+    };
+
+    const deleteEvent = async (id) => {
+        if (!confirm('Delete event?')) return;
+        await fetch(`/admin/events/${id}`, { method: 'DELETE', headers: { 'X-Admin-Key': ADMIN_PASSWORD, 'X-CSRF-TOKEN': csrfToken() } });
+        showToast('Deleted!');
+        fetchData('events');
+    };
+
+    const saveGame = async () => {
+        await fetch('/admin/tournament-games', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Admin-Key': ADMIN_PASSWORD, 'X-CSRF-TOKEN': csrfToken() }, body: JSON.stringify(gameForm) });
+        showToast('Game added!');
+        setGameForm({ tournament_name: '', game_name: '', game_icon: '🎯', entry_type: 'solo', max_players: 1 });
+        fetchData('games');
+    };
+
+    const deleteGame = async (id) => {
+        if (!confirm('Delete game?')) return;
+        await fetch(`/admin/tournament-games/${id}`, { method: 'DELETE', headers: { 'X-Admin-Key': ADMIN_PASSWORD, 'X-CSRF-TOKEN': csrfToken() } });
+        showToast('Deleted!');
+        fetchData('games');
+    };
+
     const saveMember = async () => {
-        if (!memberForm.name || !memberForm.email)
-            return showToast("Name and email required", "error");
-        const url = editingMember
-            ? `/admin/members/${editingMember.id}`
-            : "/admin/members";
-        const data = await poster(
-            url,
-            editingMember ? "PUT" : "POST",
-            memberForm,
-        );
+        if (!memberForm.name || !memberForm.email) return showToast('Name and email required', 'error');
+        const url = editingMember ? `/admin/members/${editingMember.id}` : '/admin/members';
+        const method = editingMember ? 'PUT' : 'POST';
+        const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json', 'X-Admin-Key': ADMIN_PASSWORD, 'X-CSRF-TOKEN': csrfToken() }, body: JSON.stringify(memberForm) });
+        const data = await res.json();
         if (data.success) {
-            showToast(editingMember ? "Updated!" : "Member added!");
-            setMemberForm(EMPTY_MEMBER);
-            setEditingMember(null);
-            fetchData("members");
-        } else showToast(data.message || "Save failed", "error");
+            showToast(editingMember ? 'Member updated!' : 'Member added!');
+            setMemberForm(EMPTY_MEMBER); setEditingMember(null);
+            fetchData('members');
+        } else showToast('Save failed', 'error');
     };
+
     const deleteMember = async (id) => {
-        if (!confirm("Remove this member?")) return;
-        await poster(`/admin/members/${id}`, "DELETE", {});
-        showToast("Removed!");
-        fetchData("members");
+        if (!confirm('Remove this member?')) return;
+        await fetch(`/admin/members/${id}`, { method: 'DELETE', headers: { 'X-Admin-Key': ADMIN_PASSWORD, 'X-CSRF-TOKEN': csrfToken() } });
+        showToast('Removed!'); fetchData('members');
     };
+
     const startEditMember = (m) => {
         setEditingMember(m);
-        setMemberForm({
-            name: m.name || "",
-            email: m.email || "",
-            phone: m.phone || "",
-            committee_role: m.committee_role || "",
-            system_role: m.system_role || "member",
-            profile_picture: m.profile_picture || "",
-        });
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        setMemberForm({ name: m.name || '', email: m.email || '', phone: m.phone || '', committee_role: m.committee_role || '' });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    // Events
-    const saveEvent = async () => {
-        if (!eventForm.title || !eventForm.date)
-            return showToast("Title and date required", "error");
-        const url = editingEvent
-            ? `/admin/events/${editingEvent.id}`
-            : "/admin/events";
-        await poster(url, editingEvent ? "PUT" : "POST", eventForm);
-        showToast(editingEvent ? "Updated!" : "Event added!");
-        setEventForm({ title: "", type: "Tournament", date: "", details: "" });
-        setEditingEvent(null);
-        fetchData("events");
-    };
-    const deleteEvent = async (id) => {
-        if (!confirm("Delete event?")) return;
-        await poster(`/admin/events/${id}`, "DELETE", {});
-        showToast("Deleted!");
-        fetchData("events");
-    };
-
-    // Games
-    const saveGame = async () => {
-        await poster("/admin/tournament-games", "POST", gameForm);
-        showToast("Game added!");
-        setGameForm({
-            tournament_name: "",
-            game_name: "",
-            game_icon: "🎯",
-            entry_type: "solo",
-            max_players: 1,
-        });
-        fetchData("games");
-    };
-    const deleteGame = async (id) => {
-        if (!confirm("Delete?")) return;
-        await poster(`/admin/tournament-games/${id}`, "DELETE", {});
-        showToast("Deleted!");
-        fetchData("games");
-    };
-
-    // News
     const saveNews = async () => {
-        if (!newsForm.title || !newsForm.content)
-            return showToast("Title and content required", "error");
-        const url = editingNews
-            ? `/admin/news/${editingNews.id}`
-            : "/admin/news";
-        const data = await poster(url, editingNews ? "PUT" : "POST", newsForm);
+        if (!newsForm.title || !newsForm.content) return showToast('Title and content required', 'error');
+        const url = editingNews ? `/admin/news/${editingNews.id}` : '/admin/news';
+        const method = editingNews ? 'PUT' : 'POST';
+        const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json', 'X-Admin-Key': ADMIN_PASSWORD, 'X-CSRF-TOKEN': csrfToken() }, body: JSON.stringify(newsForm) });
+        const data = await res.json();
         if (data.success) {
-            showToast(editingNews ? "Updated!" : "News posted!");
-            setNewsForm({ title: "", content: "", is_pinned: false });
+            showToast(editingNews ? 'News updated!' : 'News posted!');
+            setNewsForm({ title: '', content: '', is_pinned: false });
             setEditingNews(null);
-            fetchData("news");
-        } else showToast("Save failed", "error");
+            fetchData('news');
+        } else showToast('Save failed', 'error');
     };
+
     const deleteNews = async (id) => {
-        if (!confirm("Delete?")) return;
-        await poster(`/admin/news/${id}`, "DELETE", {});
-        showToast("Deleted!");
-        fetchData("news");
+        if (!confirm('Delete this news post?')) return;
+        await fetch(`/admin/news/${id}`, { method: 'DELETE', headers: { 'X-Admin-Key': ADMIN_PASSWORD, 'X-CSRF-TOKEN': csrfToken() } });
+        showToast('Deleted!'); fetchData('news');
     };
+
     const startEditNews = (n) => {
         setEditingNews(n);
-        setNewsForm({
-            title: n.title,
-            content: n.content,
-            is_pinned: !!n.is_pinned,
-        });
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        setNewsForm({ title: n.title, content: n.content, is_pinned: !!n.is_pinned });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    // Gallery
     const saveGalleryPhoto = async () => {
-        if (!galleryForm.tournament_name || !galleryForm.image_url)
-            return showToast("Tournament and image URL required", "error");
-        await poster("/admin/match-gallery", "POST", galleryForm);
-        showToast("Photo added!");
-        setGalleryForm({ tournament_name: "", image_url: "", caption: "" });
-        fetchData("gallery");
-    };
-    const deleteGalleryPhoto = async (id) => {
-        if (!confirm("Delete?")) return;
-        await poster(`/admin/match-gallery/${id}`, "DELETE", {});
-        showToast("Deleted!");
-        fetchData("gallery");
+        if (!galleryForm.tournament_name || !galleryForm.image_url) return showToast('Tournament and image URL required', 'error');
+        await fetch('/admin/match-gallery', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Admin-Key': ADMIN_PASSWORD, 'X-CSRF-TOKEN': csrfToken() }, body: JSON.stringify(galleryForm) });
+        showToast('Photo added!'); setGalleryForm({ tournament_name: '', image_url: '', caption: '' }); fetchData('gallery');
     };
 
-    // Delete reg / team
-    const deleteReg = async (id) => {
-        if (!confirm("Delete?")) return;
-        await poster(`/admin/registrations/${id}`, "DELETE", {});
-        showToast("Deleted!");
-        fetchData("registrations");
+    const deleteGalleryPhoto = async (id) => {
+        if (!confirm('Delete this photo?')) return;
+        await fetch(`/admin/match-gallery/${id}`, { method: 'DELETE', headers: { 'X-Admin-Key': ADMIN_PASSWORD, 'X-CSRF-TOKEN': csrfToken() } });
+        showToast('Deleted!'); fetchData('gallery');
     };
 
     const d = dark;
-    const tabs = [
-        {
-            key: "registrations",
-            label: "Solo Regs",
-            icon: "📋",
-            count: registrations.length,
-        },
-        {
-            key: "teams",
-            label: "Team Regs",
-            icon: "⚽",
-            count: teamRegs.length,
-        },
-        {
-            key: "club-members",
-            label: "Club Members",
-            icon: "🎽",
-            count: clubMembers.length,
-        },
-        {
-            key: "members",
-            label: "Committee",
-            icon: "👥",
-            count: members.length,
-        },
-        { key: "events", label: "Events", icon: "🏆", count: events.length },
-        {
-            key: "games",
-            label: "Games",
-            icon: "🎮",
-            count: tournamentGames.length,
-        },
-        { key: "news", label: "News", icon: "📰", count: newsItems.length },
-        {
-            key: "gallery",
-            label: "Gallery",
-            icon: "📸",
-            count: galleryPhotos.length,
-        },
-    ];
-    const inputCls = `p-3 border rounded-xl text-sm outline-none w-full ${d ? "bg-slate-800 border-slate-700 text-white focus:border-amber-500" : "bg-white border-slate-200 text-slate-800 focus:border-blue-400"}`;
-    const filteredReg = registrations.filter(
-        (r) =>
-            r.player_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            r.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            r.event_name?.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
 
-    const Spinner = () => (
-        <div className="flex justify-center py-20">
-            <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
-        </div>
+    const tabs = [
+        { key: 'registrations', label: 'Solo Registrations', icon: '📋', count: registrations.length },
+        { key: 'teams', label: 'Team Registrations', icon: '⚽', count: teamRegs.length },
+        { key: 'club-members', label: 'Club Members', icon: '🎽', count: clubMembers.length },
+        { key: 'members', label: 'Committee', icon: '👥', count: members.length },
+        { key: 'events', label: 'Events', icon: '🏆', count: events.length },
+        { key: 'games', label: 'Tournament Games', icon: '🎮', count: tournamentGames.length },
+        { key: 'news', label: 'News', icon: '📰', count: newsItems.length },
+        { key: 'gallery', label: 'Match Gallery', icon: '📸', count: galleryPhotos.length },
+    ];
+
+    const inputCls = `p-3 border rounded-xl text-sm outline-none w-full ${d ? 'bg-slate-800 border-slate-700 text-white focus:border-amber-500' : 'border-slate-200 focus:border-blue-400 text-slate-800 bg-white'}`;
+
+    const filteredReg = registrations.filter(r =>
+        r.player_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        r.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        r.event_name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
         <>
-            <style>{`
-            @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-            .animate-fade-in-up { animation: fadeInUp 0.5s ease both; }
-            button { transition: all 0.2s ease; }
-            button:active { transform: scale(0.96); }
+        <style>{`
+            @keyframes adminFadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+            .animate-fade-in-up { animation: adminFadeUp 0.45s ease both; }
+            .admin-btn { transition: transform 0.15s ease, opacity 0.15s ease; }
+            .admin-btn:active { transform: scale(0.95); }
         `}</style>
-            <div
-                className={`min-h-screen ${d ? "bg-slate-950" : "bg-slate-100"}`}
-            >
-                {/* Navbar */}
-                <nav className="bg-slate-900 border-b border-amber-500/20 sticky top-0 z-50 shadow-xl">
-                    <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-                        <div className="flex items-center gap-3">
-                            <button
-                                onClick={() => setSidebarOpen(!sidebarOpen)}
-                                className="md:hidden text-white p-1.5 bg-slate-800 rounded-lg"
-                            >
-                                <svg
-                                    className="w-5 h-5"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    {sidebarOpen ? (
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M6 18L18 6M6 6l12 12"
-                                        />
-                                    ) : (
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M4 6h16M4 12h16M4 18h16"
-                                        />
-                                    )}
-                                </svg>
-                            </button>
-                            <span className="text-xl">🛡️</span>
-                            <div>
-                                <p className="text-white font-black text-sm tracking-wider">
-                                    MUSC ADMIN
-                                </p>
-                                <p className="text-amber-400 text-[9px] uppercase tracking-widest hidden sm:block">
-                                    Management Dashboard
-                                </p>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <span className="hidden sm:block text-xs font-bold px-3 py-1 rounded-full bg-emerald-900 text-emerald-400">
-                                🟢 Online
-                            </span>
-                            <button
-                                onClick={onLogout}
-                                className="text-xs font-black bg-red-600 hover:bg-red-500 text-white px-3 py-2 rounded-xl"
-                            >
-                                🚪 Logout
-                            </button>
+        <div className={`min-h-screen ${d ? 'bg-slate-950' : 'bg-slate-100'}`}>
+            <nav className="bg-slate-900 border-b border-amber-500/20 sticky top-0 z-50 shadow-xl">
+                <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                        <button onClick={() => setSidebarOpen(!sidebarOpen)} className="md:hidden text-white p-1.5 bg-slate-800 rounded-lg admin-btn">
+                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                {sidebarOpen ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /> : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />}
+                            </svg>
+                        </button>
+                        <span className="text-xl">🛡️</span>
+                        <div>
+                            <p className="text-white font-black text-sm tracking-wider">MUSC ADMIN</p>
+                            <p className="text-amber-400 text-[9px] uppercase tracking-widest hidden sm:block">Management Dashboard</p>
                         </div>
                     </div>
-                    {/* Mobile sidebar */}
-                    {sidebarOpen && (
-                        <div className="md:hidden bg-slate-800 border-t border-slate-700 px-4 py-3 space-y-1 animate-fade-in-up">
-                            <div className="px-4 pb-3 pt-1 grid grid-cols-2 gap-2 border-b border-slate-700 mb-2">
-                                {[
-                                    {
-                                        label: "Solo",
-                                        value: registrations.length,
-                                    },
-                                    { label: "Teams", value: teamRegs.length },
-                                    {
-                                        label: "Members",
-                                        value: clubMembers.length,
-                                    },
-                                    { label: "Events", value: events.length },
-                                ].map((s, i) => (
-                                    <div
-                                        key={i}
-                                        className="bg-slate-900 rounded-lg p-2 text-center"
-                                    >
-                                        <p className="text-amber-400 font-black text-sm">
-                                            {s.value}
-                                        </p>
-                                        <p className="text-slate-400 text-[9px] uppercase font-bold">
-                                            {s.label}
-                                        </p>
-                                    </div>
-                                ))}
-                            </div>
-                            {tabs.map((tab) => (
-                                <button
-                                    key={tab.key}
-                                    onClick={() => setAdminTab(tab.key)}
-                                    className={`w-full text-left px-4 py-3 rounded-xl font-black text-sm flex items-center justify-between transition-all ${adminTab === tab.key ? "bg-amber-500 text-slate-950" : "text-slate-300 hover:bg-slate-700"}`}
-                                >
-                                    <span>
-                                        {tab.icon} {tab.label}
-                                    </span>
-                                    <span
-                                        className={`text-xs px-2 py-0.5 rounded-full ${adminTab === tab.key ? "bg-slate-950/30" : "bg-slate-600 text-slate-300"}`}
-                                    >
-                                        {tab.count}
-                                    </span>
-                                </button>
-                            ))}
-                        </div>
-                    )}
-                </nav>
-
-                <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6 flex flex-col md:flex-row gap-4 md:gap-6">
-                    {/* Sidebar (desktop) */}
-                    <aside className="hidden md:flex flex-col w-56 flex-shrink-0 space-y-3">
-                        <div
-                            className={`p-4 rounded-2xl border ${d ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200 shadow-sm"}`}
-                        >
-                            <p
-                                className={`text-[10px] font-black uppercase tracking-widest mb-3 ${d ? "text-slate-400" : "text-slate-500"}`}
-                            >
-                                Navigation
-                            </p>
-                            {tabs.map((tab) => (
-                                <button
-                                    key={tab.key}
-                                    onClick={() => setAdminTab(tab.key)}
-                                    className={`w-full text-left px-3 py-2.5 rounded-xl font-black text-xs flex items-center justify-between mb-1 transition-all ${adminTab === tab.key ? "bg-amber-500 text-slate-950 shadow-md" : d ? "text-slate-300 hover:bg-slate-800" : "text-slate-600 hover:bg-slate-100"}`}
-                                >
-                                    <span>
-                                        {tab.icon} {tab.label}
-                                    </span>
-                                    <span
-                                        className={`text-[10px] px-1.5 py-0.5 rounded-full font-black ${adminTab === tab.key ? "bg-slate-950/20" : d ? "bg-slate-700 text-slate-400" : "bg-slate-200 text-slate-500"}`}
-                                    >
-                                        {tab.count}
-                                    </span>
-                                </button>
-                            ))}
-                        </div>
-                        <div
-                            className={`p-4 rounded-2xl border ${d ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200 shadow-sm"}`}
-                        >
-                            <p
-                                className={`text-[10px] font-black uppercase tracking-widest mb-3 ${d ? "text-slate-400" : "text-slate-500"}`}
-                            >
-                                Quick Stats
-                            </p>
-                            {[
-                                {
-                                    label: "Solo Signups",
-                                    value: registrations.length,
-                                    color: "text-amber-500",
-                                },
-                                {
-                                    label: "Team Entries",
-                                    value: teamRegs.length,
-                                    color: "text-emerald-500",
-                                },
-                                {
-                                    label: "Club Members",
-                                    value: clubMembers.length,
-                                    color: "text-blue-500",
-                                },
-                                {
-                                    label: "Active Events",
-                                    value: events.length,
-                                    color: "text-purple-500",
-                                },
-                            ].map((s, i) => (
-                                <div
-                                    key={i}
-                                    className="flex justify-between items-center mb-1.5"
-                                >
-                                    <span
-                                        className={`text-xs ${d ? "text-slate-400" : "text-slate-500"}`}
-                                    >
-                                        {s.label}
-                                    </span>
-                                    <span
-                                        className={`font-black text-sm ${s.color}`}
-                                    >
-                                        {s.value}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                    </aside>
-
-                    {/* Main content */}
-                    <div className="flex-1 min-w-0 space-y-5">
-                        {/* Solo Registrations */}
-                        {adminTab === "registrations" && (
-                            <div className="animate-fade-in-up space-y-4">
-                                <div className="flex flex-wrap justify-between items-center gap-3">
-                                    <h2
-                                        className={`text-xl font-black ${d ? "text-white" : "text-slate-800"}`}
-                                    >
-                                        Solo Registrations{" "}
-                                        <span className="text-amber-500">
-                                            ({filteredReg.length})
-                                        </span>
-                                    </h2>
-                                    <button
-                                        onClick={() =>
-                                            fetchData("registrations")
-                                        }
-                                        className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl"
-                                    >
-                                        🔄 Refresh
-                                    </button>
-                                </div>
-                                <input
-                                    type="text"
-                                    placeholder="🔍 Search by name, email, event..."
-                                    value={searchTerm}
-                                    onChange={(e) =>
-                                        setSearchTerm(e.target.value)
-                                    }
-                                    className={`w-full p-3 border rounded-xl text-sm outline-none ${d ? "bg-slate-800 border-slate-700 text-white placeholder-slate-500 focus:border-amber-500" : "bg-white border-slate-200 text-slate-800 focus:border-blue-400"}`}
-                                />
-                                {loading ? (
-                                    <Spinner />
-                                ) : filteredReg.length === 0 ? (
-                                    <div
-                                        className={`text-center py-20 rounded-2xl border ${d ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200"}`}
-                                    >
-                                        <p className="text-5xl mb-3">📭</p>
-                                        <p
-                                            className={`font-black text-sm ${d ? "text-slate-400" : "text-slate-500"}`}
-                                        >
-                                            No registrations yet
-                                        </p>
-                                    </div>
-                                ) : (
-                                    <>
-                                        {/* Mobile cards */}
-                                        <div className="md:hidden space-y-3">
-                                            {filteredReg.map((r, i) => (
-                                                <div
-                                                    key={r.id}
-                                                    className={`p-4 rounded-2xl border animate-fade-in-up ${d ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200 shadow-sm"}`}
-                                                    style={{
-                                                        animationDelay: `${i * 40}ms`,
-                                                    }}
-                                                >
-                                                    <div className="flex justify-between items-start mb-2">
-                                                        <div>
-                                                            <p
-                                                                className={`font-black text-sm ${d ? "text-white" : "text-slate-800"}`}
-                                                            >
-                                                                {r.player_name}
-                                                            </p>
-                                                            <p
-                                                                className={`text-xs ${d ? "text-slate-400" : "text-slate-500"}`}
-                                                            >
-                                                                {r.email}
-                                                            </p>
-                                                        </div>
-                                                        <button
-                                                            onClick={() =>
-                                                                deleteReg(r.id)
-                                                            }
-                                                            className="text-[10px] font-black bg-red-100 text-red-700 px-2 py-1 rounded-lg"
-                                                        >
-                                                            🗑
-                                                        </button>
-                                                    </div>
-                                                    <div className="flex flex-wrap gap-2 mt-1">
-                                                        <span className="bg-amber-100 text-amber-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg">
-                                                            {r.event_name}
-                                                        </span>
-                                                        {r.game_name && (
-                                                            <span className="bg-blue-100 text-blue-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg">
-                                                                {r.game_name}
-                                                            </span>
-                                                        )}
-                                                        <span
-                                                            className={`text-[9px] font-bold px-2 py-1 rounded-lg ${d ? "bg-slate-800 text-slate-300" : "bg-slate-100 text-slate-600"}`}
-                                                        >
-                                                            {r.department}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                        {/* Desktop table */}
-                                        <div
-                                            className={`hidden md:block overflow-x-auto rounded-2xl border ${d ? "border-slate-800" : "border-slate-200"}`}
-                                        >
-                                            <table
-                                                className={`w-full text-sm ${d ? "bg-slate-900" : "bg-white"}`}
-                                            >
-                                                <thead>
-                                                    <tr
-                                                        className={`text-[10px] font-black uppercase tracking-wider ${d ? "bg-slate-800 text-slate-400" : "bg-slate-50 text-slate-500"}`}
-                                                    >
-                                                        {[
-                                                            "#",
-                                                            "Name",
-                                                            "Email",
-                                                            "Phone",
-                                                            "Tournament",
-                                                            "Game",
-                                                            "Dept",
-                                                            "Date",
-                                                            "",
-                                                        ].map((h) => (
-                                                            <th
-                                                                key={h}
-                                                                className="px-4 py-3 text-left"
-                                                            >
-                                                                {h}
-                                                            </th>
-                                                        ))}
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {filteredReg.map((r, i) => (
-                                                        <tr
-                                                            key={r.id}
-                                                            className={`border-t animate-fade-in-up ${d ? "border-slate-800 hover:bg-slate-800/50" : "border-slate-100 hover:bg-slate-50"}`}
-                                                            style={{
-                                                                animationDelay: `${i * 30}ms`,
-                                                            }}
-                                                        >
-                                                            <td
-                                                                className={`px-4 py-3 text-xs font-black ${d ? "text-slate-500" : "text-slate-400"}`}
-                                                            >
-                                                                {i + 1}
-                                                            </td>
-                                                            <td
-                                                                className={`px-4 py-3 font-bold ${d ? "text-white" : "text-slate-800"}`}
-                                                            >
-                                                                {r.player_name}
-                                                            </td>
-                                                            <td
-                                                                className={`px-4 py-3 text-xs ${d ? "text-slate-300" : "text-slate-600"}`}
-                                                            >
-                                                                {r.email}
-                                                            </td>
-                                                            <td
-                                                                className={`px-4 py-3 text-xs ${d ? "text-slate-300" : "text-slate-600"}`}
-                                                            >
-                                                                {r.phone}
-                                                            </td>
-                                                            <td className="px-4 py-3">
-                                                                <span className="bg-amber-100 text-amber-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg whitespace-nowrap">
-                                                                    {
-                                                                        r.event_name
-                                                                    }
-                                                                </span>
-                                                            </td>
-                                                            <td className="px-4 py-3">
-                                                                {r.game_name && (
-                                                                    <span className="bg-blue-100 text-blue-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg">
-                                                                        {
-                                                                            r.game_name
-                                                                        }
-                                                                    </span>
-                                                                )}
-                                                            </td>
-                                                            <td
-                                                                className={`px-4 py-3 text-xs ${d ? "text-slate-300" : "text-slate-600"}`}
-                                                            >
-                                                                {r.department}
-                                                            </td>
-                                                            <td
-                                                                className={`px-4 py-3 text-xs ${d ? "text-slate-400" : "text-slate-500"}`}
-                                                            >
-                                                                {r.created_at
-                                                                    ? new Date(
-                                                                          r.created_at,
-                                                                      ).toLocaleDateString()
-                                                                    : "—"}
-                                                            </td>
-                                                            <td className="px-4 py-3">
-                                                                <button
-                                                                    onClick={() =>
-                                                                        deleteReg(
-                                                                            r.id,
-                                                                        )
-                                                                    }
-                                                                    className="text-[10px] font-black bg-red-100 hover:bg-red-200 text-red-700 px-2.5 py-1 rounded-lg"
-                                                                >
-                                                                    🗑
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </>
-                                )}
-                            </div>
-                        )}
-
-                        {/* Team Registrations */}
-                        {adminTab === "teams" && (
-                            <div className="animate-fade-in-up space-y-4">
-                                <div className="flex justify-between items-center">
-                                    <h2
-                                        className={`text-xl font-black ${d ? "text-white" : "text-slate-800"}`}
-                                    >
-                                        Team Registrations{" "}
-                                        <span className="text-amber-500">
-                                            ({teamRegs.length})
-                                        </span>
-                                    </h2>
-                                    <button
-                                        onClick={() => fetchData("teams")}
-                                        className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl"
-                                    >
-                                        🔄 Refresh
-                                    </button>
-                                </div>
-                                {loading ? (
-                                    <Spinner />
-                                ) : teamRegs.length === 0 ? (
-                                    <div
-                                        className={`text-center py-20 rounded-2xl border ${d ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200"}`}
-                                    >
-                                        <p className="text-5xl mb-3">⚽</p>
-                                        <p
-                                            className={`font-black text-sm ${d ? "text-slate-400" : "text-slate-500"}`}
-                                        >
-                                            No team registrations yet
-                                        </p>
-                                    </div>
-                                ) : (
-                                    <div className="space-y-4">
-                                        {teamRegs.map((t, i) => {
-                                            let players = [];
-                                            try {
-                                                players =
-                                                    typeof t.players ===
-                                                    "string"
-                                                        ? JSON.parse(t.players)
-                                                        : t.players || [];
-                                            } catch {}
-                                            return (
-                                                <div
-                                                    key={t.id}
-                                                    className={`p-5 rounded-2xl border animate-fade-in-up ${d ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200 shadow-sm"}`}
-                                                    style={{
-                                                        animationDelay: `${i * 40}ms`,
-                                                    }}
-                                                >
-                                                    <div className="flex justify-between items-start mb-3">
-                                                        <div>
-                                                            <p
-                                                                className={`font-black text-base ${d ? "text-white" : "text-slate-800"}`}
-                                                            >
-                                                                {t.team_name}
-                                                            </p>
-                                                            <span className="bg-emerald-100 text-emerald-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg">
-                                                                {
-                                                                    t.tournament_name
-                                                                }
-                                                            </span>
-                                                        </div>
-                                                        <span
-                                                            className={`text-xs ${d ? "text-slate-400" : "text-slate-500"}`}
-                                                        >
-                                                            {t.created_at
-                                                                ? new Date(
-                                                                      t.created_at,
-                                                                  ).toLocaleDateString()
-                                                                : "—"}
-                                                        </span>
-                                                    </div>
-                                                    <div
-                                                        className={`grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs mb-3 p-3 rounded-xl ${d ? "bg-slate-800" : "bg-slate-50"}`}
-                                                    >
-                                                        <p
-                                                            className={
-                                                                d
-                                                                    ? "text-slate-300"
-                                                                    : "text-slate-600"
-                                                            }
-                                                        >
-                                                            <span className="font-black">
-                                                                Captain:
-                                                            </span>{" "}
-                                                            {t.captain_name}
-                                                        </p>
-                                                        <p
-                                                            className={
-                                                                d
-                                                                    ? "text-slate-300"
-                                                                    : "text-slate-600"
-                                                            }
-                                                        >
-                                                            <span className="font-black">
-                                                                Phone:
-                                                            </span>{" "}
-                                                            {t.captain_phone}
-                                                        </p>
-                                                        <p
-                                                            className={
-                                                                d
-                                                                    ? "text-slate-300"
-                                                                    : "text-slate-600"
-                                                            }
-                                                        >
-                                                            <span className="font-black">
-                                                                Dept:
-                                                            </span>{" "}
-                                                            {t.department}
-                                                        </p>
-                                                    </div>
-                                                    {players.length > 0 && (
-                                                        <div className="flex flex-wrap gap-2">
-                                                            {players
-                                                                .filter(
-                                                                    (p) =>
-                                                                        p.name,
-                                                                )
-                                                                .map(
-                                                                    (p, pi) => (
-                                                                        <span
-                                                                            key={
-                                                                                pi
-                                                                            }
-                                                                            className={`text-[9px] font-bold px-2 py-1 rounded-lg ${d ? "bg-slate-700 text-slate-300" : "bg-slate-100 text-slate-600"}`}
-                                                                        >
-                                                                            {pi +
-                                                                                1}
-                                                                            .{" "}
-                                                                            {
-                                                                                p.name
-                                                                            }{" "}
-                                                                            {p.role &&
-                                                                                `(${p.role})`}
-                                                                        </span>
-                                                                    ),
-                                                                )}
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-
-                        {adminTab === "club-members" && (
-                            <div className="animate-fade-in-up space-y-4">
-                                <div className="flex justify-between items-center">
-                                    <h2
-                                        className={`text-xl font-black ${d ? "text-white" : "text-slate-800"}`}
-                                    >
-                                        Club Members{" "}
-                                        <span className="text-amber-500">
-                                            ({clubMembers.length})
-                                        </span>
-                                    </h2>
-                                    <button
-                                        onClick={() =>
-                                            fetchData("club-members")
-                                        }
-                                        className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl"
-                                    >
-                                        🔄 Refresh
-                                    </button>
-                                </div>
-                                {loading ? (
-                                    <Spinner />
-                                ) : clubMembers.length === 0 ? (
-                                    <div
-                                        className={`text-center py-20 rounded-2xl border ${d ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200"}`}
-                                    >
-                                        <p className="text-5xl mb-3">🎽</p>
-                                        <p
-                                            className={`font-black text-sm ${d ? "text-slate-400" : "text-slate-500"}`}
-                                        >
-                                            No club members yet
-                                        </p>
-                                    </div>
-                                ) : (
-                                    <div className="space-y-3">
-                                        {clubMembers.map((m, i) => (
-                                            <div
-                                                key={m.id}
-                                                className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center gap-3 animate-fade-in-up ${d ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200 shadow-sm"}`}
-                                                style={{
-                                                    animationDelay: `${i * 40}ms`,
-                                                }}
-                                            >
-                                                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-white font-black text-sm flex-shrink-0">
-                                                    {m.name?.charAt(0)}
-                                                </div>
-                                                <div className="flex-1 min-w-0">
-                                                    <p
-                                                        className={`font-black text-sm ${d ? "text-white" : "text-slate-800"}`}
-                                                    >
-                                                        {m.name}
-                                                    </p>
-                                                    <p
-                                                        className={`text-xs ${d ? "text-slate-400" : "text-slate-500"}`}
-                                                    >
-                                                        {m.email} · {m.phone}
-                                                    </p>
-                                                </div>
-                                                <div className="flex flex-wrap gap-2">
-                                                    <span className="bg-blue-100 text-blue-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg">
-                                                        {m.department}
-                                                    </span>
-                                                    <span
-                                                        className={`text-[9px] font-bold px-2 py-1 rounded-lg ${d ? "bg-slate-700 text-slate-300" : "bg-slate-100 text-slate-600"}`}
-                                                    >
-                                                        {m.semester} Sem
-                                                    </span>
-                                                    <span
-                                                        className={`text-[9px] font-bold px-2 py-1 rounded-lg ${d ? "bg-slate-700 text-slate-300" : "bg-slate-100 text-slate-600"}`}
-                                                    >
-                                                        ID: {m.student_id}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-
-                        {adminTab === "members" && (
-                            <div className="animate-fade-in-up space-y-5">
-                                <div
-                                    className={`p-5 rounded-2xl border ${d ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200 shadow-sm"}`}
-                                >
-                                    <h3
-                                        className={`font-black text-base mb-4 ${d ? "text-white" : "text-slate-800"}`}
-                                    >
-                                        {editingMember
-                                            ? "✏️ Edit Member"
-                                            : "➕ Add Committee Member"}
-                                    </h3>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
-                                        <input
-                                            type="text"
-                                            placeholder="Full Name *"
-                                            value={memberForm.name}
-                                            onChange={(e) =>
-                                                setMemberForm({
-                                                    ...memberForm,
-                                                    name: e.target.value,
-                                                })
-                                            }
-                                            className={inputCls}
-                                        />
-                                        <input
-                                            type="email"
-                                            placeholder="Email *"
-                                            value={memberForm.email}
-                                            onChange={(e) =>
-                                                setMemberForm({
-                                                    ...memberForm,
-                                                    email: e.target.value,
-                                                })
-                                            }
-                                            className={inputCls}
-                                        />
-                                        <input
-                                            type="text"
-                                            placeholder="Phone"
-                                            value={memberForm.phone}
-                                            onChange={(e) =>
-                                                setMemberForm({
-                                                    ...memberForm,
-                                                    phone: e.target.value,
-                                                })
-                                            }
-                                            className={inputCls}
-                                        />
-                                        <input
-                                            type="text"
-                                            placeholder="Committee Role (e.g. PRESIDENT)"
-                                            value={memberForm.committee_role}
-                                            onChange={(e) =>
-                                                setMemberForm({
-                                                    ...memberForm,
-                                                    committee_role:
-                                                        e.target.value,
-                                                })
-                                            }
-                                            className={inputCls}
-                                        />
-                                        <select
-                                            value={memberForm.system_role}
-                                            onChange={(e) =>
-                                                setMemberForm({
-                                                    ...memberForm,
-                                                    system_role: e.target.value,
-                                                })
-                                            }
-                                            className={inputCls}
-                                        >
-                                            <option value="member">
-                                                Member
-                                            </option>
-                                            <option value="admin">Admin</option>
-                                        </select>
-                                        <input
-                                            type="text"
-                                            placeholder="Profile Picture URL (imgur link)"
-                                            value={memberForm.profile_picture}
-                                            onChange={(e) =>
-                                                setMemberForm({
-                                                    ...memberForm,
-                                                    profile_picture:
-                                                        e.target.value,
-                                                })
-                                            }
-                                            className={inputCls}
-                                        />
-                                    </div>
-                                    <div className="flex gap-3 flex-wrap">
-                                        <button
-                                            onClick={saveMember}
-                                            className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl hover:scale-105"
-                                        >
-                                            {editingMember
-                                                ? "💾 Update"
-                                                : "➕ Add Member"}
-                                        </button>
-                                        {editingMember && (
-                                            <button
-                                                onClick={() => {
-                                                    setEditingMember(null);
-                                                    setMemberForm(EMPTY_MEMBER);
-                                                }}
-                                                className={`px-5 py-2.5 font-black text-xs rounded-xl ${d ? "bg-slate-700 text-white" : "bg-slate-100 text-slate-700"}`}
-                                            >
-                                                Cancel
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                    <h2
-                                        className={`text-xl font-black ${d ? "text-white" : "text-slate-800"}`}
-                                    >
-                                        Committee{" "}
-                                        <span className="text-amber-500">
-                                            ({members.length})
-                                        </span>
-                                    </h2>
-                                    <button
-                                        onClick={() => fetchData("members")}
-                                        className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl"
-                                    >
-                                        🔄 Refresh
-                                    </button>
-                                </div>
-                                {loading ? (
-                                    <Spinner />
-                                ) : (
-                                    <div
-                                        className={`overflow-x-auto rounded-2xl border ${d ? "border-slate-800" : "border-slate-200"}`}
-                                    >
-                                        <table
-                                            className={`w-full text-sm ${d ? "bg-slate-900" : "bg-white"}`}
-                                        >
-                                            <thead>
-                                                <tr
-                                                    className={`text-[10px] font-black uppercase tracking-wider ${d ? "bg-slate-800 text-slate-400" : "bg-slate-50 text-slate-500"}`}
-                                                >
-                                                    {[
-                                                        "#",
-                                                        "Name",
-                                                        "Email",
-                                                        "Role",
-                                                        "Phone",
-                                                        "Actions",
-                                                    ].map((h) => (
-                                                        <th
-                                                            key={h}
-                                                            className="px-4 py-3 text-left"
-                                                        >
-                                                            {h}
-                                                        </th>
-                                                    ))}
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {members.map((m, i) => (
-                                                    <tr
-                                                        key={m.id}
-                                                        className={`border-t animate-fade-in-up ${d ? "border-slate-800 hover:bg-slate-800/50" : "border-slate-100 hover:bg-slate-50"}`}
-                                                        style={{
-                                                            animationDelay: `${i * 30}ms`,
-                                                        }}
-                                                    >
-                                                        <td
-                                                            className={`px-4 py-3 text-xs font-black ${d ? "text-slate-500" : "text-slate-400"}`}
-                                                        >
-                                                            {i + 1}
-                                                        </td>
-                                                        <td
-                                                            className={`px-4 py-3 font-bold ${d ? "text-white" : "text-slate-800"}`}
-                                                        >
-                                                            {m.name}
-                                                        </td>
-                                                        <td
-                                                            className={`px-4 py-3 text-xs ${d ? "text-slate-300" : "text-slate-600"}`}
-                                                        >
-                                                            {m.email}
-                                                        </td>
-                                                        <td className="px-4 py-3">
-                                                            <span className="bg-blue-100 text-blue-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg whitespace-nowrap">
-                                                                {m.committee_role ||
-                                                                    m.system_role ||
-                                                                    "Member"}
-                                                            </span>
-                                                        </td>
-                                                        <td
-                                                            className={`px-4 py-3 text-xs ${d ? "text-slate-300" : "text-slate-600"}`}
-                                                        >
-                                                            {m.phone || "—"}
-                                                        </td>
-                                                        <td className="px-4 py-3 flex gap-2">
-                                                            <button
-                                                                onClick={() =>
-                                                                    startEditMember(
-                                                                        m,
-                                                                    )
-                                                                }
-                                                                className="text-[10px] font-black bg-blue-100 hover:bg-blue-200 text-blue-700 px-2.5 py-1 rounded-lg"
-                                                            >
-                                                                ✏️ Edit
-                                                            </button>
-                                                            <button
-                                                                onClick={() =>
-                                                                    deleteMember(
-                                                                        m.id,
-                                                                    )
-                                                                }
-                                                                className="text-[10px] font-black bg-red-100 hover:bg-red-200 text-red-700 px-2.5 py-1 rounded-lg"
-                                                            >
-                                                                🗑
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-
-                        {adminTab === "events" && (
-                            <div className="animate-fade-in-up space-y-5">
-                                <div
-                                    className={`p-5 rounded-2xl border ${d ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200 shadow-sm"}`}
-                                >
-                                    <h3
-                                        className={`font-black text-base mb-4 ${d ? "text-white" : "text-slate-800"}`}
-                                    >
-                                        {editingEvent
-                                            ? "✏️ Edit Event"
-                                            : "➕ Add Event"}
-                                    </h3>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
-                                        <input
-                                            type="text"
-                                            placeholder="Event Title *"
-                                            value={eventForm.title}
-                                            onChange={(e) =>
-                                                setEventForm({
-                                                    ...eventForm,
-                                                    title: e.target.value,
-                                                })
-                                            }
-                                            className={inputCls}
-                                        />
-                                        <select
-                                            value={eventForm.type}
-                                            onChange={(e) =>
-                                                setEventForm({
-                                                    ...eventForm,
-                                                    type: e.target.value,
-                                                })
-                                            }
-                                            className={inputCls}
-                                        >
-                                            {[
-                                                "Tournament",
-                                                "Indoor Tournament",
-                                                "League Match",
-                                                "Domestic Tournament",
-                                            ].map((t) => (
-                                                <option key={t} value={t}>
-                                                    {t}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <input
-                                            type="date"
-                                            value={eventForm.date}
-                                            onChange={(e) =>
-                                                setEventForm({
-                                                    ...eventForm,
-                                                    date: e.target.value,
-                                                })
-                                            }
-                                            className={inputCls}
-                                        />
-                                        <input
-                                            type="text"
-                                            placeholder="Details"
-                                            value={eventForm.details}
-                                            onChange={(e) =>
-                                                setEventForm({
-                                                    ...eventForm,
-                                                    details: e.target.value,
-                                                })
-                                            }
-                                            className={inputCls}
-                                        />
-                                    </div>
-                                    <div className="flex gap-3 flex-wrap">
-                                        <button
-                                            onClick={saveEvent}
-                                            className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl hover:scale-105"
-                                        >
-                                            {editingEvent
-                                                ? "💾 Update"
-                                                : "➕ Add"}
-                                        </button>
-                                        {editingEvent && (
-                                            <button
-                                                onClick={() => {
-                                                    setEditingEvent(null);
-                                                    setEventForm({
-                                                        title: "",
-                                                        type: "Tournament",
-                                                        date: "",
-                                                        details: "",
-                                                    });
-                                                }}
-                                                className={`px-5 py-2.5 font-black text-xs rounded-xl ${d ? "bg-slate-700 text-white" : "bg-slate-100 text-slate-700"}`}
-                                            >
-                                                Cancel
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                    <h2
-                                        className={`text-xl font-black ${d ? "text-white" : "text-slate-800"}`}
-                                    >
-                                        All Events{" "}
-                                        <span className="text-amber-500">
-                                            ({events.length})
-                                        </span>
-                                    </h2>
-                                    <button
-                                        onClick={() => fetchData("events")}
-                                        className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl"
-                                    >
-                                        🔄 Refresh
-                                    </button>
-                                </div>
-                                {loading ? (
-                                    <Spinner />
-                                ) : (
-                                    <div className="space-y-3">
-                                        {events.map((ev, i) => (
-                                            <div
-                                                key={ev.id}
-                                                className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center gap-3 animate-fade-in-up ${d ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200 shadow-sm"}`}
-                                                style={{
-                                                    animationDelay: `${i * 40}ms`,
-                                                }}
-                                            >
-                                                <div className="flex-1">
-                                                    <p
-                                                        className={`font-black text-sm ${d ? "text-white" : "text-slate-800"}`}
-                                                    >
-                                                        {ev.title}
-                                                    </p>
-                                                    <div className="flex gap-2 mt-1">
-                                                        <span className="bg-emerald-100 text-emerald-800 text-[9px] font-black uppercase px-2 py-0.5 rounded-lg">
-                                                            {ev.type}
-                                                        </span>
-                                                        <span
-                                                            className={`text-[9px] ${d ? "text-slate-400" : "text-slate-500"}`}
-                                                        >
-                                                            📅{" "}
-                                                            {ev.event_date ||
-                                                                ev.date ||
-                                                                "—"}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div className="flex gap-2 flex-shrink-0">
-                                                    <button
-                                                        onClick={() => {
-                                                            setEditingEvent(ev);
-                                                            setEventForm({
-                                                                title: ev.title,
-                                                                type:
-                                                                    ev.type ||
-                                                                    "Tournament",
-                                                                date:
-                                                                    ev.event_date ||
-                                                                    ev.date ||
-                                                                    "",
-                                                                details:
-                                                                    ev.details ||
-                                                                    "",
-                                                            });
-                                                            window.scrollTo({
-                                                                top: 0,
-                                                                behavior:
-                                                                    "smooth",
-                                                            });
-                                                        }}
-                                                        className="text-[10px] font-black bg-blue-100 hover:bg-blue-200 text-blue-700 px-2.5 py-1 rounded-lg"
-                                                    >
-                                                        ✏️ Edit
-                                                    </button>
-                                                    <button
-                                                        onClick={() =>
-                                                            deleteEvent(ev.id)
-                                                        }
-                                                        className="text-[10px] font-black bg-red-100 hover:bg-red-200 text-red-700 px-2.5 py-1 rounded-lg"
-                                                    >
-                                                        🗑 Delete
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-
-                        {adminTab === "games" && (
-                            <div className="animate-fade-in-up space-y-5">
-                                <div
-                                    className={`p-5 rounded-2xl border ${d ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200 shadow-sm"}`}
-                                >
-                                    <h3
-                                        className={`font-black text-base mb-4 ${d ? "text-white" : "text-slate-800"}`}
-                                    >
-                                        ➕ Add Game to Tournament
-                                    </h3>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
-                                        <input
-                                            type="text"
-                                            placeholder="Tournament Name (exact)"
-                                            value={gameForm.tournament_name}
-                                            onChange={(e) =>
-                                                setGameForm({
-                                                    ...gameForm,
-                                                    tournament_name:
-                                                        e.target.value,
-                                                })
-                                            }
-                                            className={inputCls}
-                                        />
-                                        <input
-                                            type="text"
-                                            placeholder="Game Name"
-                                            value={gameForm.game_name}
-                                            onChange={(e) =>
-                                                setGameForm({
-                                                    ...gameForm,
-                                                    game_name: e.target.value,
-                                                })
-                                            }
-                                            className={inputCls}
-                                        />
-                                        <input
-                                            type="text"
-                                            placeholder="Icon emoji 🎯"
-                                            value={gameForm.game_icon}
-                                            onChange={(e) =>
-                                                setGameForm({
-                                                    ...gameForm,
-                                                    game_icon: e.target.value,
-                                                })
-                                            }
-                                            className={inputCls}
-                                        />
-                                        <select
-                                            value={gameForm.entry_type}
-                                            onChange={(e) =>
-                                                setGameForm({
-                                                    ...gameForm,
-                                                    entry_type: e.target.value,
-                                                })
-                                            }
-                                            className={inputCls}
-                                        >
-                                            <option value="solo">Solo</option>
-                                            <option value="team">Team</option>
-                                        </select>
-                                    </div>
-                                    <button
-                                        onClick={saveGame}
-                                        className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl hover:scale-105"
-                                    >
-                                        ➕ Add Game
-                                    </button>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                    <h2
-                                        className={`text-xl font-black ${d ? "text-white" : "text-slate-800"}`}
-                                    >
-                                        Tournament Games{" "}
-                                        <span className="text-amber-500">
-                                            ({tournamentGames.length})
-                                        </span>
-                                    </h2>
-                                    <button
-                                        onClick={() => fetchData("games")}
-                                        className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl"
-                                    >
-                                        🔄 Refresh
-                                    </button>
-                                </div>
-                                {loading ? (
-                                    <Spinner />
-                                ) : (
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                        {tournamentGames.map((g, i) => (
-                                            <div
-                                                key={g.id}
-                                                className={`p-4 rounded-2xl border flex items-center gap-3 animate-fade-in-up ${d ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200 shadow-sm"}`}
-                                                style={{
-                                                    animationDelay: `${i * 40}ms`,
-                                                }}
-                                            >
-                                                <span className="text-2xl">
-                                                    {g.game_icon}
-                                                </span>
-                                                <div className="flex-1">
-                                                    <p
-                                                        className={`font-black text-sm ${d ? "text-white" : "text-slate-800"}`}
-                                                    >
-                                                        {g.game_name}
-                                                    </p>
-                                                    <p
-                                                        className={`text-[9px] ${d ? "text-slate-400" : "text-slate-500"}`}
-                                                    >
-                                                        {g.tournament_name}
-                                                    </p>
-                                                    <span
-                                                        className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded ${g.entry_type === "team" ? "bg-blue-100 text-blue-700" : "bg-emerald-100 text-emerald-700"}`}
-                                                    >
-                                                        {g.entry_type}
-                                                    </span>
-                                                </div>
-                                                <button
-                                                    onClick={() =>
-                                                        deleteGame(g.id)
-                                                    }
-                                                    className="text-[10px] font-black bg-red-100 hover:bg-red-200 text-red-700 px-2 py-1 rounded-lg"
-                                                >
-                                                    🗑
-                                                </button>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-
-                        {adminTab === "news" && (
-                            <div className="animate-fade-in-up space-y-5">
-                                <div
-                                    className={`p-4 sm:p-5 rounded-2xl border ${d ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200 shadow-sm"}`}
-                                >
-                                    <h3
-                                        className={`font-black text-base mb-4 ${d ? "text-white" : "text-slate-800"}`}
-                                    >
-                                        {editingNews
-                                            ? "✏️ Edit News"
-                                            : "📰 Post News"}
-                                    </h3>
-                                    <input
-                                        type="text"
-                                        placeholder="Title *"
-                                        value={newsForm.title}
-                                        onChange={(e) =>
-                                            setNewsForm({
-                                                ...newsForm,
-                                                title: e.target.value,
-                                            })
-                                        }
-                                        className={`${inputCls} mb-3`}
-                                    />
-                                    <textarea
-                                        placeholder="Content *"
-                                        rows="3"
-                                        value={newsForm.content}
-                                        onChange={(e) =>
-                                            setNewsForm({
-                                                ...newsForm,
-                                                content: e.target.value,
-                                            })
-                                        }
-                                        className={`${inputCls} mb-3`}
-                                    ></textarea>
-                                    <label className="flex items-center gap-2 text-xs mb-3 cursor-pointer">
-                                        <input
-                                            type="checkbox"
-                                            checked={newsForm.is_pinned}
-                                            onChange={(e) =>
-                                                setNewsForm({
-                                                    ...newsForm,
-                                                    is_pinned: e.target.checked,
-                                                })
-                                            }
-                                        />
-                                        <span
-                                            className={
-                                                d
-                                                    ? "text-slate-300"
-                                                    : "text-slate-600"
-                                            }
-                                        >
-                                            📌 Pin this post
-                                        </span>
-                                    </label>
-                                    <div className="flex gap-3 flex-wrap">
-                                        <button
-                                            onClick={saveNews}
-                                            className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl hover:scale-105"
-                                        >
-                                            {editingNews
-                                                ? "💾 Update"
-                                                : "➕ Post News"}
-                                        </button>
-                                        {editingNews && (
-                                            <button
-                                                onClick={() => {
-                                                    setEditingNews(null);
-                                                    setNewsForm({
-                                                        title: "",
-                                                        content: "",
-                                                        is_pinned: false,
-                                                    });
-                                                }}
-                                                className={`px-5 py-2.5 font-black text-xs rounded-xl ${d ? "bg-slate-700 text-white" : "bg-slate-100 text-slate-700"}`}
-                                            >
-                                                Cancel
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                    <h2
-                                        className={`text-xl font-black ${d ? "text-white" : "text-slate-800"}`}
-                                    >
-                                        All News{" "}
-                                        <span className="text-amber-500">
-                                            ({newsItems.length})
-                                        </span>
-                                    </h2>
-                                    <button
-                                        onClick={() => fetchData("news")}
-                                        className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl"
-                                    >
-                                        🔄 Refresh
-                                    </button>
-                                </div>
-                                <div className="space-y-3">
-                                    {newsItems.map((n, i) => (
-                                        <div
-                                            key={n.id}
-                                            className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 animate-fade-in-up ${d ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200 shadow-sm"}`}
-                                            style={{
-                                                animationDelay: `${i * 40}ms`,
-                                            }}
-                                        >
-                                            <div className="flex-1 min-w-0">
-                                                {n.is_pinned && (
-                                                    <span className="bg-amber-100 text-amber-800 text-[9px] font-black uppercase px-2 py-0.5 rounded-lg mr-2">
-                                                        📌 Pinned
-                                                    </span>
-                                                )}
-                                                <span
-                                                    className={`font-black text-sm ${d ? "text-white" : "text-slate-800"}`}
-                                                >
-                                                    {n.title}
-                                                </span>
-                                                <p
-                                                    className={`text-xs mt-1 ${d ? "text-slate-400" : "text-slate-500"}`}
-                                                >
-                                                    {n.content}
-                                                </p>
-                                                <p
-                                                    className={`text-[10px] mt-2 ${d ? "text-slate-500" : "text-slate-400"}`}
-                                                >
-                                                    {n.created_at
-                                                        ? new Date(
-                                                              n.created_at,
-                                                          ).toLocaleDateString()
-                                                        : ""}
-                                                </p>
-                                            </div>
-                                            <div className="flex gap-2 flex-shrink-0">
-                                                <button
-                                                    onClick={() =>
-                                                        startEditNews(n)
-                                                    }
-                                                    className="text-[10px] font-black bg-blue-100 hover:bg-blue-200 text-blue-700 px-2.5 py-1 rounded-lg"
-                                                >
-                                                    ✏️ Edit
-                                                </button>
-                                                <button
-                                                    onClick={() =>
-                                                        deleteNews(n.id)
-                                                    }
-                                                    className="text-[10px] font-black bg-red-100 hover:bg-red-200 text-red-700 px-2.5 py-1 rounded-lg"
-                                                >
-                                                    🗑
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-
-                        {adminTab === "gallery" && (
-                            <div className="animate-fade-in-up space-y-5">
-                                <div
-                                    className={`p-5 rounded-2xl border ${d ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200 shadow-sm"}`}
-                                >
-                                    <h3
-                                        className={`font-black text-base mb-4 ${d ? "text-white" : "text-slate-800"}`}
-                                    >
-                                        📸 Add Match Photo
-                                    </h3>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
-                                        <input
-                                            type="text"
-                                            placeholder="Tournament Name (exact)"
-                                            value={galleryForm.tournament_name}
-                                            onChange={(e) =>
-                                                setGalleryForm({
-                                                    ...galleryForm,
-                                                    tournament_name:
-                                                        e.target.value,
-                                                })
-                                            }
-                                            className={inputCls}
-                                        />
-                                        <input
-                                            type="text"
-                                            placeholder="Image URL (imgur link)"
-                                            value={galleryForm.image_url}
-                                            onChange={(e) =>
-                                                setGalleryForm({
-                                                    ...galleryForm,
-                                                    image_url: e.target.value,
-                                                })
-                                            }
-                                            className={inputCls}
-                                        />
-                                        <input
-                                            type="text"
-                                            placeholder="Caption (optional)"
-                                            value={galleryForm.caption}
-                                            onChange={(e) =>
-                                                setGalleryForm({
-                                                    ...galleryForm,
-                                                    caption: e.target.value,
-                                                })
-                                            }
-                                            className={`${inputCls} sm:col-span-2`}
-                                        />
-                                    </div>
-                                    <button
-                                        onClick={saveGalleryPhoto}
-                                        className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl hover:scale-105"
-                                    >
-                                        ➕ Add Photo
-                                    </button>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                    <h2
-                                        className={`text-xl font-black ${d ? "text-white" : "text-slate-800"}`}
-                                    >
-                                        Gallery Photos{" "}
-                                        <span className="text-amber-500">
-                                            ({galleryPhotos.length})
-                                        </span>
-                                    </h2>
-                                    <button
-                                        onClick={() => fetchData("gallery")}
-                                        className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl"
-                                    >
-                                        🔄 Refresh
-                                    </button>
-                                </div>
-                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                    {galleryPhotos.map((p, i) => (
-                                        <div
-                                            key={p.id}
-                                            className={`rounded-2xl border overflow-hidden relative animate-fade-in-up ${d ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200"}`}
-                                            style={{
-                                                animationDelay: `${i * 40}ms`,
-                                            }}
-                                        >
-                                            <img
-                                                src={p.image_url}
-                                                className="w-full h-28 object-cover"
-                                                alt={p.caption}
-                                            />
-                                            {p.caption && (
-                                                <p
-                                                    className={`text-[9px] font-bold px-2 py-1 truncate ${d ? "text-slate-400" : "text-slate-500"}`}
-                                                >
-                                                    {p.caption}
-                                                </p>
-                                            )}
-                                            <button
-                                                onClick={() =>
-                                                    deleteGalleryPhoto(p.id)
-                                                }
-                                                className="absolute top-1 right-1 text-[10px] font-black bg-red-600 text-white px-2 py-0.5 rounded-lg"
-                                            >
-                                                🗑
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
+                    <div className="flex items-center gap-3">
+                        <span className="hidden sm:block text-xs font-bold px-3 py-1 rounded-full bg-emerald-900 text-emerald-400">🟢 Online</span>
+                        <button onClick={onLogout} className="text-xs font-black bg-red-600 hover:bg-red-500 text-white px-3 py-2 rounded-xl transition-colors admin-btn">🚪 Logout</button>
                     </div>
                 </div>
-                {toast && (
-                    <Toast
-                        message={toast.message}
-                        type={toast.type}
-                        onClose={() => setToast(null)}
-                    />
+                {sidebarOpen && (
+                    <div className="md:hidden bg-slate-800 border-t border-slate-700 px-4 py-3 space-y-1 animate-fade-in-up">
+                        {tabs.map(tab => (
+                            <button key={tab.key} onClick={() => setAdminTab(tab.key)}
+                                className={`w-full text-left px-4 py-3 rounded-xl font-black text-sm flex items-center justify-between transition-all admin-btn ${adminTab === tab.key ? 'bg-amber-500 text-slate-950' : 'text-slate-300 hover:bg-slate-700'}`}>
+                                <span>{tab.icon} {tab.label}</span>
+                                <span className={`text-xs px-2 py-0.5 rounded-full ${adminTab === tab.key ? 'bg-slate-950/30' : 'bg-slate-600 text-slate-300'}`}>{tab.count}</span>
+                            </button>
+                        ))}
+                        <div className="grid grid-cols-4 gap-2 pt-2">
+                            {[
+                                { label: 'Solo', value: registrations.length },
+                                { label: 'Teams', value: teamRegs.length },
+                                { label: 'Members', value: clubMembers.length },
+                                { label: 'Events', value: events.length },
+                            ].map((s, i) => (
+                                <div key={i} className="bg-slate-900 rounded-lg p-2 text-center">
+                                    <p className="text-amber-400 font-black text-sm">{s.value}</p>
+                                    <p className="text-slate-400 text-[9px] uppercase font-bold">{s.label}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 )}
+            </nav>
+
+            <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6 flex flex-col md:flex-row gap-4 md:gap-6">
+                <aside className="hidden md:flex flex-col w-56 flex-shrink-0 space-y-2">
+                    <div className={`p-4 rounded-2xl border mb-2 ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+                        <p className={`text-[10px] font-black uppercase tracking-widest mb-3 ${d ? 'text-slate-400' : 'text-slate-500'}`}>Navigation</p>
+                        {tabs.map(tab => (
+                            <button key={tab.key} onClick={() => setAdminTab(tab.key)}
+                                className={`w-full text-left px-3 py-2.5 rounded-xl font-black text-xs flex items-center justify-between mb-1 transition-all admin-btn ${adminTab === tab.key ? 'bg-amber-500 text-slate-950 shadow-md' : (d ? 'text-slate-300 hover:bg-slate-800' : 'text-slate-600 hover:bg-slate-100')}`}>
+                                <span>{tab.icon} {tab.label}</span>
+                                <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-black ${adminTab === tab.key ? 'bg-slate-950/20' : (d ? 'bg-slate-700 text-slate-400' : 'bg-slate-200 text-slate-500')}`}>{tab.count}</span>
+                            </button>
+                        ))}
+                    </div>
+                    <div className={`p-4 rounded-2xl border space-y-2 ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+                        <p className={`text-[10px] font-black uppercase tracking-widest ${d ? 'text-slate-400' : 'text-slate-500'}`}>Quick Stats</p>
+                        {[
+                            { label: 'Solo Signups', value: registrations.length, color: 'text-amber-500' },
+                            { label: 'Team Entries', value: teamRegs.length, color: 'text-emerald-500' },
+                            { label: 'Club Members', value: clubMembers.length, color: 'text-blue-500' },
+                            { label: 'Active Events', value: events.length, color: 'text-purple-500' },
+                        ].map((s, i) => (
+                            <div key={i} className="flex justify-between items-center">
+                                <span className={`text-xs ${d ? 'text-slate-400' : 'text-slate-500'}`}>{s.label}</span>
+                                <span className={`font-black text-sm ${s.color}`}>{s.value}</span>
+                            </div>
+                        ))}
+                    </div>
+                </aside>
+
+                <div className="flex-1 min-w-0 space-y-5">
+
+                    {adminTab === 'registrations' && (
+                        <div className="animate-fade-in-up space-y-4">
+                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                                <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-slate-800'}`}>Solo Registrations <span className="text-amber-500">({filteredReg.length})</span></h2>
+                                <button onClick={() => fetchData('registrations')} className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl admin-btn">🔄 Refresh</button>
+                            </div>
+                            <input type="text" placeholder="🔍 Search by name, email, event..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className={`w-full p-3 border rounded-xl text-sm outline-none ${d ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-500 focus:border-amber-500' : 'bg-white border-slate-200 text-slate-800 focus:border-blue-400'}`} />
+                            {loading ? <div className="flex justify-center py-20"><div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div></div>
+                            : filteredReg.length === 0 ? <div className={`text-center py-20 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}><p className="text-5xl mb-3">📭</p><p className={`font-black text-sm ${d ? 'text-slate-400' : 'text-slate-500'}`}>No registrations yet</p></div>
+                            : (
+                                <>
+                                    <div className="md:hidden space-y-3">
+                                        {filteredReg.map((r, i) => (
+                                            <div key={r.id} className={`p-4 rounded-2xl border animate-fade-in-up ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`} style={{ animationDelay: `${i * 40}ms` }}>
+                                                <div className="flex justify-between items-start mb-2">
+                                                    <div><p className={`font-black text-sm ${d ? 'text-white' : 'text-slate-800'}`}>{r.player_name}</p><p className={`text-xs ${d ? 'text-slate-400' : 'text-slate-500'}`}>{r.email}</p></div>
+                                                    <button onClick={() => deleteReg(r.id)} className="text-[10px] font-black bg-red-100 text-red-700 px-2 py-1 rounded-lg admin-btn">🗑</button>
+                                                </div>
+                                                <div className="flex flex-wrap gap-2">
+                                                    <span className="bg-amber-100 text-amber-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg">{r.event_name}</span>
+                                                    {r.game_name && <span className="bg-blue-100 text-blue-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg">{r.game_name}</span>}
+                                                    <span className={`text-[9px] font-bold px-2 py-1 rounded-lg ${d ? 'bg-slate-800 text-slate-300' : 'bg-slate-100 text-slate-600'}`}>{r.department}</span>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className={`hidden md:block overflow-x-auto rounded-2xl border ${d ? 'border-slate-800' : 'border-slate-200'}`}>
+                                        <table className={`w-full text-sm ${d ? 'bg-slate-900' : 'bg-white'}`}>
+                                            <thead><tr className={`text-[10px] font-black uppercase tracking-wider ${d ? 'bg-slate-800 text-slate-400' : 'bg-slate-50 text-slate-500'}`}>
+                                                {['#', 'Name', 'Email', 'Phone', 'Tournament', 'Game', 'Dept', 'Date', ''].map(h => <th key={h} className="px-4 py-3 text-left">{h}</th>)}
+                                            </tr></thead>
+                                            <tbody>{filteredReg.map((r, i) => (
+                                                <tr key={r.id} className={`border-t ${d ? 'border-slate-800 hover:bg-slate-800/50' : 'border-slate-100 hover:bg-slate-50'}`}>
+                                                    <td className={`px-4 py-3 text-xs font-black ${d ? 'text-slate-500' : 'text-slate-400'}`}>{i + 1}</td>
+                                                    <td className={`px-4 py-3 font-bold ${d ? 'text-white' : 'text-slate-800'}`}>{r.player_name}</td>
+                                                    <td className={`px-4 py-3 text-xs ${d ? 'text-slate-300' : 'text-slate-600'}`}>{r.email}</td>
+                                                    <td className={`px-4 py-3 text-xs ${d ? 'text-slate-300' : 'text-slate-600'}`}>{r.phone}</td>
+                                                    <td className="px-4 py-3"><span className="bg-amber-100 text-amber-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg">{r.event_name}</span></td>
+                                                    <td className="px-4 py-3">{r.game_name && <span className="bg-blue-100 text-blue-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg">{r.game_name}</span>}</td>
+                                                    <td className={`px-4 py-3 text-xs ${d ? 'text-slate-300' : 'text-slate-600'}`}>{r.department}</td>
+                                                    <td className={`px-4 py-3 text-xs ${d ? 'text-slate-400' : 'text-slate-500'}`}>{r.created_at ? new Date(r.created_at).toLocaleDateString() : '—'}</td>
+                                                    <td className="px-4 py-3"><button onClick={() => deleteReg(r.id)} className="text-[10px] font-black bg-red-100 hover:bg-red-200 text-red-700 px-2.5 py-1 rounded-lg admin-btn">🗑</button></td>
+                                                </tr>
+                                            ))}</tbody>
+                                        </table>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    )}
+
+                    {adminTab === 'teams' && (
+                        <div className="animate-fade-in-up space-y-4">
+                            <div className="flex justify-between items-center">
+                                <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-slate-800'}`}>Team Registrations <span className="text-amber-500">({teamRegs.length})</span></h2>
+                                <button onClick={() => fetchData('teams')} className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl admin-btn">🔄 Refresh</button>
+                            </div>
+                            {loading ? <div className="flex justify-center py-20"><div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div></div>
+                            : teamRegs.length === 0 ? <div className={`text-center py-20 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}><p className="text-5xl mb-3">⚽</p><p className={`font-black text-sm ${d ? 'text-slate-400' : 'text-slate-500'}`}>No team registrations yet</p></div>
+                            : (
+                                <div className="space-y-4">
+                                    {teamRegs.map((t, i) => {
+                                        let players = [];
+                                        try { players = typeof t.players === 'string' ? JSON.parse(t.players) : t.players || []; } catch {}
+                                        return (
+                                            <div key={t.id} className={`p-5 rounded-2xl border animate-fade-in-up ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`} style={{ animationDelay: `${i * 40}ms` }}>
+                                                <div className="flex justify-between items-start mb-3">
+                                                    <div>
+                                                        <p className={`font-black text-base ${d ? 'text-white' : 'text-slate-800'}`}>{t.team_name}</p>
+                                                        <span className="bg-emerald-100 text-emerald-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg">{t.tournament_name}</span>
+                                                    </div>
+                                                    <span className={`text-xs ${d ? 'text-slate-400' : 'text-slate-500'}`}>{t.created_at ? new Date(t.created_at).toLocaleDateString() : '—'}</span>
+                                                </div>
+                                                <div className={`grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs mb-3 p-3 rounded-xl ${d ? 'bg-slate-800' : 'bg-slate-50'}`}>
+                                                    <p className={d ? 'text-slate-300' : 'text-slate-600'}><span className="font-black">Captain:</span> {t.captain_name}</p>
+                                                    <p className={d ? 'text-slate-300' : 'text-slate-600'}><span className="font-black">Phone:</span> {t.captain_phone}</p>
+                                                    <p className={d ? 'text-slate-300' : 'text-slate-600'}><span className="font-black">Dept:</span> {t.department}</p>
+                                                </div>
+                                                {players.length > 0 && (
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {players.filter(p => p.name).map((p, pi) => (
+                                                            <span key={pi} className={`text-[9px] font-bold px-2 py-1 rounded-lg ${d ? 'bg-slate-700 text-slate-300' : 'bg-slate-100 text-slate-600'}`}>
+                                                                {pi + 1}. {p.name} {p.role && `(${p.role})`}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {adminTab === 'club-members' && (
+                        <div className="animate-fade-in-up space-y-4">
+                            <div className="flex justify-between items-center">
+                                <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-slate-800'}`}>Club Members <span className="text-amber-500">({clubMembers.length})</span></h2>
+                                <button onClick={() => fetchData('club-members')} className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl admin-btn">🔄 Refresh</button>
+                            </div>
+                            {loading ? <div className="flex justify-center py-20"><div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div></div>
+                            : clubMembers.length === 0 ? <div className={`text-center py-20 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}><p className="text-5xl mb-3">🎽</p><p className={`font-black text-sm ${d ? 'text-slate-400' : 'text-slate-500'}`}>No club members yet</p></div>
+                            : (
+                                <div className="space-y-3">
+                                    {clubMembers.map((m, i) => (
+                                        <div key={m.id} className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center gap-3 animate-fade-in-up ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`} style={{ animationDelay: `${i * 40}ms` }}>
+                                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-white font-black text-sm flex-shrink-0">
+                                                {m.name?.charAt(0)}
+                                            </div>
+                                            <div className="flex-1">
+                                                <p className={`font-black text-sm ${d ? 'text-white' : 'text-slate-800'}`}>{m.name}</p>
+                                                <p className={`text-xs ${d ? 'text-slate-400' : 'text-slate-500'}`}>{m.email} · {m.phone}</p>
+                                            </div>
+                                            <div className="flex flex-wrap gap-2">
+                                                <span className="bg-blue-100 text-blue-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg">{m.department}</span>
+                                                <span className={`text-[9px] font-bold px-2 py-1 rounded-lg ${d ? 'bg-slate-700 text-slate-300' : 'bg-slate-100 text-slate-600'}`}>{m.semester} Sem</span>
+                                                <span className={`text-[9px] font-bold px-2 py-1 rounded-lg ${d ? 'bg-slate-700 text-slate-300' : 'bg-slate-100 text-slate-600'}`}>ID: {m.student_id}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {adminTab === 'members' && (
+                        <div className="animate-fade-in-up space-y-5">
+                            <div className={`p-4 sm:p-5 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+                                <h3 className={`font-black text-base mb-4 ${d ? 'text-white' : 'text-slate-800'}`}>{editingMember ? '✏️ Edit Member' : '➕ Add Committee Member'}</h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                                    <input type="text" placeholder="Full Name *" value={memberForm.name} onChange={e => setMemberForm({ ...memberForm, name: e.target.value })} className={inputCls} />
+                                    <input type="email" placeholder="Email *" value={memberForm.email} onChange={e => setMemberForm({ ...memberForm, email: e.target.value })} className={inputCls} />
+                                    <input type="text" placeholder="Phone" value={memberForm.phone} onChange={e => setMemberForm({ ...memberForm, phone: e.target.value })} className={inputCls} />
+                                    <input type="text" placeholder="Committee Role (e.g. PRESIDENT)" value={memberForm.committee_role} onChange={e => setMemberForm({ ...memberForm, committee_role: e.target.value })} className={inputCls} />
+                                </div>
+                                <div className="flex gap-3 flex-wrap">
+                                    <button onClick={saveMember} className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl admin-btn">{editingMember ? '💾 Update' : '➕ Add'}</button>
+                                    {editingMember && <button onClick={() => { setEditingMember(null); setMemberForm(EMPTY_MEMBER); }} className={`px-5 py-2.5 font-black text-xs rounded-xl admin-btn ${d ? 'bg-slate-700 text-white' : 'bg-slate-100 text-slate-700'}`}>Cancel</button>}
+                                </div>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-slate-800'}`}>Committee <span className="text-amber-500">({members.length})</span></h2>
+                                <button onClick={() => fetchData('members')} className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl admin-btn">🔄 Refresh</button>
+                            </div>
+                            {loading ? <div className="flex justify-center py-20"><div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div></div>
+                            : (
+                                <>
+                                    <div className="md:hidden space-y-3">
+                                        {members.map((m, i) => (
+                                            <div key={m.id} className={`p-4 rounded-2xl border animate-fade-in-up ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`} style={{ animationDelay: `${i * 40}ms` }}>
+                                                <div className="flex justify-between items-start mb-2">
+                                                    <div><p className={`font-black text-sm ${d ? 'text-white' : 'text-slate-800'}`}>{m.name}</p><p className={`text-xs ${d ? 'text-slate-400' : 'text-slate-500'}`}>{m.email}</p></div>
+                                                    <div className="flex gap-1">
+                                                        <button onClick={() => startEditMember(m)} className="text-[10px] font-black bg-blue-100 text-blue-700 px-2 py-1 rounded-lg admin-btn">✏️</button>
+                                                        <button onClick={() => deleteMember(m.id)} className="text-[10px] font-black bg-red-100 text-red-700 px-2 py-1 rounded-lg admin-btn">🗑</button>
+                                                    </div>
+                                                </div>
+                                                <span className="bg-blue-100 text-blue-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg">{m.committee_role || m.system_role || 'Member'}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className={`hidden md:block overflow-x-auto rounded-2xl border ${d ? 'border-slate-800' : 'border-slate-200'}`}>
+                                        <table className={`w-full text-sm ${d ? 'bg-slate-900' : 'bg-white'}`}>
+                                            <thead><tr className={`text-[10px] font-black uppercase tracking-wider ${d ? 'bg-slate-800 text-slate-400' : 'bg-slate-50 text-slate-500'}`}>
+                                                {['#', 'Name', 'Email', 'Role', 'Phone', 'Actions'].map(h => <th key={h} className="px-4 py-3 text-left">{h}</th>)}
+                                            </tr></thead>
+                                            <tbody>{members.map((m, i) => (
+                                                <tr key={m.id} className={`border-t ${d ? 'border-slate-800 hover:bg-slate-800/50' : 'border-slate-100 hover:bg-slate-50'}`}>
+                                                    <td className={`px-4 py-3 text-xs font-black ${d ? 'text-slate-500' : 'text-slate-400'}`}>{i + 1}</td>
+                                                    <td className={`px-4 py-3 font-bold ${d ? 'text-white' : 'text-slate-800'}`}>{m.name}</td>
+                                                    <td className={`px-4 py-3 text-xs ${d ? 'text-slate-300' : 'text-slate-600'}`}>{m.email}</td>
+                                                    <td className="px-4 py-3"><span className="bg-blue-100 text-blue-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg">{m.committee_role || m.system_role || 'Member'}</span></td>
+                                                    <td className={`px-4 py-3 text-xs ${d ? 'text-slate-300' : 'text-slate-600'}`}>{m.phone || '—'}</td>
+                                                    <td className="px-4 py-3 flex gap-2">
+                                                        <button onClick={() => startEditMember(m)} className="text-[10px] font-black bg-blue-100 hover:bg-blue-200 text-blue-700 px-2.5 py-1 rounded-lg admin-btn">✏️</button>
+                                                        <button onClick={() => deleteMember(m.id)} className="text-[10px] font-black bg-red-100 hover:bg-red-200 text-red-700 px-2.5 py-1 rounded-lg admin-btn">🗑</button>
+                                                    </td>
+                                                </tr>
+                                            ))}</tbody>
+                                        </table>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    )}
+
+                    {adminTab === 'events' && (
+                        <div className="animate-fade-in-up space-y-5">
+                            <div className={`p-4 sm:p-5 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+                                <h3 className={`font-black text-base mb-4 ${d ? 'text-white' : 'text-slate-800'}`}>{editingEvent ? '✏️ Edit Event' : '➕ Add Event'}</h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                                    <input type="text" placeholder="Event Title *" value={eventForm.title} onChange={e => setEventForm({ ...eventForm, title: e.target.value })} className={inputCls} />
+                                    <select value={eventForm.type} onChange={e => setEventForm({ ...eventForm, type: e.target.value })} className={inputCls}>
+                                        {['Tournament', 'Indoor Tournament', 'League Match', 'Domestic Tournament'].map(t => <option key={t} value={t}>{t}</option>)}
+                                    </select>
+                                    <input type="date" value={eventForm.date} onChange={e => setEventForm({ ...eventForm, date: e.target.value })} className={inputCls} />
+                                    <input type="text" placeholder="Details" value={eventForm.details} onChange={e => setEventForm({ ...eventForm, details: e.target.value })} className={inputCls} />
+                                </div>
+                                <div className="flex gap-3 flex-wrap">
+                                    <button onClick={saveEvent} className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl admin-btn">{editingEvent ? '💾 Update' : '➕ Add'}</button>
+                                    {editingEvent && <button onClick={() => { setEditingEvent(null); setEventForm({ title: '', type: 'Tournament', date: '', details: '' }); }} className={`px-5 py-2.5 font-black text-xs rounded-xl admin-btn ${d ? 'bg-slate-700 text-white' : 'bg-slate-100 text-slate-700'}`}>Cancel</button>}
+                                </div>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-slate-800'}`}>All Events <span className="text-amber-500">({events.length})</span></h2>
+                                <button onClick={() => fetchData('events')} className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl admin-btn">🔄 Refresh</button>
+                            </div>
+                            {loading ? <div className="flex justify-center py-10"><div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div></div>
+                            : <div className="space-y-3">{events.map((ev, i) => (
+                                <div key={ev.id} className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center gap-3 animate-fade-in-up ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`} style={{ animationDelay: `${i * 40}ms` }}>
+                                    <div className="flex-1">
+                                        <p className={`font-black text-sm ${d ? 'text-white' : 'text-slate-800'}`}>{ev.title}</p>
+                                        <div className="flex gap-2 mt-1">
+                                            <span className="bg-emerald-100 text-emerald-800 text-[9px] font-black uppercase px-2 py-0.5 rounded-lg">{ev.type}</span>
+                                            <span className={`text-[9px] ${d ? 'text-slate-400' : 'text-slate-500'}`}>📅 {ev.event_date || ev.date || '—'}</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <button onClick={() => { setEditingEvent(ev); setEventForm({ title: ev.title, type: ev.type || 'Tournament', date: ev.event_date || ev.date || '', details: ev.details || '' }); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="text-[10px] font-black bg-blue-100 hover:bg-blue-200 text-blue-700 px-2.5 py-1 rounded-lg admin-btn">✏️</button>
+                                        <button onClick={() => deleteEvent(ev.id)} className="text-[10px] font-black bg-red-100 hover:bg-red-200 text-red-700 px-2.5 py-1 rounded-lg admin-btn">🗑</button>
+                                    </div>
+                                </div>
+                            ))}</div>}
+                        </div>
+                    )}
+
+                    {adminTab === 'games' && (
+                        <div className="animate-fade-in-up space-y-5">
+                            <div className={`p-4 sm:p-5 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+                                <h3 className={`font-black text-base mb-4 ${d ? 'text-white' : 'text-slate-800'}`}>➕ Add Game to Tournament</h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                                    <input type="text" placeholder="Tournament Name (exact)" value={gameForm.tournament_name} onChange={e => setGameForm({ ...gameForm, tournament_name: e.target.value })} className={inputCls} />
+                                    <input type="text" placeholder="Game Name" value={gameForm.game_name} onChange={e => setGameForm({ ...gameForm, game_name: e.target.value })} className={inputCls} />
+                                    <input type="text" placeholder="Icon emoji 🎯" value={gameForm.game_icon} onChange={e => setGameForm({ ...gameForm, game_icon: e.target.value })} className={inputCls} />
+                                    <select value={gameForm.entry_type} onChange={e => setGameForm({ ...gameForm, entry_type: e.target.value })} className={inputCls}>
+                                        <option value="solo">Solo</option>
+                                        <option value="team">Team</option>
+                                    </select>
+                                </div>
+                                <button onClick={saveGame} className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl admin-btn">➕ Add Game</button>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-slate-800'}`}>Tournament Games <span className="text-amber-500">({tournamentGames.length})</span></h2>
+                                <button onClick={() => fetchData('games')} className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl admin-btn">🔄 Refresh</button>
+                            </div>
+                            {loading ? <div className="flex justify-center py-10"><div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div></div>
+                            : <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">{tournamentGames.map((g, i) => (
+                                <div key={g.id} className={`p-4 rounded-2xl border flex items-center gap-3 animate-fade-in-up ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`} style={{ animationDelay: `${i * 40}ms` }}>
+                                    <span className="text-2xl">{g.game_icon}</span>
+                                    <div className="flex-1">
+                                        <p className={`font-black text-sm ${d ? 'text-white' : 'text-slate-800'}`}>{g.game_name}</p>
+                                        <p className={`text-[9px] ${d ? 'text-slate-400' : 'text-slate-500'}`}>{g.tournament_name}</p>
+                                        <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded ${g.entry_type === 'team' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{g.entry_type}</span>
+                                    </div>
+                                    <button onClick={() => deleteGame(g.id)} className="text-[10px] font-black bg-red-100 hover:bg-red-200 text-red-700 px-2 py-1 rounded-lg admin-btn">🗑</button>
+                                </div>
+                            ))}</div>}
+                        </div>
+                    )}
+
+                    {adminTab === 'news' && (
+                        <div className="animate-fade-in-up space-y-5">
+                            <div className={`p-4 sm:p-5 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+                                <h3 className={`font-black text-base mb-4 ${d ? 'text-white' : 'text-slate-800'}`}>{editingNews ? '✏️ Edit News' : '📰 Post News'}</h3>
+                                <input type="text" placeholder="Title *" value={newsForm.title} onChange={e => setNewsForm({ ...newsForm, title: e.target.value })} className={`${inputCls} mb-3`} />
+                                <textarea placeholder="Content *" rows="3" value={newsForm.content} onChange={e => setNewsForm({ ...newsForm, content: e.target.value })} className={`${inputCls} mb-3`}></textarea>
+                                <label className="flex items-center gap-2 text-xs mb-3">
+                                    <input type="checkbox" checked={newsForm.is_pinned} onChange={e => setNewsForm({ ...newsForm, is_pinned: e.target.checked })} />
+                                    <span className={d ? 'text-slate-300' : 'text-slate-600'}>📌 Pin this post</span>
+                                </label>
+                                <div className="flex gap-3 flex-wrap">
+                                    <button onClick={saveNews} className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl admin-btn">{editingNews ? '💾 Update' : '➕ Post News'}</button>
+                                    {editingNews && <button onClick={() => { setEditingNews(null); setNewsForm({ title: '', content: '', is_pinned: false }); }} className={`px-5 py-2.5 font-black text-xs rounded-xl admin-btn ${d ? 'bg-slate-700 text-white' : 'bg-slate-100 text-slate-700'}`}>Cancel</button>}
+                                </div>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-slate-800'}`}>All News <span className="text-amber-500">({newsItems.length})</span></h2>
+                                <button onClick={() => fetchData('news')} className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl admin-btn">🔄 Refresh</button>
+                            </div>
+                            {loading ? <div className="flex justify-center py-10"><div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div></div>
+                            : newsItems.length === 0 ? <div className={`text-center py-16 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}><p className="text-4xl mb-2">📰</p><p className={`font-black text-sm ${d ? 'text-slate-400' : 'text-slate-500'}`}>No news posted yet</p></div>
+                            : (
+                                <div className="space-y-3">
+                                    {newsItems.map((n, i) => (
+                                        <div key={n.id} className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 animate-fade-in-up ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`} style={{ animationDelay: `${i * 40}ms` }}>
+                                            <div className="flex-1 min-w-0">
+                                                {n.is_pinned && <span className="bg-amber-100 text-amber-800 text-[9px] font-black uppercase px-2 py-0.5 rounded-lg mr-2">📌 Pinned</span>}
+                                                <span className={`font-black text-sm ${d ? 'text-white' : 'text-slate-800'}`}>{n.title}</span>
+                                                <p className={`text-xs mt-1 ${d ? 'text-slate-400' : 'text-slate-500'}`}>{n.content}</p>
+                                            </div>
+                                            <div className="flex gap-2 flex-shrink-0">
+                                                <button onClick={() => startEditNews(n)} className="text-[10px] font-black bg-blue-100 hover:bg-blue-200 text-blue-700 px-2.5 py-1 rounded-lg admin-btn">✏️ Edit</button>
+                                                <button onClick={() => deleteNews(n.id)} className="text-[10px] font-black bg-red-100 hover:bg-red-200 text-red-700 px-2.5 py-1 rounded-lg admin-btn">🗑</button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {adminTab === 'gallery' && (
+                        <div className="animate-fade-in-up space-y-5">
+                            <div className={`p-4 sm:p-5 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+                                <h3 className={`font-black text-base mb-4 ${d ? 'text-white' : 'text-slate-800'}`}>📸 Add Match Photo</h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                                    <input type="text" placeholder="Tournament Name (exact)" value={galleryForm.tournament_name} onChange={e => setGalleryForm({ ...galleryForm, tournament_name: e.target.value })} className={inputCls} />
+                                    <input type="text" placeholder="Image URL (imgbb link)" value={galleryForm.image_url} onChange={e => setGalleryForm({ ...galleryForm, image_url: e.target.value })} className={inputCls} />
+                                    <input type="text" placeholder="Caption" value={galleryForm.caption} onChange={e => setGalleryForm({ ...galleryForm, caption: e.target.value })} className={`${inputCls} sm:col-span-2`} />
+                                </div>
+                                <button onClick={saveGalleryPhoto} className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl admin-btn">➕ Add Photo</button>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-slate-800'}`}>Gallery Photos <span className="text-amber-500">({galleryPhotos.length})</span></h2>
+                                <button onClick={() => fetchData('gallery')} className="text-xs font-black bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl admin-btn">🔄 Refresh</button>
+                            </div>
+                            {loading ? <div className="flex justify-center py-10"><div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div></div>
+                            : galleryPhotos.length === 0 ? <div className={`text-center py-16 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}><p className="text-4xl mb-2">📸</p><p className={`font-black text-sm ${d ? 'text-slate-400' : 'text-slate-500'}`}>No photos yet</p></div>
+                            : (
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                    {galleryPhotos.map((p, i) => (
+                                        <div key={p.id} className={`rounded-2xl border overflow-hidden relative animate-fade-in-up ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`} style={{ animationDelay: `${i * 40}ms` }}>
+                                            <img src={p.image_url} className="w-full h-24 object-cover" alt={p.caption} />
+                                            <button onClick={() => deleteGalleryPhoto(p.id)} className="absolute top-1 right-1 text-[10px] font-black bg-red-600 text-white px-2 py-0.5 rounded-lg admin-btn">🗑</button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
             </div>
+            {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+        </div>
         </>
     );
 }
 
-
 function AdminLogin({ onLogin, dark }) {
-    const [pw, setPw] = useState("");
-    const [error, setError] = useState("");
+    const [pw, setPw] = useState('');
+    const [error, setError] = useState('');
     const d = dark;
-    const handleLogin = () => {
-        if (pw === ADMIN_PASSWORD) onLogin();
-        else {
-            setError("Wrong password.");
-            setPw("");
-        }
-    };
+    const handleLogin = () => { if (pw === ADMIN_PASSWORD) onLogin(); else { setError('Wrong password.'); setPw(''); } };
     return (
-        <div
-            className={`min-h-screen flex items-center justify-center p-4 ${d ? "bg-slate-950" : "bg-slate-100"}`}
-        >
-            <div
-                className={`w-full max-w-sm p-8 rounded-3xl border shadow-2xl animate-fade-in-up ${d ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200"}`}
-            >
+        <div className={`min-h-screen flex items-center justify-center p-4 ${d ? 'bg-slate-950' : 'bg-slate-100'}`}>
+            <div className={`w-full max-w-sm p-8 rounded-3xl border shadow-2xl animate-fade-in-up ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
                 <div className="text-center mb-8">
-                    <span className="text-5xl block mb-3 animate-float">
-                        🛡️
-                    </span>
-                    <h2
-                        className={`text-2xl font-black ${d ? "text-white" : "text-blue-950"}`}
-                    >
-                        Admin Access
-                    </h2>
-                    <p
-                        className={`text-xs mt-1 ${d ? "text-slate-400" : "text-slate-500"}`}
-                    >
-                        MU Sports Club Dashboard
-                    </p>
+                    <span className="text-5xl block mb-3 animate-float">🛡️</span>
+                    <h2 className={`text-2xl font-black ${d ? 'text-white' : 'text-blue-950'}`}>Admin Access</h2>
+                    <p className={`text-xs mt-1 ${d ? 'text-slate-400' : 'text-slate-500'}`}>MU Sports Club Dashboard</p>
                 </div>
                 <div className="space-y-4">
-                    <input
-                        type="password"
-                        placeholder="Enter admin password"
-                        value={pw}
-                        onChange={(e) => {
-                            setPw(e.target.value);
-                            setError("");
-                        }}
-                        onKeyDown={(e) => e.key === "Enter" && handleLogin()}
-                        className={`w-full p-3.5 border rounded-xl text-sm outline-none transition-all ${d ? "bg-slate-800 border-slate-700 text-white focus:border-amber-500" : "border-slate-200 focus:border-blue-500 text-slate-800"}`}
-                    />
-                    {error && (
-                        <p className="text-red-500 text-xs font-bold text-center">
-                            {error}
-                        </p>
-                    )}
-                    <button
-                        onClick={handleLogin}
-                        className="w-full py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs uppercase tracking-widest rounded-xl transition-all hover:scale-[1.02] shadow-lg"
-                    >
+                    <input type="password" placeholder="Enter admin password" value={pw} onChange={e => { setPw(e.target.value); setError(''); }} onKeyDown={e => e.key === 'Enter' && handleLogin()}
+                        className={`w-full p-3.5 border rounded-xl text-sm outline-none transition-all ${d ? 'bg-slate-800 border-slate-700 text-white focus:border-amber-500' : 'border-slate-200 focus:border-blue-500 text-slate-800'}`} />
+                    {error && <p className="text-red-500 text-xs font-bold text-center">{error}</p>}
+                    <button onClick={handleLogin} className="w-full py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs uppercase tracking-widest rounded-xl transition-all hover:scale-[1.02] shadow-lg">
                         Access Dashboard →
                     </button>
                 </div>
@@ -4247,157 +2366,128 @@ function AdminLogin({ onLogin, dark }) {
     );
 }
 
-
-function NewsFeed({ dark }) {
-    const [news, setNews] = useState([]);
-    useEffect(() => {
-        fetch("/news")
-            .then((r) => r.json())
-            .then((d) => setNews(d.data || []))
-            .catch(() => {});
-    }, []);
-    if (news.length === 0)
-        return (
-            <div
-                className={`text-center py-20 rounded-2xl border ${dark ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200"}`}
-            >
-                <p className="text-5xl mb-3">📰</p>
-                <p
-                    className={`font-black text-sm ${dark ? "text-slate-400" : "text-slate-500"}`}
-                >
-                    No news yet — check back soon!
-                </p>
-            </div>
-        );
+function DigitalIDCard({ dark }) {
+    const [identifier, setIdentifier] = useState('');
+    const [member, setMember] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const d = dark;
+
+    const lookupMember = async () => {
+        if (!identifier.trim()) return;
+        setLoading(true); setError('');
+        try {
+            const res = await fetch(`/member-card/${encodeURIComponent(identifier)}`);
+            const data = await res.json();
+            if (data.success) setMember(data.data);
+            else { setError('No member found with that Student ID or Email'); setMember(null); }
+        } catch { setError('Connection failed'); }
+        setLoading(false);
+    };
+
+    const qrUrl = member ? `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(member.student_id + '|' + member.name)}` : '';
+
     return (
-        <div className="space-y-6">
+        <div className="max-w-md mx-auto space-y-6 animate-fade-in-up">
             <div className="text-center">
-                <p
-                    className={`text-xs font-black uppercase tracking-widest mb-1 ${d ? "text-blue-400" : "text-blue-600"}`}
-                >
-                    Stay Updated
-                </p>
-                <h2
-                    className={`text-3xl font-black tracking-tight uppercase ${d ? "text-white" : "text-blue-950"}`}
-                >
-                    Latest News
-                </h2>
+                <p className={`text-xs font-black uppercase tracking-widest mb-1 ${d ? 'text-blue-400' : 'text-blue-600'}`}>Member Services</p>
+                <h1 className={`text-2xl font-black tracking-tight uppercase ${d ? 'text-white' : 'text-blue-950'}`}>Digital ID Card</h1>
+                <p className={`text-xs mt-2 ${d ? 'text-slate-400' : 'text-slate-500'}`}>Enter your Student ID or Email to view your card</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {news.map((n, i) => (
-                    <div
-                        key={n.id}
-                        className={`p-5 rounded-2xl border animate-fade-in-up ${d ? "bg-slate-900 border-slate-800" : "bg-white border-blue-100 shadow-sm"}`}
-                        style={{ animationDelay: `${i * 60}ms` }}
-                    >
-                        {n.is_pinned && (
-                            <span className="inline-block bg-amber-100 text-amber-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg mb-2">
-                                📌 Pinned
-                            </span>
-                        )}
-                        <h3
-                            className={`font-black text-base ${d ? "text-white" : "text-blue-950"}`}
-                        >
-                            {n.title}
-                        </h3>
-                        <p
-                            className={`text-xs mt-2 leading-relaxed ${d ? "text-slate-400" : "text-slate-500"}`}
-                        >
-                            {n.content}
-                        </p>
-                        <p
-                            className={`text-[10px] mt-3 ${d ? "text-slate-500" : "text-slate-400"}`}
-                        >
-                            {n.created_at
-                                ? new Date(n.created_at).toLocaleDateString()
-                                : ""}
-                        </p>
+            <div className="flex gap-2">
+                <input type="text" value={identifier} onChange={e => setIdentifier(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && lookupMember()}
+                    placeholder="Student ID or Email"
+                    className={`flex-1 p-3.5 border rounded-xl outline-none text-sm ${d ? 'bg-slate-800 border-slate-700 text-white focus:border-amber-500' : 'border-blue-100 focus:border-blue-500'}`} />
+                <button onClick={lookupMember} disabled={loading}
+                    className="px-6 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl transition-all">
+                    {loading ? '⏳' : '🔍 Find'}
+                </button>
+            </div>
+            {error && <p className="text-red-500 text-xs font-bold text-center">{error}</p>}
+            {member && (
+                <div className="rounded-3xl overflow-hidden shadow-2xl animate-fade-in-up" style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%)' }}>
+                    <div className="p-6 text-white relative">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-amber-400/10 rounded-full blur-2xl"></div>
+                        <div className="flex justify-between items-start mb-6 relative z-10">
+                            <div>
+                                <p className="text-[9px] font-black uppercase tracking-widest text-amber-400">Official Member Card</p>
+                                <p className="text-lg font-black tracking-wider">MU SPORTS CLUB</p>
+                            </div>
+                            <span className="text-2xl">🎽</span>
+                        </div>
+                        <div className="flex items-center gap-4 relative z-10">
+                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-black text-xl flex-shrink-0">
+                                {member.name?.charAt(0)}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <p className="font-black text-base truncate">{member.name}</p>
+                                <p className="text-blue-300 text-xs">{member.department} · {member.semester} Semester</p>
+                                <p className="text-blue-300 text-xs">ID: {member.student_id}</p>
+                            </div>
+                            <div className="w-16 h-16 bg-white rounded-lg p-1 flex-shrink-0">
+                                <img src={qrUrl} alt="QR Code" className="w-full h-full" />
+                            </div>
+                        </div>
+                        <div className="mt-4 pt-4 border-t border-white/10 flex justify-between text-[10px] text-blue-300 relative z-10">
+                            <span>📧 {member.email}</span>
+                            <span>📞 {member.phone}</span>
+                        </div>
                     </div>
-                ))}
-            </div>
+                    <div className="bg-amber-500 text-slate-950 text-center py-2 text-[10px] font-black uppercase tracking-widest">
+                        Metropolitan University, Sylhet
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
 
-
 function MatchGallery({ dark, clubEvents }) {
-    const [selectedTournament, setSelectedTournament] = useState("All");
+    const [selectedTournament, setSelectedTournament] = useState('All');
     const [photos, setPhotos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [lightbox, setLightbox] = useState(null);
     const d = dark;
+
     useEffect(() => {
         setLoading(true);
-        const url =
-            selectedTournament === "All"
-                ? "/match-gallery"
-                : `/match-gallery/${encodeURIComponent(selectedTournament)}`;
-        fetch(url)
-            .then((r) => r.json())
-            .then((d) => setPhotos(d.data || []))
-            .catch(() => setPhotos([]))
-            .finally(() => setLoading(false));
+        const url = selectedTournament === 'All' ? '/match-gallery' : `/match-gallery/${encodeURIComponent(selectedTournament)}`;
+        fetch(url).then(r => r.json()).then(d => setPhotos(d.data || [])).catch(() => setPhotos([])).finally(() => setLoading(false));
     }, [selectedTournament]);
+
     return (
         <div className="space-y-6 animate-fade-in-up">
             <div className="text-center">
-                <p
-                    className={`text-xs font-black uppercase tracking-widest mb-1 ${d ? "text-blue-400" : "text-blue-600"}`}
-                >
-                    Captured Moments
-                </p>
-                <h1
-                    className={`text-3xl font-black tracking-tight uppercase ${d ? "text-white" : "text-blue-950"}`}
-                >
-                    Match Gallery
-                </h1>
+                <p className={`text-xs font-black uppercase tracking-widest mb-1 ${d ? 'text-blue-400' : 'text-blue-600'}`}>Captured Moments</p>
+                <h1 className={`text-3xl font-black tracking-tight uppercase ${d ? 'text-white' : 'text-blue-950'}`}>Match Gallery</h1>
             </div>
             <div className="flex flex-wrap justify-center gap-2">
-                {["All", ...clubEvents.map((e) => e.title)].map((t) => (
-                    <button
-                        key={t}
-                        onClick={() => setSelectedTournament(t)}
-                        className={`text-[10px] font-black uppercase tracking-wider px-4 py-2 rounded-full border transition-all ${selectedTournament === t ? (d ? "bg-amber-500 text-slate-950 border-amber-500" : "bg-blue-950 text-white border-blue-950") : d ? "border-slate-700 text-slate-400 hover:border-slate-500" : "border-blue-200 text-slate-500 hover:border-blue-400"}`}
-                    >
+                {['All', ...clubEvents.map(e => e.title)].map(t => (
+                    <button key={t} onClick={() => setSelectedTournament(t)}
+                        className={`text-[10px] font-black uppercase tracking-wider px-4 py-2 rounded-full border transition-all ${selectedTournament === t
+                            ? (d ? 'bg-amber-500 text-slate-950 border-amber-500' : 'bg-blue-950 text-white border-blue-950')
+                            : (d ? 'border-slate-700 text-slate-400' : 'border-blue-200 text-slate-500')}`}>
                         {t}
                     </button>
                 ))}
             </div>
             {loading ? (
-                <div className="flex justify-center py-20">
-                    <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
-                </div>
+                <div className="flex justify-center py-20"><div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div></div>
             ) : photos.length === 0 ? (
-                <div
-                    className={`text-center py-20 rounded-2xl border ${d ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200"}`}
-                >
+                <div className={`text-center py-20 rounded-2xl border ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
                     <p className="text-5xl mb-3">📸</p>
-                    <p
-                        className={`font-black text-sm ${d ? "text-slate-400" : "text-slate-500"}`}
-                    >
-                        No photos yet for this tournament
-                    </p>
+                    <p className={`font-black text-sm ${d ? 'text-slate-400' : 'text-slate-500'}`}>No photos yet for this tournament</p>
                 </div>
             ) : (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                     {photos.map((p, i) => (
-                        <div
-                            key={p.id}
-                            className="gallery-item relative rounded-2xl overflow-hidden cursor-pointer border h-40 animate-fade-in-up"
-                            style={{ animationDelay: `${i * 40}ms` }}
-                            onClick={() => setLightbox(p)}
-                        >
-                            <img
-                                src={p.image_url}
-                                alt={p.caption}
-                                className="w-full h-full object-cover"
-                            />
+                        <div key={p.id} className="gallery-item relative rounded-2xl overflow-hidden cursor-pointer border h-40 animate-fade-in-up"
+                            style={{ animationDelay: `${i * 40}ms` }} onClick={() => setLightbox(p)}>
+                            <img src={p.image_url} alt={p.caption} className="w-full h-full object-cover" />
                             {p.caption && (
                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-2">
-                                    <span className="text-white text-[9px] font-black">
-                                        {p.caption}
-                                    </span>
+                                    <span className="text-white text-[9px] font-black">{p.caption}</span>
                                 </div>
                             )}
                         </div>
@@ -4405,30 +2495,11 @@ function MatchGallery({ dark, clubEvents }) {
                 </div>
             )}
             {lightbox && (
-                <div
-                    className="fixed inset-0 z-[9998] bg-slate-950/95 flex items-center justify-center p-4"
-                    onClick={() => setLightbox(null)}
-                >
-                    <div
-                        className="relative max-w-2xl w-full"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <button
-                            onClick={() => setLightbox(null)}
-                            className="absolute -top-10 right-0 text-white text-3xl font-black"
-                        >
-                            ×
-                        </button>
-                        <img
-                            src={lightbox.image_url}
-                            alt={lightbox.caption}
-                            className="w-full rounded-2xl"
-                        />
-                        {lightbox.caption && (
-                            <p className="text-center text-white text-sm mt-3 font-bold">
-                                {lightbox.caption}
-                            </p>
-                        )}
+                <div className="fixed inset-0 z-[9998] bg-slate-950/95 flex items-center justify-center p-4" onClick={() => setLightbox(null)}>
+                    <div className="relative max-w-2xl w-full" onClick={e => e.stopPropagation()}>
+                        <button onClick={() => setLightbox(null)} className="absolute -top-10 right-0 text-white text-3xl font-black">×</button>
+                        <img src={lightbox.image_url} alt={lightbox.caption} className="w-full rounded-2xl" />
+                        {lightbox.caption && <p className="text-center text-white text-sm mt-3">{lightbox.caption}</p>}
                     </div>
                 </div>
             )}
@@ -4436,341 +2507,166 @@ function MatchGallery({ dark, clubEvents }) {
     );
 }
 
+function NewsFeed({ dark }) {
+    const [news, setNews] = useState([]);
+    useEffect(() => { fetch('/news').then(r => r.json()).then(d => setNews(d.data || [])).catch(() => {}); }, []);
+    const d = dark;
+    if (news.length === 0) return (
+        <div className="text-center py-16">
+            <p className="text-4xl mb-3">📰</p>
+            <p className={`font-black text-sm ${d ? 'text-slate-400' : 'text-slate-500'}`}>No news posted yet — check back soon!</p>
+        </div>
+    );
 
+    return (
+        <div className="space-y-6">
+            <div className="text-center">
+                <p className={`text-xs font-black uppercase tracking-widest mb-1 ${d ? 'text-blue-400' : 'text-blue-600'}`}>Stay Updated</p>
+                <h2 className={`text-3xl font-black tracking-tight uppercase ${d ? 'text-white' : 'text-blue-950'}`}>Latest News</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {news.map((n, i) => (
+                    <div key={n.id} className={`p-5 rounded-2xl border animate-fade-in-up ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-blue-100 shadow-sm'}`} style={{ animationDelay: `${i * 60}ms` }}>
+                        {n.is_pinned && <span className="inline-block bg-amber-100 text-amber-800 text-[9px] font-black uppercase px-2 py-1 rounded-lg mb-2">📌 Pinned</span>}
+                        <h3 className={`font-black text-base ${d ? 'text-white' : 'text-blue-950'}`}>{n.title}</h3>
+                        <p className={`text-xs mt-2 leading-relaxed ${d ? 'text-slate-400' : 'text-slate-500'}`}>{n.content}</p>
+                        <p className={`text-[10px] mt-3 ${d ? 'text-slate-500' : 'text-slate-400'}`}>{new Date(n.created_at).toLocaleDateString()}</p>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+// ─── Main App ─────────────────────────────────────────────────────────────────
 function MUSportsClubApp() {
     const dbEvents = window.backendEvents || [];
     const dbUsers = window.backendUsers || [];
-    const [currentTab, setCurrentTab] = useState("home");
+
+    const [currentTab, setCurrentTab] = useState('home');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [darkMode, setDarkMode] = useState(false);
     const [toast, setToast] = useState(null);
     const [lightboxImg, setLightboxImg] = useState(null);
-    const [collabForm, setCollabForm] = useState({
-        name: "",
-        org: "",
-        note: "",
-    });
+    const [collabForm, setCollabForm] = useState({ name: '', org: '', note: '' });
     const [attachedFile, setAttachedFile] = useState(null);
     const [statsRef, statsInView] = useInView(0.3);
-    const [activeFilter, setActiveFilter] = useState("All");
+    const [activeFilter, setActiveFilter] = useState('All');
     const [isAdmin, setIsAdmin] = useState(false);
     const [showAdminLogin, setShowAdminLogin] = useState(false);
-    const showToast = useCallback(
-        (message, type = "success") => setToast({ message, type }),
-        [],
-    );
 
-    useEffect(() => {
-        document.documentElement.classList.toggle("dark", darkMode);
-    }, [darkMode]);
-    useEffect(() => {
-        if (window.location.hash === "#admin") setShowAdminLogin(true);
-    }, []);
+    const showToast = useCallback((message, type = 'success') => setToast({ message, type }), []);
 
-    const goTo = (tab) => {
-        setCurrentTab(tab);
-        setIsMenuOpen(false);
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    };
+    useEffect(() => { document.documentElement.classList.toggle('dark', darkMode); }, [darkMode]);
+    useEffect(() => { if (window.location.hash === '#admin') setShowAdminLogin(true); }, []);
+
+    const goTo = (tab) => { setCurrentTab(tab); setIsMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+
     const handleFileChange = (e) => {
         const f = e.target.files?.[0];
-        if (f) {
-            setAttachedFile(f);
-            showToast(`"${f.name}" attached!`);
-        }
+        if (f) { setAttachedFile(f); showToast(`"${f.name}" attached!`, 'success'); }
     };
+
     const handleSayHello = (e) => {
         e.preventDefault();
-        const sub = encodeURIComponent(
-            `MU Sports Club Collaboration - ${collabForm.org || "Proposal"}`,
-        );
-        const body = encodeURIComponent(
-            `Hi MU Sports Club,\n\nI am ${collabForm.name} from ${collabForm.org || "N/A"}.\n\nMessage:\n${collabForm.note}`,
-        );
+        const sub = encodeURIComponent(`MU Sports Club Collaboration - ${collabForm.org || 'Proposal'}`);
+        const body = encodeURIComponent(`Hi MU Sports Club,\n\nI am ${collabForm.name} from ${collabForm.org || 'N/A'}.\n\nMessage:\n${collabForm.note}`);
         window.location.href = `mailto:sports.club@mu.edu?subject=${sub}&body=${body}`;
     };
 
     const defaultCommittee = [
-        {
-            id: "c1",
-            name: "Abu Sufian",
-            committee_role: "PRESIDENT",
-            email: "president@mu.edu",
-            phone: "01741197388",
-            profile_picture: "https://imgur.com/JKxNhUe.jpg",
-        },
-        {
-            id: "c2",
-            name: "Shahriyar Rifat",
-            committee_role: "GENERAL SECRETARY",
-            email: "gs.sports@mu.edu",
-            phone: "01308893939",
-            profile_picture: "https://imgur.com/g2U3xIF.jpg",
-        },
-        {
-            id: "c3",
-            name: "Abdullah Jabid",
-            committee_role: "ORGANISING SECRETARY",
-            email: "organizer@mu.edu",
-            phone: "01317242586",
-            profile_picture: "https://imgur.com/ToF8tAU.jpg",
-        },
-        {
-            id: "c4",
-            name: "MD.Saiful Islam",
-            committee_role: "ORGANISING SECRETARY",
-            email: "oyon@mu.edu",
-            phone: "01607896330",
-            profile_picture: "https://imgur.com/xXCKpLf.jpg",
-        },
-        {
-            id: "c5",
-            name: "MD.Salman",
-            committee_role: "ORGANISING SECRETARY",
-            email: "salman@mu.edu",
-            phone: "01737599603",
-            profile_picture: "https://imgur.com/VQY5Xt6.jpg",
-        },
-        {
-            id: "c6",
-            name: "Adnan Wahdi",
-            committee_role: "THE GREAT TREASURER",
-            email: "treasurer@mu.edu",
-            phone: "01724926802",
-            profile_picture: "https://imgur.com/cUx7PjL.jpg",
-        },
-        {
-            id: "c7",
-            name: "Syed Hassan",
-            committee_role: "EVENT COORDINATOR",
-            email: "hassan@mu.edu",
-            phone: "01957636327",
-            profile_picture: "https://imgur.com/46oGbg7.jpg",
-        },
-        {
-            id: "c8",
-            name: "MD.Sodrul Hasan Sohi",
-            committee_role: "OFFICE SECRETARY",
-            email: "sohi@mu.edu",
-            phone: "01316586392",
-            profile_picture: "https://imgur.com/p5UAaHB.jpg",
-        },
-        {
-            id: "c9",
-            name: "Muhtasim Labib",
-            committee_role: "ESPORTS COORDINATOR",
-            email: "labib@mu.edu",
-            phone: "",
-            profile_picture: "https://imgur.com/zNFGArI.jpg",
-        },
-        {
-            id: "c10",
-            name: "Mifrat Hussain Chahat",
-            committee_role: "PUBLIC RELATIONS SECRETARY",
-            email: "chahat@mu.edu",
-            phone: "",
-            profile_picture: "https://imgur.com/CrHZ8B8.jpg",
-        },
-        {
-            id: "c11",
-            name: "Tajul Islam",
-            committee_role: "PRESS SECRETARY",
-            email: "taj@mu.edu",
-            phone: "",
-            profile_picture: "https://imgur.com/wYFDVb4.jpg",
-        },
-        {
-            id: "c12",
-            name: "Md.Mahiyan Noor Mahi",
-            committee_role: "PRESS SECRETARY",
-            email: "motu@mu.edu",
-            phone: "01756510942",
-            profile_picture: "https://imgur.com/PIsCE4u.jpg",
-        },
-        {
-            id: "c13",
-            name: "Miftahur Rahman Omi",
-            committee_role: "CHIEF PHOTOGRAPHER",
-            email: "leo@mu.edu",
-            phone: "01887457293",
-            profile_picture: "https://imgur.com/sgjKYoV.jpg",
-        },
-        {
-            id: "c14",
-            name: "Bijay Paul",
-            committee_role: "LOGISTICS SECRETARY",
-            email: "paul@mu.edu",
-            phone: "",
-            profile_picture: "https://imgur.com/9TeyKxy.jpg",
-        },
-        {
-            id: "c15",
-            name: "Samir Ahmed",
-            committee_role: "EXECUTIVE FOR DESIGN",
-            email: "samir@mu.edu",
-            phone: "",
-            profile_picture: "https://imgur.com/py1LVG5.jpg",
-        },
-        {
-            id: "c16",
-            name: "Mansur Rahman Manna",
-            committee_role: "VOLUNTEER COORDINATOR",
-            email: "manna@mu.edu",
-            phone: "",
-            profile_picture: "https://imgur.com/iUVviQ7.jpg",
-        },
+        { id: 'c1', name: "Abu Sufian", committee_role: "PRESIDENT", email: "president@mu.edu", phone: "01741197388", profile_picture: "https://imgur.com/JKxNhUe.jpg" },
+        { id: 'c2', name: "Shahriyar Rifat", committee_role: "GENERAL SECRETARY", email: "gs.sports@mu.edu", phone: "01308893939", profile_picture: "https://imgur.com/g2U3xIF.jpg" },
+        { id: 'c3', name: "Abdullah Jabid", committee_role: "ORGANISING SECRETARY", email: "organizer@mu.edu", phone: "01317242586", profile_picture: "https://imgur.com/ToF8tAU.jpg" },
+        { id: 'c4', name: "MD.Saiful Islam", committee_role: "ORGANISING SECRETARY", email: "oyon@mu.edu", phone: "01607896330", profile_picture: "https://imgur.com/xXCKpLf.jpg" },
+        { id: 'c5', name: "MD.Salman", committee_role: "ORGANISING SECRETARY", email: "salman@mu.edu", phone: "01737599603", profile_picture: "https://imgur.com/VQY5Xt6.jpg" },
+        { id: 'c6', name: "Adnan Wahdi", committee_role: "THE GREAT TREASURER", email: "treasurer@mu.edu", phone: "01724926802", profile_picture: "https://imgur.com/cUx7PjL.jpg" },
+        { id: 'c7', name: "Syed Hassan", committee_role: "EVENT COORDINATOR", email: "hassan@mu.edu", phone: "01957636327", profile_picture: "https://imgur.com/46oGbg7.jpg" },
+        { id: 'c8', name: "MD.Sodrul Hasan Sohi", committee_role: "OFFICE SECRETARY", email: "sohi@mu.edu", phone: "01316586392", profile_picture: "https://imgur.com/p5UAaHB.jpg" },
+        { id: 'c9', name: "Muhtasim Labib", committee_role: "Esports Event Coordinator", email: "labib@mu.edu", phone: "", profile_picture: "https://imgur.com/zNFGArI.jpg" },
+        { id: 'c10', name: "Mifrat Hussain Chahat", committee_role: "Public Relations Secretary", email: "chahat@mu.edu", phone: "", profile_picture: "https://imgur.com/CrHZ8B8.jpg" },
+        { id: 'c11', name: "Tajul Islam", committee_role: "PRESS SECRETARY", email: "taj@mu.edu", phone: "", profile_picture: "https://imgur.com/wYFDVb4.jpg" },
+        { id: 'c13', name: "Md.Mahiyan Noor Mahi", committee_role: "PRESS SECRETARY", email: "motu@mu.edu", phone: "01756510942", profile_picture: "https://imgur.com/PIsCE4u.jpg" },
+        { id: 'c14', name: "Miftahur Rahman Omi", committee_role: "CHIEF PHOTOGRAPHER", email: "leo@mu.edu", phone: "01887457293", profile_picture: "https://imgur.com/sgjKYoV.jpg" },
+        { id: 'c15', name: "Bijay Paul", committee_role: "Logistics Secretary", email: "paul@mu.edu", phone: "", profile_picture: "https://imgur.com/9TeyKxy.jpg" },
+        { id: 'c16', name: "Samir Ahmed", committee_role: "Executive for Design", email: "samir@mu.edu", phone: "", profile_picture: "https://imgur.com/py1LVG5.jpg" },
+        { id: 'c17', name: "Mansur Rahman Manna", committee_role: "Volunteer Coordinator", email: "manna@mu.edu", phone: "", profile_picture: "https://imgur.com/iUVviQ7.jpg" },
     ];
+    const committeeList = [...defaultCommittee, ...dbUsers];
 
-    const defaultEmails = new Set(defaultCommittee.map((m) => m.email));
-    const committeeList = [
-        ...defaultCommittee,
-        ...dbUsers.filter((u) => !defaultEmails.has(u.email)),
+    const clubEvents = dbEvents.length >= 6 ? dbEvents : [
+        { title: "INDOOR GAMES SEASON-15", type: "Indoor Tournament", date: "July 5, 2026", details: "Annual ultimate indoor showdown — Chess, Carrom, Table Tennis, Badminton & more at MU Lounge." },
+        { title: "INTRA-MUSC FUTSAL", type: "Indoor Tournament", date: "August 15, 2026", details: "Strategic futsal tournament targeting MUSC members. Team-based knockout format." },
+        { title: "LEAGUE M", type: "League Match", date: "Sep 02, 2026", details: "Premium inter-university 9-a-side main football league." },
+        { title: "INTRA FUTSAL", type: "League Match", date: "Oct 20, 2026", details: "The ultimate futsal competition for all MU students." },
+        { title: "UPL", type: "Domestic Tournament", date: "Nov 15, 2026", details: "The grand cricket tournament under international standard rules." },
+        { title: "MPL-15", type: "Tournament", date: "Jan 20, 2027", details: "Inter-university level grand cricket event. Full squad registration required." },
     ];
-
-    const clubEvents =
-        dbEvents.length >= 6
-            ? dbEvents
-            : [
-                  {
-                      title: "INDOOR GAMES SEASON-15",
-                      type: "Indoor Tournament",
-                      date: "July 5, 2026",
-                      details:
-                          "Annual ultimate indoor showdown — Chess, Carrom, Badminton, Table Tennis & more at MU Lounge.",
-                  },
-                  {
-                      title: "INTRA-MUSC FUTSAL",
-                      type: "Indoor Tournament",
-                      date: "August 15, 2026",
-                      details:
-                          "Strategic futsal tournament for MUSC members. Team-based knockout format.",
-                  },
-                  {
-                      title: "LEAGUE M",
-                      type: "League Match",
-                      date: "Sep 02, 2026",
-                      details:
-                          "Premium inter-university 9-a-side main football league.",
-                  },
-                  {
-                      title: "INTRA FUTSAL",
-                      type: "League Match",
-                      date: "Oct 20, 2026",
-                      details:
-                          "The ultimate futsal competition for all MU students.",
-                  },
-                  {
-                      title: "UPL",
-                      type: "Domestic Tournament",
-                      date: "Nov 15, 2026",
-                      details:
-                          "The grand cricket tournament under international standard rules.",
-                  },
-                  {
-                      title: "MPL-15",
-                      type: "Tournament",
-                      date: "Jan 20, 2027",
-                      details:
-                          "Inter-university level grand cricket event. Full squad registration required.",
-                  },
-              ];
 
     const galleryImages = [
         { src: "https://imgur.com/WA9AgTj.jpg", label: "MPL Champions 2026" },
         { src: "https://imgur.com/jq26MPc.jpg", label: "BBQ Night 2026" },
-        {
-            src: "https://imgur.com/Ce6pAoN.jpg",
-            label: "Committee Handover 2024-25",
-        },
-        {
-            src: "https://imgur.com/v3jndUb.jpg",
-            label: "Farewell MR.President 24-25",
-        },
+        { src: "https://imgur.com/Ce6pAoN.jpg", label: "Committee Handover 2024-25" },
+        { src: "https://imgur.com/v3jndUb.jpg", label: "Farewell MR.President 24-25" },
         { src: "https://imgur.com/vR6QBef.jpg", label: "Arrival of MR.15" },
-        {
-            src: "https://imgur.com/UJwcCaC.jpg",
-            label: "League M Champions 2025",
-        },
+        { src: "https://imgur.com/UJwcCaC.jpg", label: "League M Champions 2025" },
     ];
 
-    const eventTypes = [
-        "All",
-        ...Array.from(new Set(clubEvents.map((e) => e.type || "Tournament"))),
-    ];
-    const filteredEvents =
-        activeFilter === "All"
-            ? clubEvents
-            : clubEvents.filter(
-                  (e) => (e.type || "Tournament") === activeFilter,
-              );
+    const eventTypes = ['All', ...Array.from(new Set(clubEvents.map(e => e.type || 'Tournament')))];
+    const filteredEvents = activeFilter === 'All' ? clubEvents : clubEvents.filter(e => (e.type || 'Tournament') === activeFilter);
 
     const roleColors = {
-        PRESIDENT: "from-amber-500 to-amber-700",
-        "GENERAL SECRETARY": "from-blue-600 to-blue-800",
-        "ORGANISING SECRETARY": "from-indigo-500 to-indigo-700",
-        "THE GREAT TREASURER": "from-emerald-500 to-emerald-700",
-        "EVENT COORDINATOR": "from-purple-500 to-purple-700",
-        "OFFICE SECRETARY": "from-rose-500 to-rose-700",
-        "PRESS SECRETARY": "from-cyan-500 to-cyan-700",
-        "CHIEF PHOTOGRAPHER": "from-orange-500 to-orange-700",
-        "ESPORTS COORDINATOR": "from-violet-500 to-violet-700",
-        "PUBLIC RELATIONS SECRETARY": "from-pink-500 to-pink-700",
-        "LOGISTICS SECRETARY": "from-teal-500 to-teal-700",
-        "EXECUTIVE FOR DESIGN": "from-fuchsia-500 to-fuchsia-700",
-        "VOLUNTEER COORDINATOR": "from-lime-500 to-lime-700",
-        "Executive Member": "from-slate-500 to-slate-700",
+        'PRESIDENT': 'from-amber-500 to-amber-700',
+        'GENERAL SECRETARY': 'from-blue-600 to-blue-800',
+        'ORGANISING SECRETARY': 'from-indigo-500 to-indigo-700',
+        'THE GREAT TREASURER': 'from-emerald-500 to-emerald-700',
+        'EVENT COORDINATOR': 'from-purple-500 to-purple-700',
+        'OFFICE SECRETARY': 'from-rose-500 to-rose-700',
+        'PRESS SECRETARY': 'from-cyan-500 to-cyan-700',
+        'CHIEF PHOTOGRAPHER': 'from-orange-500 to-orange-700',
+        'Executive Member': 'from-slate-500 to-slate-700',
     };
 
     const d = darkMode;
 
-    if (showAdminLogin && !isAdmin)
-        return <AdminLogin dark={d} onLogin={() => setIsAdmin(true)} />;
-    if (isAdmin)
-        return (
-            <AdminPanel
-                dark={d}
-                onLogout={() => {
-                    setIsAdmin(false);
-                    setShowAdminLogin(false);
-                    window.location.hash = "";
-                }}
-            />
-        );
+    if (showAdminLogin && !isAdmin) return <AdminLogin dark={d} onLogin={() => setIsAdmin(true)} />;
+    if (isAdmin) return <AdminPanel dark={d} onLogout={() => { setIsAdmin(false); setShowAdminLogin(false); window.location.hash = ''; }} />;
 
     const navItems = [
-        { key: "home", label: "Home" },
-        { key: "about", label: "About" },
-        { key: "committee", label: "Executive Panel" },
-        { key: "events", label: "Tournaments" },
-        { key: "news", label: "News" },
-        { key: "gallery", label: "Match Gallery" },
+        { key: 'home', label: 'Home' },
+        { key: 'about', label: 'About' },
+        { key: 'committee', label: 'Executive Panel' },
+        { key: 'events', label: 'Tournaments' },
+        { key: 'news', label: 'News' },
+        { key: 'gallery', label: 'Match Gallery' },
     ];
 
     return (
         <>
-            <style>{`
+        <style>{`
             @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Bebas+Neue&display=swap');
             * { box-sizing: border-box; }
             body { font-family: 'Inter', sans-serif; margin: 0; }
-            @keyframes fadeInUp  { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
-            @keyframes slideUp   { from { opacity:0; transform:translateY(40px); } to { opacity:1; transform:translateY(0); } }
-            @keyframes pulse-glow { 0%,100% { box-shadow:0 0 0 0 rgba(245,158,11,0); } 50% { box-shadow:0 0 20px 4px rgba(245,158,11,.25); } }
-            @keyframes float     { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-8px); } }
-            @keyframes shimmer   { 0% { background-position:-200% center; } 100% { background-position:200% center; } }
+            @keyframes fadeInUp { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+            @keyframes slideUp  { from { opacity:0; transform:translateY(40px); } to { opacity:1; transform:translateY(0); } }
+            @keyframes pulse-glow { 0%,100% { box-shadow:0 0 0 0 rgba(245,158,11,0); } 50% { box-shadow:0 0 24px 6px rgba(245,158,11,.3); } }
+            @keyframes float  { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-8px); } }
+            @keyframes shimmer { 0% { background-position:-200% center; } 100% { background-position:200% center; } }
             @keyframes spin-slow { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
-            @keyframes spin      { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+            @keyframes spin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+            @keyframes softGlow { 0%,100% { opacity:0.5; } 50% { opacity:1; } }
             .animate-fade-in-up  { animation:fadeInUp .6s ease both; }
             .animate-slide-up    { animation:slideUp  .4s ease both; }
-            .animate-float       { animation:float 3s ease-in-out infinite; }
-            .animate-pulse-glow  { animation:pulse-glow 2s ease-in-out infinite; }
+            .animate-float       { animation:float    3s ease-in-out infinite; }
+            .animate-pulse-glow  { animation:pulse-glow 2.2s ease-in-out infinite; }
             .animate-spin-slow   { animation:spin-slow 12s linear infinite; }
             .animate-spin        { animation:spin .8s linear infinite; }
-            .hero-gradient       { background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 45%,#0f172a 100%); }
-            .hero-gradient-dark  { background:linear-gradient(135deg,#020617 0%,#0f172a 50%,#020617 100%); }
+            .hero-gradient      { background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 45%,#0f172a 100%); }
+            .hero-gradient-dark { background:linear-gradient(135deg,#020617 0%,#0f172a 50%,#020617 100%); }
             .gold-shimmer { background:linear-gradient(90deg,#f59e0b,#fbbf24,#f59e0b); background-size:200% auto; -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation:shimmer 3s linear infinite; }
             .glass-card { backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); }
-            .stat-card  { background:var(--card-bg,#fff); animation:fadeInUp .6s ease both; }
-            .nav-link   { position:relative; padding-bottom:2px; }
+            .stat-card { background:var(--card-bg,#fff); animation:fadeInUp .6s ease both; }
+            .nav-link { position:relative; padding-bottom:2px; }
             .nav-link::after { content:''; position:absolute; left:0; bottom:-2px; width:0; height:2px; background:#f59e0b; transition:width .25s ease; border-radius:2px; }
             .nav-link:hover::after,.nav-link.active::after { width:100%; }
             .sport-card:hover .sport-icon { animation:float 1.5s ease-in-out infinite; }
@@ -4785,1058 +2681,438 @@ function MUSportsClubApp() {
             ::-webkit-scrollbar-thumb { background:#334155; border-radius:3px; }
             .membership-benefit:hover .benefit-icon { transform:scale(1.15) rotate(-5deg); }
             .benefit-icon { transition:transform .3s ease; }
+            .logo-ring { transition: box-shadow 0.3s ease, transform 0.3s ease; }
+            .logo-ring:hover { transform: scale(1.06); }
+            .brand-divider { width: 1px; background: linear-gradient(to bottom, transparent, rgba(148,163,184,0.3), transparent); }
         `}</style>
-            <div
-                className={`min-h-screen font-sans antialiased transition-colors duration-300 ${d ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-800"}`}
-            >
-                {/* NAV */}
-                <nav
-                    className={`shadow-2xl sticky top-0 z-50 border-b transition-colors duration-300 ${d ? "bg-slate-900/95 border-slate-800" : "bg-slate-950/95 border-amber-500/20"}`}
-                    style={{ backdropFilter: "blur(20px)" }}
-                >
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="flex justify-between h-20 items-center">
-                            <div
-                                className="flex items-center space-x-2 md:space-x-3 cursor-pointer group min-w-max shrink-0"
-                                onClick={() => goTo("home")}
-                            >
-<img src="https://imgur.com/RBtBKlX.jpg" alt="Club Logo" className="w-12 h-12 md:w-14 md:h-14 object-contain shrink-0" style={{ mixBlendMode: 'screen' }} />                                <span className="text-sm md:text-lg font-black tracking-widest text-white leading-none">
-                                    MU SPORTS CLUB
-                                </span>
+
+        <div className={`min-h-screen font-sans antialiased transition-colors duration-300 ${d ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
+
+            {/* ── PREMIUM HEADER ── */}
+            <nav className={`shadow-2xl sticky top-0 z-50 border-b transition-colors duration-300 ${d ? 'bg-slate-900/95 border-slate-800' : 'bg-slate-950/95 border-amber-500/20'}`} style={{ backdropFilter: 'blur(20px)' }}>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex justify-between h-20 items-center gap-3">
+
+                        {/* Left — Club Brand */}
+                        <div className="flex items-center gap-3 cursor-pointer group min-w-0 shrink-0" onClick={() => goTo('home')}>
+                            <div className="logo-ring w-11 h-11 rounded-full overflow-hidden shrink-0 ring-2 ring-amber-400/40 shadow-lg shadow-amber-500/10">
+                                <img src="https://imgur.com/RBtBKlX.jpg" alt="Club Logo" className="w-full h-full object-cover" />
                             </div>
-                            <div className="hidden lg:flex items-center space-x-6 text-sm font-semibold text-gray-300">
-                                {navItems.map((item) => (
-                                    <button
-                                        key={item.key}
-                                        onClick={() => goTo(item.key)}
-                                        className={`nav-link transition ${currentTab === item.key ? "text-amber-500 active" : "hover:text-white"}`}
-                                    >
-                                        {item.label}
-                                    </button>
-                                ))}
-                            </div>
-                            <div className="flex items-center gap-3 shrink-0">
-                                <button
-                                    onClick={() => setDarkMode(!d)}
-                                    className="text-amber-400 text-lg hover:scale-110 transition-transform"
-                                >
-                                    {d ? "☀️" : "🌙"}
-                                </button>
-                                <button
-                                    onClick={() => goTo("register")}
-                                    className="hidden sm:inline-block bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2 md:px-5 md:py-2.5 rounded-lg text-xs md:text-sm uppercase tracking-wider transition shadow-lg"
-                                >
-                                    Register Now
-                                </button>
-                               <img src="https://imgur.com/SGXqF5C.jpg" alt="MU Logo" className="w-12 h-12 md:w-14 md:h-14 object-contain shrink-0" style={{ mixBlendMode: 'screen' }} />
-                                <button
-                                    onClick={() => setIsMenuOpen(!isMenuOpen)}
-                                    className="lg:hidden text-white p-2"
-                                >
-                                    <svg
-                                        className="h-7 w-7"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-                                        {isMenuOpen ? (
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth="2.5"
-                                                d="M6 18L18 6M6 6l12 12"
-                                            />
-                                        ) : (
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth="2.5"
-                                                d="M4 6h16M4 12h16M4 18h16"
-                                            />
-                                        )}
-                                    </svg>
-                                </button>
+                            <div className="min-w-0 hidden xs:block">
+                                <span className="text-sm md:text-lg font-black tracking-widest block text-white leading-none whitespace-nowrap">MU SPORTS CLUB</span>
+                                <span className="text-[8px] md:text-[9px] tracking-[.2em] font-bold uppercase text-amber-400/90 block mt-0.5 whitespace-nowrap">Metropolitan University · Sylhet</span>
                             </div>
                         </div>
-                    </div>
-                    {isMenuOpen && (
-                        <div
-                            className="lg:hidden bg-slate-900/98 border-t border-slate-800 px-4 pt-3 pb-5 space-y-1 text-base font-semibold text-white"
-                            style={{ backdropFilter: "blur(20px)" }}
-                        >
-                            {navItems.map((item) => (
-                                <button
-                                    key={item.key}
-                                    onClick={() => goTo(item.key)}
-                                    className={`block w-full text-left py-2.5 px-3 rounded-lg transition-colors ${currentTab === item.key ? "text-amber-400 bg-amber-400/10" : "hover:text-amber-400 hover:bg-white/5"}`}
-                                >
+
+                        {/* Center — Nav Links (desktop) */}
+                        <div className="hidden lg:flex items-center gap-6 text-[13px] font-semibold text-gray-300 flex-1 justify-center">
+                            {navItems.map(item => (
+                                <button key={item.key} onClick={() => goTo(item.key)}
+                                    className={`nav-link transition ${currentTab === item.key ? 'text-amber-400 active' : 'hover:text-white'}`}>
                                     {item.label}
                                 </button>
                             ))}
-                            <button
-                                onClick={() => goTo("register")}
-                                className="block w-full text-center bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black py-3 rounded-xl mt-3 shadow-lg"
-                            >
-                                Register Now 🚀
-                            </button>
                         </div>
-                    )}
-                </nav>
 
-                <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                        {/* Right — Actions + MU Logo */}
+                        <div className="flex items-center gap-3 shrink-0">
+                            <button onClick={() => setDarkMode(!d)} className="text-amber-400 text-base hover:scale-110 transition-transform">
+                                {d ? '☀️' : '🌙'}
+                            </button>
+                            <button onClick={() => goTo('register')} className="hidden sm:inline-flex items-center bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black px-4 py-2 md:px-5 md:py-2.5 rounded-xl text-[10px] md:text-xs uppercase tracking-wider transition shadow-lg shadow-amber-500/20 animate-pulse-glow">
+                                Register Now
+                            </button>
 
-                    {currentTab === "home" && (
-                        <div className="space-y-20">
+                            <div className="brand-divider h-9 hidden sm:block"></div>
 
-                            <div
-                                className={`relative rounded-3xl overflow-hidden text-center text-white py-20 md:py-28 px-6 ${d ? "hero-gradient-dark" : "hero-gradient"}`}
-                            >
-                                <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none animate-spin-slow"></div>
-                                <div className="absolute bottom-0 left-0 w-80 h-80 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
-                                <div className="relative z-10 space-y-6">
-                                    <span className="inline-block bg-gradient-to-r from-red-600/20 via-blue-700/20 to-cyan-500/20 border border-red-400/40 text-white text-[10px] font-black uppercase tracking-[.25em] px-5 py-2 rounded-full backdrop-blur-2xl">
-                                        🏆 Official Sports Arena · Metropolitan
-                                        University
+                            <div className="hidden sm:flex items-center gap-2.5">
+                                <div className="flex flex-col items-end leading-none">
+                                    <span className="text-[8px] md:text-[9px] tracking-[.15em] font-black uppercase whitespace-nowrap">
+                                        <span className="text-red-500">METROPOLITAN</span> <span className="text-white">UNIVERSITY</span>
                                     </span>
-                                    <h1
-                                        className="text-5xl md:text-7xl font-black tracking-tight leading-none uppercase"
-                                        style={{
-                                            fontFamily:
-                                                "'Bebas Neue',sans-serif",
-                                        }}
-                                    >
-                                        <span className="block text-white">
-                                            Born To Rule
-                                        </span>
-                                        <span className="block gold-shimmer">
-                                            Over The Game
-                                        </span>
-                                    </h1>
-                                    <p className="text-blue-100/70 text-base md:text-lg max-w-2xl mx-auto font-medium leading-relaxed">
-                                        <span className="block text-white font-black">
-                                            Welcome to the Royal Club
-                                        </span>
-                                        We cultivate elite sportsmanship,
-                                        celebrate strategic campus victories,
-                                        and manage athletic leagues with honour
-                                        at Metropolitan University, Sylhet.
-                                    </p>
-                                    <div className="flex flex-wrap justify-center gap-4 pt-4">
-                                        <button
-                                            onClick={() => goTo("events")}
-                                            className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black px-8 py-4 rounded-2xl text-[11px] uppercase tracking-wider transition-all transform hover:scale-105 shadow-2xl shadow-amber-500/30"
-                                        >
-                                            Explore Tournaments 🏆
-                                        </button>
-                                        <button
-                                            onClick={() => goTo("register")}
-                                            className="glass-card hover:bg-white/10 text-white font-bold px-7 py-4 rounded-2xl text-[11px] uppercase tracking-wider transition-all hover:scale-105"
-                                        >
-                                            Register Now →
-                                        </button>
-                                        <button
-                                            onClick={() => goTo("committee")}
-                                            className="glass-card hover:bg-white/10 text-white font-bold px-7 py-4 rounded-2xl text-[11px] uppercase tracking-wider transition-all hover:scale-105"
-                                        >
-                                            Executive Board 👥
-                                        </button>
-                                    </div>
+                                    <span className="text-[7px] md:text-[8px] tracking-[.25em] text-slate-400 font-semibold mt-0.5">SYLHET</span>
+                                </div>
+                                <div className="logo-ring w-11 h-11 rounded-full overflow-hidden shrink-0 ring-2 ring-slate-600/50 shadow-md bg-white">
+                                    <img src="https://imgur.com/SGXqF5C.jpg" alt="MU Logo" className="w-full h-full object-cover" />
                                 </div>
                             </div>
 
-                            {/* Stats */}
-                            <div
-                                ref={statsRef}
-                                className="grid grid-cols-2 md:grid-cols-4 gap-4"
-                            >
-                                <StatCard
-                                    count={350}
-                                    suffix="+"
-                                    label="Athletes Enrolled"
-                                    icon="🏃‍♂️"
-                                    dark={d}
-                                    delay={0}
-                                    trigger={statsInView}
-                                />
-                                <StatCard
-                                    count={6}
-                                    suffix="+"
-                                    label="Active Events"
-                                    icon="🔥"
-                                    dark={d}
-                                    delay={100}
-                                    trigger={statsInView}
-                                />
-                                <StatCard
-                                    count={16}
-                                    suffix=""
-                                    label="Panel Members"
-                                    icon="👑"
-                                    dark={d}
-                                    delay={200}
-                                    trigger={statsInView}
-                                />
-                                <StatCard
-                                    count={99}
-                                    suffix="%"
-                                    label="Fair Play"
-                                    icon="🛡️"
-                                    dark={d}
-                                    delay={300}
-                                    trigger={statsInView}
-                                />
-                            </div>
-
-                            {/* Sports categories */}
-                            <div className="space-y-6">
-                                <div className="text-center">
-                                    <p
-                                        className={`text-xs font-black tracking-widest uppercase mb-1 ${d ? "text-blue-400" : "text-blue-600"}`}
-                                    >
-                                        What We Play
-                                    </p>
-                                    <h2
-                                        className={`text-3xl font-black tracking-tight uppercase ${d ? "text-white" : "text-blue-950"}`}
-                                    >
-                                        Sports Categories
-                                    </h2>
-                                </div>
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-                                    {sportsCategories.map((sp, i) => (
-                                        <div
-                                            key={i}
-                                            className={`sport-card p-6 rounded-2xl border group cursor-pointer animate-fade-in-up transition-all duration-300 hover:border-amber-400/50 hover:shadow-xl ${d ? "bg-slate-900 border-slate-800 hover:bg-slate-800" : "bg-white border-blue-100 hover:bg-blue-50/50"}`}
-                                            style={{
-                                                animationDelay: `${i * 80}ms`,
-                                            }}
-                                        >
-                                            <div className="sport-icon text-4xl mb-3 block w-fit">
-                                                {sp.icon}
-                                            </div>
-                                            <h3
-                                                className={`font-black text-base ${d ? "text-white" : "text-blue-950"}`}
-                                            >
-                                                {sp.name}
-                                            </h3>
-                                            <p
-                                                className={`text-xs mt-1 leading-relaxed ${d ? "text-slate-400" : "text-slate-500"}`}
-                                            >
-                                                {sp.desc}
-                                            </p>
-                                            <span
-                                                className={`inline-block mt-3 text-[9px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full ${d ? "bg-blue-950 text-blue-400 border border-blue-900" : "bg-blue-50 text-blue-700 border border-blue-200"}`}
-                                            >
-                                                {sp.tag}
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Upcoming events preview */}
-                            <div className="space-y-6">
-                                <div className="flex justify-between items-end">
-                                    <div>
-                                        <p
-                                            className={`text-xs font-black tracking-widest uppercase mb-1 ${d ? "text-blue-400" : "text-blue-600"}`}
-                                        >
-                                            On The Calendar
-                                        </p>
-                                        <h2
-                                            className={`text-3xl font-black tracking-tight uppercase ${d ? "text-white" : "text-blue-950"}`}
-                                        >
-                                            Upcoming Events
-                                        </h2>
-                                    </div>
-                                    <button
-                                        onClick={() => goTo("events")}
-                                        className={`text-xs font-black uppercase tracking-wider px-4 py-2 rounded-xl border transition-colors ${d ? "border-slate-700 text-slate-300 hover:border-amber-400 hover:text-amber-400" : "border-blue-200 text-blue-700 hover:border-blue-600"}`}
-                                    >
-                                        View All →
-                                    </button>
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                                    {clubEvents.slice(0, 3).map((ev, i) => (
-                                        <div
-                                            key={i}
-                                            className={`event-card rounded-2xl border p-6 ${d ? "bg-slate-900 border-slate-800" : "bg-white border-blue-100 shadow-sm"}`}
-                                        >
-                                            <span
-                                                className={`text-[9px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md ${ev.type?.includes("Indoor") ? (d ? "bg-blue-950 text-blue-400" : "bg-blue-50 text-blue-700") : d ? "bg-emerald-950 text-emerald-400" : "bg-emerald-50 text-emerald-700"}`}
-                                            >
-                                                {ev.type}
-                                            </span>
-                                            <h3
-                                                className={`font-black text-base mt-3 ${d ? "text-white" : "text-blue-950"}`}
-                                            >
-                                                {ev.title}
-                                            </h3>
-                                            <p
-                                                className={`text-xs mt-2 leading-relaxed line-clamp-2 ${d ? "text-slate-400" : "text-slate-500"}`}
-                                            >
-                                                {ev.details}
-                                            </p>
-                                            {TEAM_TOURNAMENTS.includes(
-                                                ev.title,
-                                            ) && (
-                                                <p
-                                                    className={`text-[9px] font-black uppercase mt-2 ${d ? "text-amber-400" : "text-amber-600"}`}
-                                                >
-                                                    👥 Team Registration
-                                                </p>
-                                            )}
-                                            <div
-                                                className={`mt-5 pt-4 border-t flex justify-between items-center ${d ? "border-slate-800" : "border-blue-50"}`}
-                                            >
-                                                <span
-                                                    className={`text-xs font-bold ${d ? "text-slate-300" : "text-slate-600"}`}
-                                                >
-                                                    📅{" "}
-                                                    {ev.date || ev.event_date}
-                                                </span>
-                                                <button
-                                                    onClick={() =>
-                                                        goTo("register")
-                                                    }
-                                                    className="text-[10px] font-black bg-amber-500 hover:bg-amber-400 text-slate-950 px-3 py-1.5 rounded-lg transition-colors"
-                                                >
-                                                    Join →
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Membership benefits */}
-                            <div
-                                className={`rounded-3xl p-8 md:p-12 border ${d ? "bg-slate-900 border-slate-800" : "bg-gradient-to-br from-blue-950 to-indigo-950"}`}
-                            >
-                                <div className="text-center mb-10">
-                                    <p className="text-xs font-black tracking-widest uppercase mb-2 text-amber-400">
-                                        Why Join Us
-                                    </p>
-                                    <h2 className="text-3xl font-black tracking-tight uppercase text-white">
-                                        Membership Benefits
-                                    </h2>
-                                </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                                    {[
-                                        {
-                                            icon: "🏆",
-                                            title: "Exclusive Tournaments",
-                                            desc: "Priority access to all MUSC events and inter-university championships.",
-                                        },
-                                        {
-                                            icon: "👕",
-                                            title: "Official Kit Access",
-                                            desc: "Official merchandise at member rates.",
-                                        },
-                                        {
-                                            icon: "🤝",
-                                            title: "Networking Hub",
-                                            desc: "Connect with 350+ athletes across all departments at MU.",
-                                        },
-                                        {
-                                            icon: "📊",
-                                            title: "Skill Development",
-                                            desc: "Coaching sessions, workshops, and strategic sports training events.",
-                                        },
-                                        {
-                                            icon: "📸",
-                                            title: "Media Coverage",
-                                            desc: "Professional photography and press coverage of all your matches.",
-                                        },
-                                        {
-                                            icon: "🎖️",
-                                            title: "Recognition & Awards",
-                                            desc: "Annual MVP titles, trophies, and certificates for top performers.",
-                                        },
-                                    ].map((b, i) => (
-                                        <div
-                                            key={i}
-                                            className="membership-benefit flex gap-4 items-start animate-fade-in-up"
-                                            style={{
-                                                animationDelay: `${i * 80}ms`,
-                                            }}
-                                        >
-                                            <span className="benefit-icon text-3xl flex-shrink-0">
-                                                {b.icon}
-                                            </span>
-                                            <div>
-                                                <h4 className="font-black text-white text-sm">
-                                                    {b.title}
-                                                </h4>
-                                                <p className="text-blue-200/70 text-xs mt-1 leading-relaxed">
-                                                    {b.desc}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Testimonials */}
-                            <div className="space-y-4">
-                                <div className="text-center">
-                                    <p
-                                        className={`text-xs font-black tracking-widest uppercase mb-1 ${d ? "text-blue-400" : "text-blue-600"}`}
-                                    >
-                                        What Members Say
-                                    </p>
-                                    <h2
-                                        className={`text-3xl font-black tracking-tight uppercase ${d ? "text-white" : "text-blue-950"}`}
-                                    >
-                                        Member Reviews!
-                                    </h2>
-                                </div>
-                                <TestimonialCarousel dark={d} />
-                            </div>
-
-                            {/* Gallery */}
-                            <div className="space-y-6">
-                                <div className="text-center">
-                                    <p
-                                        className={`text-xs font-black tracking-widest uppercase mb-1 ${d ? "text-blue-400" : "text-blue-600"}`}
-                                    >
-                                        Legacy Moments
-                                    </p>
-                                    <h2
-                                        className={`text-3xl font-black tracking-tight uppercase ${d ? "text-white" : "text-blue-950"}`}
-                                    >
-                                        Club Gallery
-                                    </h2>
-                                </div>
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-                                    {galleryImages.map((img, i) => (
-                                        <div
-                                            key={i}
-                                            className={`gallery-item relative rounded-2xl overflow-hidden cursor-pointer border ${i === 0 || i === 3 ? "md:col-span-1 h-56" : "h-44"} ${d ? "border-slate-800" : "border-blue-100"}`}
-                                            onClick={() => setLightboxImg(img)}
-                                        >
-                                            <img
-                                                src={img.src}
-                                                alt={img.label}
-                                                className="w-full h-full object-cover"
-                                            />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-3">
-                                                <span className="text-white text-[10px] font-black uppercase tracking-wider">
-                                                    {img.label}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* CTA */}
-                            <div
-                                className={`rounded-3xl text-center py-14 px-6 border ${d ? "bg-slate-900 border-slate-800" : "bg-blue-950 border-blue-900"}`}
-                            >
-                                <h2 className="text-3xl md:text-4xl font-black text-white uppercase tracking-tight mb-3">
-                                    Ready to Compete?
-                                </h2>
-                                <p className="text-blue-200/70 text-sm mb-8 max-w-lg mx-auto">
-                                    Join 350+ athletes at MU's most prestigious
-                                    sports club. Register for an active
-                                    tournament slot today.
-                                </p>
-                                <button
-                                    onClick={() => goTo("register")}
-                                    className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black px-10 py-4 rounded-2xl text-xs uppercase tracking-widest transition-all transform hover:scale-105 shadow-2xl shadow-amber-500/30"
-                                >
-                                    Register Now 🚀
-                                </button>
-                            </div>
+                            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden text-white p-2 -mr-2">
+                                <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    {isMenuOpen
+                                        ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                                        : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />}
+                                </svg>
+                            </button>
                         </div>
-                    )}
+                    </div>
+                </div>
 
-                    {/* ABOUT */}
-                    {currentTab === "about" && (
-                        <div className="max-w-4xl mx-auto space-y-12">
-                            <div
-                                className={`p-8 md:p-10 rounded-3xl border shadow-md space-y-6 animate-fade-in-up ${d ? "bg-slate-900 border-slate-800" : "bg-white border-blue-100"}`}
-                            >
-                                <div className="border-l-4 border-amber-500 pl-5">
-                                    <h2
-                                        className={`text-2xl font-black uppercase ${d ? "text-white" : "text-blue-950"}`}
-                                    >
-                                        MU Sports Legacy
-                                    </h2>
-                                    <p className="text-xs text-amber-500 uppercase tracking-widest font-black mt-1">
-                                        Our Story · Connect · Track Us
-                                    </p>
-                                </div>
-                                <p
-                                    className={`text-sm leading-relaxed font-medium ${d ? "text-slate-300" : "text-slate-600"}`}
-                                >
-                                    MU Sports Club is the central athletic
-                                    authority of Metropolitan University,
-                                    Sylhet. We build teams that challenge
-                                    boundaries, organize competitive
-                                    championships, and maintain active external
-                                    communication for regional athletic events.
-                                    Since our founding, we've grown into a
-                                    community of over 350 athletes across all
-                                    faculties — united by a love for competition
-                                    and fair play.
-                                </p>
-                                <div className="flex items-center gap-4 pt-2">
-                                    <a
-                                        href="https://www.facebook.com/MetropolitanUniversity.Sports.Club"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-md hover:scale-110 transition-all border ${d ? "bg-slate-800 border-slate-700" : "bg-slate-50 border-blue-100 hover:border-blue-400"}`}
-                                    >
-                                        <img
-                                            src="https://cdn-icons-png.flaticon.com/512/733/733547.png"
-                                            className="w-6 h-6 object-contain"
-                                            alt="Facebook"
-                                        />
-                                    </a>
-                                    <a
-                                        href="https://www.instagram.com/sportsclubmu/"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-md hover:scale-110 transition-all border ${d ? "bg-slate-800 border-slate-700" : "bg-slate-50 border-blue-100 hover:border-pink-400"}`}
-                                    >
-                                        <img
-                                            src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
-                                            className="w-6 h-6 object-contain"
-                                            alt="Instagram"
-                                        />
-                                    </a>
-                                    <a
-                                        href="mailto:sports.club@mu.edu"
-                                        className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-md hover:scale-110 transition-all border text-xl ${d ? "bg-slate-800 border-slate-700" : "bg-slate-50 border-blue-100 hover:border-amber-400"}`}
-                                    >
-                                        📧
-                                    </a>
-                                </div>
-                            </div>
-                            <div className="space-y-4">
-                                <h3
-                                    className={`text-xl font-black tracking-tight ${d ? "text-white" : "text-blue-950"}`}
-                                >
-                                    🏆 Legacy Moments
-                                </h3>
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                    {galleryImages.slice(0, 3).map((img, i) => (
-                                        <div
-                                            key={i}
-                                            className={`h-44 rounded-2xl overflow-hidden relative border cursor-pointer group ${d ? "border-slate-700" : "border-blue-100"}`}
-                                            onClick={() => setLightboxImg(img)}
-                                        >
-                                            <img
-                                                src={img.src}
-                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                                                alt={img.label}
-                                            />
-                                            <span className="absolute bottom-2 left-2 bg-slate-950/80 text-white text-[9px] px-2 py-0.5 rounded font-black uppercase tracking-wider">
-                                                {img.label}
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                            <div
-                                className={`p-8 rounded-3xl border shadow-md animate-fade-in-up ${d ? "bg-slate-900 border-slate-800" : "bg-blue-50/60 border-blue-100"}`}
-                            >
-                                <h3
-                                    className={`text-xl font-black mb-2 ${d ? "text-amber-400" : "text-blue-950"}`}
-                                >
-                                    🤝 Want to Collaborate?
-                                </h3>
-                                <p
-                                    className={`text-xs mb-5 font-medium ${d ? "text-slate-300" : "text-slate-600"}`}
-                                >
-                                    Partner with MU Sports Club for regional
-                                    athletic events, sponsorships, or friendly
-                                    league fixtures.
-                                </p>
-                                <div className="space-y-4">
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <input
-                                            type="text"
-                                            placeholder="Name"
-                                            value={collabForm.name}
-                                            onChange={(e) =>
-                                                setCollabForm({
-                                                    ...collabForm,
-                                                    name: e.target.value,
-                                                })
-                                            }
-                                            className={`p-3.5 border rounded-xl text-sm outline-none transition-all ${d ? "bg-slate-800 border-slate-700 text-white focus:border-amber-500" : "bg-white border-blue-100 text-slate-900 focus:border-blue-500"}`}
-                                        />
-                                        <input
-                                            type="text"
-                                            placeholder="Organization"
-                                            value={collabForm.org}
-                                            onChange={(e) =>
-                                                setCollabForm({
-                                                    ...collabForm,
-                                                    org: e.target.value,
-                                                })
-                                            }
-                                            className={`p-3.5 border rounded-xl text-sm outline-none transition-all ${d ? "bg-slate-800 border-slate-700 text-white focus:border-amber-500" : "bg-white border-blue-100 text-slate-900 focus:border-blue-500"}`}
-                                        />
-                                    </div>
-                                    <textarea
-                                        placeholder="Describe your collaboration proposal..."
-                                        rows="4"
-                                        value={collabForm.note}
-                                        onChange={(e) =>
-                                            setCollabForm({
-                                                ...collabForm,
-                                                note: e.target.value,
-                                            })
-                                        }
-                                        className={`w-full p-3.5 border rounded-xl text-sm outline-none transition-all resize-none ${d ? "bg-slate-800 border-slate-700 text-white focus:border-amber-500" : "bg-white border-blue-100 text-slate-900 focus:border-blue-500"}`}
-                                    ></textarea>
-                                    <div
-                                        className={`p-4 rounded-xl border border-dashed flex flex-col sm:flex-row justify-between items-center gap-3 ${d ? "bg-slate-950 border-slate-700" : "bg-white border-blue-200"}`}
-                                    >
-                                        <div>
-                                            <span
-                                                className={`text-xs font-black block ${d ? "text-slate-200" : "text-slate-700"}`}
-                                            >
-                                                Attach Proposal / Identity Image
-                                            </span>
-                                            <span className="text-[10px] text-slate-400 block mt-0.5">
-                                                PNG, JPG (Max 5MB)
-                                            </span>
-                                        </div>
-                                        <input
-                                            type="file"
-                                            id="collab-file"
-                                            accept="image/*"
-                                            onChange={handleFileChange}
-                                            className="hidden"
-                                        />
-                                        <label
-                                            htmlFor="collab-file"
-                                            className={`text-[11px] px-5 py-2.5 rounded-xl font-black cursor-pointer transition-colors ${d ? "bg-slate-800 text-amber-400 hover:bg-slate-700" : "bg-blue-950 text-white hover:bg-blue-800"}`}
-                                        >
-                                            {attachedFile
-                                                ? "🔄 Change File"
-                                                : "📁 Choose File"}
-                                        </label>
-                                    </div>
-                                    <button
-                                        onClick={handleSayHello}
-                                        className={`w-full py-3.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all shadow-lg ${d ? "bg-amber-500 text-slate-950 hover:bg-amber-400" : "bg-blue-950 text-white hover:bg-blue-800"}`}
-                                    >
-                                        Send Proposal ✉️
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                {isMenuOpen && (
+                    <div className="lg:hidden bg-slate-900/98 border-t border-slate-800 px-4 pt-3 pb-5 space-y-1 text-base font-semibold text-white" style={{ backdropFilter: 'blur(20px)' }}>
+                        {navItems.map(item => (
+                            <button key={item.key} onClick={() => goTo(item.key)}
+                                className={`block w-full text-left py-2.5 px-3 rounded-lg transition-colors ${currentTab === item.key ? 'text-amber-400 bg-amber-400/10' : 'hover:text-amber-400 hover:bg-white/5'}`}>
+                                {item.label}
+                            </button>
+                        ))}
+                        <button onClick={() => goTo('register')}
+                            className="block w-full text-center bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black py-3 rounded-xl mt-3 shadow-lg">
+                            Register Now 🚀
+                        </button>
+                    </div>
+                )}
+            </nav>
 
-                    {/* COMMITTEE */}
-                    {currentTab === "committee" && (
-                        <div className="space-y-10">
-                            <div className="text-center animate-fade-in-up">
-                                <p
-                                    className={`text-xs font-black tracking-widest uppercase mb-2 ${d ? "text-blue-400" : "text-blue-600"}`}
-                                >
-                                    The ChangeMakers
-                                </p>
-                                <h1
-                                    className={`text-3xl md:text-4xl font-black tracking-tight uppercase ${d ? "text-white" : "text-blue-950"}`}
-                                >
-                                    Executive Steering Committee 👑
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+                {currentTab === 'home' && (
+                    <div className="space-y-20">
+                        <div className={`relative rounded-3xl overflow-hidden text-center text-white py-20 md:py-28 px-6 animate-fade-in-up ${d ? 'hero-gradient-dark' : 'hero-gradient'}`}>
+                            <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none animate-spin-slow"></div>
+                            <div className="absolute bottom-0 left-0 w-80 h-80 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
+                            <div className="relative z-10 space-y-6">
+                                <span className="inline-block bg-gradient-to-r from-red-600/20 via-blue-700/20 to-cyan-500/20 border border-red-400/40 text-white text-[10px] font-black uppercase tracking-[.25em] px-5 py-2 rounded-full backdrop-blur-2xl">🏆 Official Sports Arena · Metropolitan University</span>
+                                <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-none uppercase" style={{ fontFamily: "'Bebas Neue',sans-serif", letterSpacing: '.02em' }}>
+                                    <span className="block text-white">Born To Rule</span>
+                                    <span className="block gold-shimmer">Over The Game</span>
                                 </h1>
-                                <p
-                                    className={`text-xs font-bold tracking-widest uppercase mt-2 ${d ? "text-slate-400" : "text-slate-500"}`}
-                                >
-                                    Official Designation Hierarchy — Session
-                                    2025–26
+                                <p className="text-blue-100/70 text-base md:text-lg max-w-2xl mx-auto font-medium leading-relaxed">
+                                    <span className="block text-white font-black">Welcome to the Royal Club</span>
+                                    We cultivate elite sportsmanship, celebrate strategic campus victories, and manage athletic leagues with honour at Metropolitan University, Sylhet.
                                 </p>
-                            </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                                {committeeList.map((user, idx) => {
-                                    const imgSrc = user.profile_picture?.trim()
-                                        ? user.profile_picture.startsWith(
-                                              "http",
-                                          )
-                                            ? user.profile_picture
-                                            : `/storage/${user.profile_picture}`
-                                        : `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=1E3A8A&color=FFFFFF&bold=true`;
-                                    const grad =
-                                        roleColors[
-                                            user.committee_role?.toUpperCase()
-                                        ] ||
-                                        roleColors[user.committee_role] ||
-                                        "from-slate-500 to-slate-700";
-                                    return (
-                                        <div
-                                            key={user.id}
-                                            className={`committee-card rounded-2xl border overflow-hidden animate-fade-in-up ${d ? "bg-slate-900 border-slate-800" : "bg-white border-blue-100"}`}
-                                            style={{
-                                                animationDelay: `${idx * 60}ms`,
-                                            }}
-                                        >
-                                            <div
-                                                className={`h-1.5 w-full bg-gradient-to-r ${grad}`}
-                                            ></div>
-                                            <div className="p-6 text-center">
-                                                <div className="relative inline-block mb-4">
-                                                    <div
-                                                        className={`w-24 h-24 rounded-2xl overflow-hidden border-2 shadow-lg mx-auto ${d ? "border-slate-700 bg-slate-800" : "border-blue-100 bg-blue-50"}`}
-                                                    >
-                                                        <img
-                                                            src={imgSrc}
-                                                            className="w-full h-full object-cover block"
-                                                            alt=""
-                                                            onError={(e) => {
-                                                                e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=1E3A8A&color=FFFFFF&bold=true`;
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <div
-                                                        className={`absolute -bottom-2 -right-2 w-7 h-7 rounded-full bg-gradient-to-br ${grad} flex items-center justify-center shadow-md`}
-                                                    >
-                                                        <span className="text-white text-[10px] font-black">
-                                                            #
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <h3
-                                                    className={`font-black text-[15px] leading-tight ${d ? "text-white" : "text-blue-950"}`}
-                                                >
-                                                    {user.name}
-                                                </h3>
-                                                <span
-                                                    className={`inline-block mt-2 bg-gradient-to-r ${grad} text-white font-extrabold text-[9px] uppercase tracking-widest px-3 py-1 rounded-full shadow-sm`}
-                                                >
-                                                    {user.committee_role}
-                                                </span>
-                                            </div>
-                                            <div
-                                                className={`px-5 pb-5 border-t text-left text-xs space-y-2 pt-4 ${d ? "border-slate-800" : "border-blue-50"}`}
-                                            >
-                                                <a
-                                                    href={`mailto:${user.email}`}
-                                                    className={`flex items-center gap-2 truncate hover:text-amber-500 transition-colors ${d ? "text-slate-400" : "text-slate-500"}`}
-                                                >
-                                                    <span>📧</span>
-                                                    <span className="truncate font-medium">
-                                                        {user.email}
-                                                    </span>
-                                                </a>
-                                                <p
-                                                    className={`flex items-center gap-2 font-medium ${d ? "text-slate-400" : "text-slate-500"}`}
-                                                >
-                                                    <span>📞</span>
-                                                    <span>
-                                                        {user.phone || "N/A"}
-                                                    </span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
+                                <div className="flex flex-wrap justify-center gap-4 pt-4">
+                                    <button onClick={() => goTo('events')} className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black px-8 py-4 rounded-2xl text-[11px] uppercase tracking-wider transition-all transform hover:scale-105 shadow-2xl shadow-amber-500/30">Explore Tournaments 🏆</button>
+                                    <button onClick={() => goTo('register')} className="glass-card hover:bg-white/10 text-white font-bold px-7 py-4 rounded-2xl text-[11px] uppercase tracking-wider transition-all hover:scale-105">Register Now →</button>
+                                    <button onClick={() => goTo('committee')} className="glass-card hover:bg-white/10 text-white font-bold px-7 py-4 rounded-2xl text-[11px] uppercase tracking-wider transition-all hover:scale-105">Executive Board 👥</button>
+                                </div>
                             </div>
                         </div>
-                    )}
 
-                    {/* EVENTS */}
-                    {currentTab === "events" && (
-                        <div className="space-y-8">
-                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 animate-fade-in-up">
+                        <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <StatCard count={350} suffix="+" label="Athletes Enrolled" icon="🏃‍♂️" dark={d} delay={0} trigger={statsInView} />
+                            <StatCard count={6} suffix="+" label="Active Events" icon="🔥" dark={d} delay={100} trigger={statsInView} />
+                            <StatCard count={11} suffix="" label="Panel Members" icon="👑" dark={d} delay={200} trigger={statsInView} />
+                            <StatCard count={99} suffix="%" label="Fair Play" icon="🛡️" dark={d} delay={300} trigger={statsInView} />
+                        </div>
+
+                        <div className="space-y-6">
+                            <div className="text-center">
+                                <p className={`text-xs font-black tracking-widest uppercase mb-1 ${d ? 'text-blue-400' : 'text-blue-600'}`}>What We Play</p>
+                                <h2 className={`text-3xl font-black tracking-tight uppercase ${d ? 'text-white' : 'text-blue-950'}`}>Sports Categories</h2>
+                            </div>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                                {sportsCategories.map((sp, i) => (
+                                    <div key={i} className={`sport-card p-6 rounded-2xl border group cursor-pointer animate-fade-in-up transition-all duration-300 hover:border-amber-400/50 hover:shadow-xl ${d ? 'bg-slate-900 border-slate-800 hover:bg-slate-800' : 'bg-white border-blue-100 hover:bg-blue-50/50'}`} style={{ animationDelay: `${i * 80}ms` }}>
+                                        <div className="sport-icon text-4xl mb-3 block w-fit">{sp.icon}</div>
+                                        <h3 className={`font-black text-base ${d ? 'text-white' : 'text-blue-950'}`}>{sp.name}</h3>
+                                        <p className={`text-xs mt-1 leading-relaxed ${d ? 'text-slate-400' : 'text-slate-500'}`}>{sp.desc}</p>
+                                        <span className={`inline-block mt-3 text-[9px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full ${d ? 'bg-blue-950 text-blue-400 border border-blue-900' : 'bg-blue-50 text-blue-700 border border-blue-200'}`}>{sp.tag}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="space-y-6">
+                            <div className="flex justify-between items-end">
                                 <div>
-                                    <p
-                                        className={`text-xs font-black tracking-widest uppercase mb-1 ${d ? "text-blue-400" : "text-blue-600"}`}
-                                    >
-                                        Season 2025–27
-                                    </p>
-                                    <h1
-                                        className={`text-2xl md:text-3xl font-black tracking-tight uppercase ${d ? "text-white" : "text-blue-950"}`}
-                                    >
-                                        Events Calendar
-                                    </h1>
+                                    <p className={`text-xs font-black tracking-widest uppercase mb-1 ${d ? 'text-blue-400' : 'text-blue-600'}`}>On The Calendar</p>
+                                    <h2 className={`text-3xl font-black tracking-tight uppercase ${d ? 'text-white' : 'text-blue-950'}`}>Upcoming Events</h2>
                                 </div>
-                                <button
-                                    onClick={() => goTo("register")}
-                                    className={`flex-shrink-0 text-[11px] px-5 py-2.5 rounded-xl font-black uppercase tracking-wider transition-colors shadow-md ${d ? "bg-amber-500 text-slate-950 hover:bg-amber-400" : "bg-blue-950 text-white hover:bg-blue-800"}`}
-                                >
-                                    Book a Slot →
-                                </button>
+                                <button onClick={() => goTo('events')} className={`text-xs font-black uppercase tracking-wider px-4 py-2 rounded-xl border transition-colors ${d ? 'border-slate-700 text-slate-300 hover:border-amber-400 hover:text-amber-400' : 'border-blue-200 text-blue-700 hover:border-blue-600'}`}>View All →</button>
                             </div>
-                            <div className="flex flex-wrap gap-2">
-                                {eventTypes.map((type) => (
-                                    <button
-                                        key={type}
-                                        onClick={() => setActiveFilter(type)}
-                                        className={`text-[10px] font-black uppercase tracking-wider px-4 py-2 rounded-full border transition-all ${activeFilter === type ? (d ? "bg-amber-500 text-slate-950 border-amber-500" : "bg-blue-950 text-white border-blue-950") : d ? "border-slate-700 text-slate-400 hover:border-slate-500" : "border-blue-200 text-slate-500 hover:border-blue-400"}`}
-                                    >
-                                        {type}
-                                    </button>
-                                ))}
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {filteredEvents.map((ev, i) => (
-                                    <div
-                                        key={i}
-                                        className={`event-card rounded-2xl border overflow-hidden animate-fade-in-up ${d ? "bg-slate-900 border-slate-800" : "bg-white border-blue-100 shadow-sm"}`}
-                                        style={{
-                                            animationDelay: `${i * 60}ms`,
-                                        }}
-                                    >
-                                        <div
-                                            className={`h-1 w-full ${ev.type?.includes("Indoor") ? "bg-gradient-to-r from-blue-500 to-blue-700" : "bg-gradient-to-r from-emerald-500 to-emerald-700"}`}
-                                        ></div>
-                                        <div className="p-6">
-                                            <span
-                                                className={`inline-block px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-wider ${ev.type?.includes("Indoor") ? (d ? "bg-blue-950 text-blue-400 border border-blue-900" : "bg-blue-50 text-blue-700 border border-blue-200") : d ? "bg-emerald-950 text-emerald-400 border border-emerald-900" : "bg-emerald-50 text-emerald-700 border border-emerald-200"}`}
-                                            >
-                                                {ev.type || "Tournament"}
-                                            </span>
-                                            <h3
-                                                className={`text-xl font-black mt-3 leading-tight ${d ? "text-white" : "text-blue-950"}`}
-                                            >
-                                                {ev.title}
-                                            </h3>
-                                            <p
-                                                className={`text-xs mt-2 leading-relaxed line-clamp-3 ${d ? "text-slate-400" : "text-slate-500"}`}
-                                            >
-                                                {ev.details}
-                                            </p>
-                                            {ev.title
-                                                ?.toUpperCase()
-                                                .includes("INDOOR") && (
-                                                <div className="mt-3 flex flex-wrap gap-1">
-                                                    {DEFAULT_INDOOR_GAMES.slice(
-                                                        0,
-                                                        6,
-                                                    ).map((g) => (
-                                                        <span
-                                                            key={g.id}
-                                                            className={`text-[9px] px-1.5 py-0.5 rounded font-bold ${d ? "bg-slate-800 text-slate-400" : "bg-slate-100 text-slate-500"}`}
-                                                        >
-                                                            {g.game_icon}{" "}
-                                                            {g.game_name}
-                                                        </span>
-                                                    ))}
-                                                    <span
-                                                        className={`text-[9px] px-1.5 py-0.5 rounded font-bold ${d ? "bg-slate-800 text-slate-400" : "bg-slate-100 text-slate-500"}`}
-                                                    >
-                                                        +more
-                                                    </span>
-                                                </div>
-                                            )}
-                                            {TEAM_TOURNAMENTS.includes(
-                                                ev.title,
-                                            ) && (
-                                                <p
-                                                    className={`text-[9px] font-black uppercase mt-2 ${d ? "text-amber-400" : "text-amber-600"}`}
-                                                >
-                                                    👥 Team Registration
-                                                    Required
-                                                </p>
-                                            )}
-                                            <div
-                                                className={`mt-5 pt-4 border-t flex justify-between items-center ${d ? "border-slate-800" : "border-blue-50"}`}
-                                            >
-                                                <span
-                                                    className={`text-xs font-bold ${d ? "text-slate-300" : "text-slate-700"}`}
-                                                >
-                                                    📅{" "}
-                                                    {ev.date || ev.event_date}
-                                                </span>
-                                                <button
-                                                    onClick={() =>
-                                                        goTo("register")
-                                                    }
-                                                    className="text-[10px] font-black bg-amber-500 hover:bg-amber-400 text-slate-950 px-4 py-2 rounded-xl transition-all hover:scale-105 shadow-sm"
-                                                >
-                                                    {TEAM_TOURNAMENTS.includes(
-                                                        ev.title,
-                                                    )
-                                                        ? "⚽ Team Entry"
-                                                        : "🏅 Join →"}
-                                                </button>
-                                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                                {clubEvents.slice(0, 3).map((ev, i) => (
+                                    <div key={i} className={`event-card rounded-2xl border p-6 ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-blue-100 shadow-sm'}`}>
+                                        <span className={`text-[9px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md ${ev.type?.includes('Indoor') ? (d ? 'bg-blue-950 text-blue-400' : 'bg-blue-50 text-blue-700') : (d ? 'bg-emerald-950 text-emerald-400' : 'bg-emerald-50 text-emerald-700')}`}>{ev.type}</span>
+                                        <h3 className={`font-black text-base mt-3 ${d ? 'text-white' : 'text-blue-950'}`}>{ev.title}</h3>
+                                        <p className={`text-xs mt-2 leading-relaxed line-clamp-2 ${d ? 'text-slate-400' : 'text-slate-500'}`}>{ev.details}</p>
+                                        <div className={`mt-5 pt-4 border-t flex justify-between items-center ${d ? 'border-slate-800' : 'border-blue-50'}`}>
+                                            <span className={`text-xs font-bold ${d ? 'text-slate-300' : 'text-slate-600'}`}>📅 {ev.date || ev.event_date}</span>
+                                            <button onClick={() => goTo('register')} className="text-[10px] font-black bg-amber-500 hover:bg-amber-400 text-slate-950 px-3 py-1.5 rounded-lg transition-colors">Join →</button>
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         </div>
-                    )}
 
-                    {currentTab === "news" && (
-                        <div className="max-w-3xl mx-auto">
-                            <NewsFeed dark={d} />
-                        </div>
-                    )}
-                    {currentTab === "gallery" && (
-                        <MatchGallery dark={d} clubEvents={clubEvents} />
-                    )}
-                    {currentTab === "register" && (
-                        <RegistrationPage
-                            dark={d}
-                            clubEvents={clubEvents}
-                            showToast={showToast}
-                            goTo={goTo}
-                        />
-                    )}
-                </main>
-
-                {/* FOOTER */}
-                <footer
-                    className={`mt-20 border-t ${d ? "bg-slate-900 border-slate-800" : "bg-slate-950 border-amber-500/10"}`}
-                >
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                            <div>
-                                <div className="flex items-center gap-3 mb-4">
-                                    <div className="w-10 h-10 rounded-xl overflow-hidden">
-                                        <img
-                                            src="https://imgur.com/RBtBKlX.jpg"
-                                            alt="logo"
-                                            className="w-full h-full object-cover"
-                                        />
+                        <div className={`rounded-3xl p-8 md:p-12 border ${d ? 'bg-slate-900 border-slate-800' : 'bg-gradient-to-br from-blue-950 to-indigo-950'}`}>
+                            <div className="text-center mb-10">
+                                <p className="text-xs font-black tracking-widest uppercase mb-2 text-amber-400">Why Join Us</p>
+                                <h2 className="text-3xl font-black tracking-tight uppercase text-white">Membership Benefits</h2>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                                {[
+                                    { icon: "🏆", title: "Exclusive Tournaments", desc: "Priority access to all MUSC events and inter-university championships." },
+                                    { icon: "👕", title: "Official Kit Access", desc: "Official merchandise at member rates." },
+                                    { icon: "🤝", title: "Networking Hub", desc: "Connect with 350+ athletes across all departments at MU." },
+                                    { icon: "📊", title: "Skill Development", desc: "Coaching sessions, workshops, and strategic sports training events." },
+                                    { icon: "📸", title: "Media Coverage", desc: "Professional photography and press coverage of all your matches." },
+                                    { icon: "🎖️", title: "Recognition & Awards", desc: "Annual MVP titles, trophies, and certificates for top performers." },
+                                ].map((b, i) => (
+                                    <div key={i} className="membership-benefit flex gap-4 items-start animate-fade-in-up" style={{ animationDelay: `${i * 80}ms` }}>
+                                        <span className="benefit-icon text-3xl flex-shrink-0">{b.icon}</span>
+                                        <div>
+                                            <h4 className="font-black text-white text-sm">{b.title}</h4>
+                                            <p className="text-blue-200/70 text-xs mt-1 leading-relaxed">{b.desc}</p>
+                                        </div>
                                     </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="space-y-4">
+                            <div className="text-center">
+                                <p className={`text-xs font-black tracking-widest uppercase mb-1 ${d ? 'text-blue-400' : 'text-blue-600'}`}>What Members Say?</p>
+                                <h2 className={`text-3xl font-black tracking-tight uppercase ${d ? 'text-white' : 'text-blue-950'}`}>Member Reviews!</h2>
+                            </div>
+                            <TestimonialCarousel dark={d} />
+                        </div>
+
+                        <div className="space-y-6">
+                            <div className="text-center">
+                                <p className={`text-xs font-black tracking-widest uppercase mb-1 ${d ? 'text-blue-400' : 'text-blue-600'}`}>Legacy Moments</p>
+                                <h2 className={`text-3xl font-black tracking-tight uppercase ${d ? 'text-white' : 'text-blue-950'}`}>Club Gallery</h2>
+                            </div>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+                                {galleryImages.map((img, i) => (
+                                    <div key={i} className={`gallery-item relative rounded-2xl overflow-hidden cursor-pointer border ${i === 0 || i === 3 ? 'md:col-span-1 h-56' : 'h-44'} ${d ? 'border-slate-800' : 'border-blue-100'}`} onClick={() => setLightboxImg(img)}>
+                                        <img src={img.src} alt={img.label} className="w-full h-full object-cover" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-3">
+                                            <span className="text-white text-[10px] font-black uppercase tracking-wider">{img.label}</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className={`rounded-3xl text-center py-14 px-6 border ${d ? 'bg-slate-900 border-slate-800' : 'bg-blue-950 border-blue-900'}`}>
+                            <h2 className="text-3xl md:text-4xl font-black text-white uppercase tracking-tight mb-3">Ready to Compete?</h2>
+                            <p className="text-blue-200/70 text-sm mb-8 max-w-lg mx-auto">Join 350+ athletes at MU's most prestigious sports club. Register for an active tournament slot today.</p>
+                            <button onClick={() => goTo('register')} className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black px-10 py-4 rounded-2xl text-xs uppercase tracking-widest transition-all transform hover:scale-105 shadow-2xl shadow-amber-500/30">Register Now 🚀</button>
+                        </div>
+                    </div>
+                )}
+
+                {currentTab === 'about' && (
+                    <div className="max-w-4xl mx-auto space-y-12">
+                        <div className={`p-8 md:p-10 rounded-3xl border shadow-md space-y-6 animate-fade-in-up ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-blue-100'}`}>
+                            <div className="border-l-4 border-amber-500 pl-5">
+                                <h2 className={`text-2xl font-black uppercase ${d ? 'text-white' : 'text-blue-950'}`}>MU Sports Legacy</h2>
+                                <p className="text-xs text-amber-500 uppercase tracking-widest font-black mt-1">Our Story · Connect · Track Us</p>
+                            </div>
+                            <p className={`text-sm leading-relaxed font-medium ${d ? 'text-slate-300' : 'text-slate-600'}`}>MU Sports Club is the central athletic authority of Metropolitan University, Sylhet. We build teams that challenge boundaries, organize competitive championships, and maintain active external communication for regional athletic events. Since our founding, we've grown into a community of over 350 athletes across all faculties — united by a love for competition and fair play.</p>
+                            <div className="flex items-center gap-4 pt-2">
+                                <a href="https://www.facebook.com/MetropolitanUniversity.Sports.Club" target="_blank" rel="noopener noreferrer" className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-md hover:scale-110 transition-all border ${d ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-blue-100 hover:border-blue-400'}`}>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" className="w-6 h-6 object-contain" alt="Facebook" />
+                                </a>
+                                <a href="https://www.instagram.com/sportsclubmu/" target="_blank" rel="noopener noreferrer" className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-md hover:scale-110 transition-all border ${d ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-blue-100 hover:border-pink-400'}`}>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" className="w-6 h-6 object-contain" alt="Instagram" />
+                                </a>
+                                <a href="mailto:sports.club@mu.edu" className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-md hover:scale-110 transition-all border text-xl ${d ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-blue-100 hover:border-amber-400'}`}>📧</a>
+                            </div>
+                        </div>
+                        <div className="space-y-4">
+                            <h3 className={`text-xl font-black tracking-tight ${d ? 'text-white' : 'text-blue-950'}`}>🏆 Legacy Moments</h3>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                {galleryImages.slice(0, 3).map((img, i) => (
+                                    <div key={i} className={`h-44 rounded-2xl overflow-hidden relative border cursor-pointer group ${d ? 'border-slate-700' : 'border-blue-100'}`} onClick={() => setLightboxImg(img)}>
+                                        <img src={img.src} className="w-full h-full object-cover group-hover:scale-105 transition-transform" alt={img.label} />
+                                        <span className="absolute bottom-2 left-2 bg-slate-950/80 text-white text-[9px] px-2 py-0.5 rounded font-black uppercase tracking-wider">{img.label}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div className={`p-8 rounded-3xl border shadow-md animate-fade-in-up ${d ? 'bg-slate-900 border-slate-800' : 'bg-blue-50/60 border-blue-100'}`}>
+                            <div className="mb-6">
+                                <h3 className={`text-xl font-black ${d ? 'text-amber-400' : 'text-blue-950'}`}>🤝 Want to Collaborate?</h3>
+                                <p className={`text-xs mt-1 font-medium ${d ? 'text-slate-300' : 'text-slate-600'}`}>Partner with MU Sports Club for regional athletic events, sponsorships, or friendly league fixtures.</p>
+                            </div>
+                            <div className="space-y-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <input type="text" placeholder="Name" value={collabForm.name} onChange={e => setCollabForm({ ...collabForm, name: e.target.value })} className={`p-3.5 border rounded-xl text-sm outline-none transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-white ${d ? 'border-slate-700 focus:border-amber-500' : 'border-blue-100 focus:border-blue-500'}`} />
+                                    <input type="text" placeholder="Organization" value={collabForm.org} onChange={e => setCollabForm({ ...collabForm, org: e.target.value })} className={`p-3.5 border rounded-xl text-sm outline-none transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-white ${d ? 'border-slate-700 focus:border-amber-500' : 'border-blue-100 focus:border-blue-500'}`} />
+                                </div>
+                                <textarea placeholder="Describe your collaboration proposal..." rows="4" value={collabForm.note} onChange={e => setCollabForm({ ...collabForm, note: e.target.value })} className={`w-full p-3.5 border rounded-xl text-sm outline-none transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-white resize-none ${d ? 'border-slate-700 focus:border-amber-500' : 'border-blue-100 focus:border-blue-500'}`}></textarea>
+                                <div className={`p-4 rounded-xl border border-dashed flex flex-col sm:flex-row justify-between items-center gap-3 ${d ? 'bg-slate-950 border-slate-700' : 'bg-white border-blue-200'}`}>
                                     <div>
-                                        <p className="text-white font-black text-sm tracking-wider">
-                                            MU SPORTS CLUB
-                                        </p>
-                                        <p className="text-amber-400 text-[9px] font-bold uppercase tracking-widest">
-                                            Metropolitan University, Sylhet
-                                        </p>
+                                        <span className={`text-xs font-black block ${d ? 'text-slate-200' : 'text-slate-700'}`}>Attach Proposal / Identity Image</span>
+                                        <span className="text-[10px] text-slate-400 block mt-0.5">PNG, JPG (Max 5MB)</span>
+                                    </div>
+                                    <input type="file" id="collab-file" accept="image/*" onChange={handleFileChange} className="hidden" />
+                                    <label htmlFor="collab-file" className={`text-[11px] px-5 py-2.5 rounded-xl font-black cursor-pointer transition-colors ${d ? 'bg-slate-800 text-amber-400 hover:bg-slate-700' : 'bg-blue-950 text-white hover:bg-blue-800'}`}>
+                                        {attachedFile ? '🔄 Change File' : '📁 Choose File'}
+                                    </label>
+                                </div>
+                                <button onClick={handleSayHello} className={`w-full py-3.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all shadow-lg ${d ? 'bg-amber-500 text-slate-950 hover:bg-amber-400' : 'bg-blue-950 text-white hover:bg-blue-800'}`}>Send Proposal ✉️</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {currentTab === 'committee' && (
+                    <div className="space-y-10">
+                        <div className="text-center animate-fade-in-up">
+                            <p className={`text-xs font-black tracking-widest uppercase mb-2 ${d ? 'text-blue-400' : 'text-blue-600'}`}>The ChangeMakers</p>
+                            <h1 className={`text-3xl md:text-4xl font-black tracking-tight uppercase ${d ? 'text-white' : 'text-blue-950'}`}>Executive Steering Committee 👑</h1>
+                            <p className={`text-xs font-bold tracking-widest uppercase mt-2 ${d ? 'text-slate-400' : 'text-slate-500'}`}>Official Designation Hierarchy — Session 2025–26</p>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            {committeeList.map((user, idx) => {
+                                const imgSrc = user.profile_picture?.trim()
+                                    ? (user.profile_picture.startsWith('http') ? user.profile_picture : `/storage/${user.profile_picture}`)
+                                    : `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=1E3A8A&color=FFFFFF&bold=true`;
+                                const grad = roleColors[user.committee_role] || 'from-slate-500 to-slate-700';
+                                return (
+                                    <div key={user.id} className={`committee-card rounded-2xl border overflow-hidden animate-fade-in-up ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-blue-100'}`} style={{ animationDelay: `${idx * 60}ms` }}>
+                                        <div className={`h-1.5 w-full bg-gradient-to-r ${grad}`}></div>
+                                        <div className="p-6 text-center">
+                                            <div className="relative inline-block mb-4">
+                                                <div className={`w-24 h-24 rounded-2xl overflow-hidden border-2 shadow-lg mx-auto ${d ? 'border-slate-700 bg-slate-800' : 'border-blue-100 bg-blue-50'}`}>
+                                                    <img src={imgSrc} className="w-full h-full object-cover block" alt="" onError={e => { e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=1E3A8A&color=FFFFFF&bold=true`; }} />
+                                                </div>
+                                                <div className={`absolute -bottom-2 -right-2 w-7 h-7 rounded-full bg-gradient-to-br ${grad} flex items-center justify-center shadow-md`}>
+                                                    <span className="text-white text-[10px] font-black">#</span>
+                                                </div>
+                                            </div>
+                                            <h3 className={`font-black text-[15px] leading-tight ${d ? 'text-white' : 'text-blue-950'}`}>{user.name}</h3>
+                                            <span className={`inline-block mt-2 bg-gradient-to-r ${grad} text-white font-extrabold text-[9px] uppercase tracking-widest px-3 py-1 rounded-full shadow-sm`}>{user.committee_role}</span>
+                                        </div>
+                                        <div className={`px-5 pb-5 border-t text-left text-xs space-y-2 pt-4 ${d ? 'border-slate-800' : 'border-blue-50'}`}>
+                                            <a href={`mailto:${user.email}`} className={`flex items-center gap-2 truncate hover:text-amber-500 transition-colors ${d ? 'text-slate-400' : 'text-slate-500'}`}>
+                                                <span>📧</span><span className="truncate font-medium">{user.email}</span>
+                                            </a>
+                                            <p className={`flex items-center gap-2 ${d ? 'text-slate-400' : 'text-slate-500'} font-medium`}>
+                                                <span>📞</span><span>{user.phone || 'N/A'}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
+
+                {currentTab === 'events' && (
+                    <div className="space-y-8">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 animate-fade-in-up">
+                            <div>
+                                <p className={`text-xs font-black tracking-widest uppercase mb-1 ${d ? 'text-blue-400' : 'text-blue-600'}`}>Season 2025–27</p>
+                                <h1 className={`text-2xl md:text-3xl font-black tracking-tight uppercase ${d ? 'text-white' : 'text-blue-950'}`}>Events Calendar</h1>
+                            </div>
+                            <button onClick={() => goTo('register')} className={`flex-shrink-0 text-[11px] px-5 py-2.5 rounded-xl font-black uppercase tracking-wider transition-colors shadow-md ${d ? 'bg-amber-500 text-slate-950 hover:bg-amber-400' : 'bg-blue-950 text-white hover:bg-blue-800'}`}>Book a Slot →</button>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                            {eventTypes.map(type => (
+                                <button key={type} onClick={() => setActiveFilter(type)} className={`text-[10px] font-black uppercase tracking-wider px-4 py-2 rounded-full border transition-all ${activeFilter === type ? (d ? 'bg-amber-500 text-slate-950 border-amber-500' : 'bg-blue-950 text-white border-blue-950') : (d ? 'border-slate-700 text-slate-400 hover:border-slate-500' : 'border-blue-200 text-slate-500 hover:border-blue-400')}`}>{type}</button>
+                            ))}
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {filteredEvents.map((ev, i) => (
+                                <div key={i} className={`event-card rounded-2xl border overflow-hidden animate-fade-in-up ${d ? 'bg-slate-900 border-slate-800' : 'bg-white border-blue-100 shadow-sm'}`} style={{ animationDelay: `${i * 60}ms` }}>
+                                    <div className={`h-1 w-full ${ev.type?.includes('Indoor') ? 'bg-gradient-to-r from-blue-500 to-blue-700' : 'bg-gradient-to-r from-emerald-500 to-emerald-700'}`}></div>
+                                    <div className="p-6">
+                                        <span className={`inline-block px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-wider ${ev.type?.includes('Indoor') ? (d ? 'bg-blue-950 text-blue-400 border border-blue-900' : 'bg-blue-50 text-blue-700 border border-blue-200') : (d ? 'bg-emerald-950 text-emerald-400 border border-emerald-900' : 'bg-emerald-50 text-emerald-700 border border-emerald-200')}`}>{ev.type || 'Tournament'}</span>
+                                        <h3 className={`text-xl font-black mt-3 leading-tight ${d ? 'text-white' : 'text-blue-950'}`}>{ev.title}</h3>
+                                        <p className={`text-xs mt-2 leading-relaxed line-clamp-3 ${d ? 'text-slate-400' : 'text-slate-500'}`}>{ev.details}</p>
+                                        {ev.title?.toUpperCase().includes('INDOOR') && (
+                                            <div className="mt-3 flex flex-wrap gap-1">
+                                                {DEFAULT_INDOOR_GAMES.slice(0, 5).map(g => (
+                                                    <span key={g.id} className={`text-[9px] px-1.5 py-0.5 rounded font-bold ${d ? 'bg-slate-800 text-slate-400' : 'bg-slate-100 text-slate-500'}`}>{g.game_icon} {g.game_name}</span>
+                                                ))}
+                                                <span className={`text-[9px] px-1.5 py-0.5 rounded font-bold ${d ? 'bg-slate-800 text-slate-400' : 'bg-slate-100 text-slate-500'}`}>+5 more</span>
+                                            </div>
+                                        )}
+                                        {TEAM_TOURNAMENTS.includes(ev.title) && (
+                                            <div className={`mt-3 flex items-center gap-1.5 text-[9px] font-black uppercase ${d ? 'text-amber-400' : 'text-amber-600'}`}>
+                                                <span>👥</span><span>Team Registration Required</span>
+                                            </div>
+                                        )}
+                                        <div className={`mt-5 pt-4 border-t flex justify-between items-center ${d ? 'border-slate-800' : 'border-blue-50'}`}>
+                                            <span className={`text-xs font-bold ${d ? 'text-slate-300' : 'text-slate-700'}`}>📅 {ev.date || ev.event_date}</span>
+                                            <button onClick={() => goTo('register')} className="text-[10px] font-black bg-amber-500 hover:bg-amber-400 text-slate-950 px-4 py-2 rounded-xl transition-all hover:scale-105 shadow-sm">
+                                                {TEAM_TOURNAMENTS.includes(ev.title) ? '⚽ Team Entry' : '🏅 Join →'}
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <p className="text-slate-400 text-xs leading-relaxed">
-                                    The official sports authority of
-                                    Metropolitan University. Cultivating elite
-                                    athletes since day one.
-                                </p>
-                            </div>
-                            <div>
-                                <p className="text-white font-black text-xs uppercase tracking-wider mb-4">
-                                    Quick Links
-                                </p>
-                                <div className="space-y-2">
-                                    {[
-                                        ["home", "Home"],
-                                        ["about", "About"],
-                                        ["committee", "Executive Panel"],
-                                        ["events", "Tournaments"],
-                                        ["news", "News"],
-                                        ["gallery", "Match Gallery"],
-                                        ["register", "Register"],
-                                    ].map(([tab, label]) => (
-                                        <button
-                                            key={tab}
-                                            onClick={() => goTo(tab)}
-                                            className="block text-slate-400 hover:text-amber-400 text-xs font-medium transition-colors"
-                                        >
-                                            {label}
-                                        </button>
-                                    ))}
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {currentTab === 'gallery' && <MatchGallery dark={d} clubEvents={clubEvents} />}
+                {currentTab === 'idcard' && <DigitalIDCard dark={d} />}
+                {currentTab === 'news' && <div className="max-w-3xl mx-auto"><NewsFeed dark={d} /></div>}
+
+                {currentTab === 'register' && (
+                    <RegistrationPage dark={darkMode} clubEvents={clubEvents} showToast={showToast} goTo={goTo} />
+                )}
+            </main>
+
+            <footer className={`mt-20 border-t ${d ? 'bg-slate-900 border-slate-800' : 'bg-slate-950 border-amber-500/10'}`}>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                        <div>
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-amber-400/30">
+                                    <img src="https://imgur.com/RBtBKlX.jpg" alt="logo" className="w-full h-full object-cover" />
+                                </div>
+                                <div>
+                                    <p className="text-white font-black text-sm tracking-wider">MU SPORTS CLUB</p>
+                                    <p className="text-amber-400 text-[9px] font-bold uppercase tracking-widest">Metropolitan University, Sylhet</p>
                                 </div>
                             </div>
-                            <div>
-                                <p className="text-white font-black text-xs uppercase tracking-wider mb-4">
-                                    Contact Us
-                                </p>
-                                <div className="space-y-2 text-slate-400 text-xs font-medium">
-                                    <a
-                                        href="mailto:sports.club@mu.edu"
-                                        className="block hover:text-amber-400 transition-colors"
-                                    >
-                                        📧 sports.club@mu.edu
+                            <p className="text-slate-400 text-xs leading-relaxed">The official sports authority of Metropolitan University. Cultivating elite athletes since day one.</p>
+                        </div>
+                        <div>
+                            <p className="text-white font-black text-xs uppercase tracking-wider mb-4">Quick Links</p>
+                            <div className="space-y-2">
+                                {[['home', 'Home'], ['about', 'About'], ['committee', 'Executive Panel'], ['events', 'Tournaments'], ['register', 'Register']].map(([tab, label]) => (
+                                    <button key={tab} onClick={() => goTo(tab)} className="block text-slate-400 hover:text-amber-400 text-xs font-medium transition-colors">{label}</button>
+                                ))}
+                            </div>
+                        </div>
+                        <div>
+                            <p className="text-white font-black text-xs uppercase tracking-wider mb-4">Contact Us</p>
+                            <div className="space-y-2 text-slate-400 text-xs font-medium">
+                                <a href="mailto:sports.club@mu.edu" className="block hover:text-amber-400 transition-colors">📧 sports.club@mu.edu</a>
+                                <p>📍 Metropolitan University, Sylhet, Bangladesh</p>
+                                <div className="flex gap-3 pt-2">
+                                    <a href="https://www.facebook.com/MetropolitanUniversity.Sports.Club" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" className="w-6 h-6 object-contain" alt="FB" />
                                     </a>
-                                    <p>
-                                        📍 Metropolitan University, Sylhet,
-                                        Bangladesh
-                                    </p>
-                                    <div className="flex gap-3 pt-2">
-                                        <a
-                                            href="https://www.facebook.com/MetropolitanUniversity.Sports.Club"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="hover:opacity-80 transition-opacity"
-                                        >
-                                            <img
-                                                src="https://cdn-icons-png.flaticon.com/512/733/733547.png"
-                                                className="w-6 h-6 object-contain"
-                                                alt="FB"
-                                            />
-                                        </a>
-                                        <a
-                                            href="https://www.instagram.com/sportsclubmu/"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="hover:opacity-80 transition-opacity"
-                                        >
-                                            <img
-                                                src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
-                                                className="w-6 h-6 object-contain"
-                                                alt="IG"
-                                            />
-                                        </a>
-                                    </div>
+                                    <a href="https://www.instagram.com/sportsclubmu/" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" className="w-6 h-6 object-contain" alt="IG" />
+                                    </a>
                                 </div>
                             </div>
                         </div>
-                        <div className="border-t border-slate-800 mt-10 pt-6 text-center">
-                            <p className="text-slate-500 text-[11px]">
-                                © 2025–26 MU Sports Club · Metropolitan
-                                University, Sylhet · All rights reserved.
-                            </p>
-                            <button
-                                onClick={() => setShowAdminLogin(true)}
-                                className="text-slate-800 hover:text-slate-600 text-[10px] mt-2 transition-colors"
-                            >
-                                ⚙
-                            </button>
-                        </div>
                     </div>
-                </footer>
-
-                {/* Lightbox */}
-                {lightboxImg && (
-                    <div
-                        className="fixed inset-0 z-[9998] bg-slate-950/95 flex items-center justify-center p-4"
-                        onClick={() => setLightboxImg(null)}
-                    >
-                        <div
-                            className="relative max-w-3xl w-full"
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            <button
-                                onClick={() => setLightboxImg(null)}
-                                className="absolute -top-10 right-0 text-white text-3xl font-black hover:text-amber-400 transition-colors z-10"
-                            >
-                                ×
-                            </button>
-                            <img
-                                src={lightboxImg.src}
-                                alt={lightboxImg.label}
-                                className="w-full rounded-2xl shadow-2xl"
-                            />
-                            <p className="text-center text-white font-black text-sm mt-3 uppercase tracking-wider">
-                                {lightboxImg.label}
-                            </p>
-                        </div>
+                    <div className="border-t border-slate-800 mt-10 pt-6 text-center">
+                        <p className="text-slate-500 text-[11px]">© 2025–26 MU Sports Club · Metropolitan University, Sylhet · All rights reserved.</p>
+                        <button onClick={() => setShowAdminLogin(true)} className="text-slate-800 hover:text-slate-600 text-[10px] mt-2 transition-colors">⚙</button>
                     </div>
-                )}
+                </div>
+            </footer>
 
-                {toast && (
-                    <Toast
-                        message={toast.message}
-                        type={toast.type}
-                        onClose={() => setToast(null)}
-                    />
-                )}
-            </div>
+            {lightboxImg && (
+                <div className="fixed inset-0 z-[9998] bg-slate-950/95 flex items-center justify-center p-4" onClick={() => setLightboxImg(null)}>
+                    <div className="relative max-w-3xl w-full" onClick={e => e.stopPropagation()}>
+                        <button onClick={() => setLightboxImg(null)} className="absolute -top-10 right-0 text-white text-3xl font-black hover:text-amber-400 transition-colors z-10">×</button>
+                        <img src={lightboxImg.src} alt={lightboxImg.label} className="w-full rounded-2xl shadow-2xl" />
+                        <p className="text-center text-white font-black text-sm mt-3 uppercase tracking-wider">{lightboxImg.label}</p>
+                    </div>
+                </div>
+            )}
+
+            {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+        </div>
         </>
     );
 }
 
-const rootElement = document.getElementById("app");
+const rootElement = document.getElementById('app');
 if (rootElement) {
     const root = createRoot(rootElement);
     root.render(<MUSportsClubApp />);
