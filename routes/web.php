@@ -85,7 +85,11 @@ Route::get('/tournament-games/{tournament}', function ($tournament) {
 });
 
 Route::get('/news', function () {
-    return response()->json(['success' => true, 'data' => DB::table('news')->orderBy('is_pinned','desc')->orderBy('created_at','desc')->get()]);
+    try {
+        return response()->json(['success' => true, 'data' => DB::table('news')->orderBy('is_pinned','desc')->orderBy('created_at','desc')->get()]);
+    } catch (\Exception $e) {
+        return response()->json(['success' => true, 'data' => []]);
+    }
 });
 
 Route::get('/match-gallery', function () {
@@ -98,14 +102,6 @@ Route::get('/match-gallery/{tournament}', function ($tournament) {
         return response()->json(['success' => true, 'data' => $data]);
     } catch (\Exception $e) {
         return response()->json(['success' => true, 'data' => [], 'error' => $e->getMessage()]);
-    }
-});
-
-Route::get('/news', function () {
-    try {
-        return response()->json(['success' => true, 'data' => DB::table('news')->orderBy('is_pinned','desc')->orderBy('created_at','desc')->get()]);
-    } catch (\Exception $e) {
-        return response()->json(['success' => true, 'data' => []]);
     }
 });
 
@@ -138,7 +134,11 @@ Route::delete('/admin/registrations/{id}', function (Request $request, $id) {
 
 Route::get('/admin/members', function (Request $request) {
     if (!adminCheck($request)) return response()->json(['error' => 'Unauthorized'], 401);
-    return response()->json(['success' => true, 'data' => DB::table('users')->select('id','name','email','system_role','committee_role','phone','profile_picture')->get()]);
+    try {
+        return response()->json(['success' => true, 'data' => DB::table('users')->select('id','name','email','system_role','committee_role','phone','profile_picture')->get()]);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+    }
 });
 
 Route::post('/admin/members', function (Request $request) {
@@ -300,7 +300,11 @@ Route::delete('/admin/tournament-games/{id}', function (Request $request, $id) {
 
 Route::get('/admin/news', function (Request $request) {
     if (!adminCheck($request)) return response()->json(['error' => 'Unauthorized'], 401);
-    return response()->json(['success' => true, 'data' => DB::table('news')->orderBy('created_at','desc')->get()]);
+    try {
+        return response()->json(['success' => true, 'data' => DB::table('news')->orderBy('created_at','desc')->get()]);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+    }
 });
 
 Route::post('/admin/news', function (Request $request) {
@@ -348,7 +352,11 @@ Route::delete('/admin/news/{id}', function (Request $request, $id) {
 
 Route::get('/admin/match-gallery', function (Request $request) {
     if (!adminCheck($request)) return response()->json(['error' => 'Unauthorized'], 401);
-    return response()->json(['success' => true, 'data' => DB::table('match_gallery')->orderBy('created_at','desc')->get()]);
+    try {
+        return response()->json(['success' => true, 'data' => DB::table('match_gallery')->orderBy('created_at','desc')->get()]);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+    }
 });
 
 Route::post('/admin/match-gallery', function (Request $request) {
