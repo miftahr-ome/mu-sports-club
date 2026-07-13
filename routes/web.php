@@ -112,7 +112,7 @@ Route::get('/member-card/{identifier}', function ($identifier) {
     return response()->json(['success' => true, 'data' => $member]);
 });
 
-// ── Admin helper (fixed: only declared once) ────────────────────────────────
+// ── Admin helper (guarded to avoid redeclaration) ────────────────────────────
 
 if (!function_exists('adminCheck')) {
     function adminCheck(Request $request)
