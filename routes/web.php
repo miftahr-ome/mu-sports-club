@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -111,10 +112,13 @@ Route::get('/member-card/{identifier}', function ($identifier) {
     return response()->json(['success' => true, 'data' => $member]);
 });
 
-// ── Admin helper ─────────────────────────────────────────────────────────────
+// ── Admin helper (fixed: only declared once) ────────────────────────────────
 
-function adminCheck(Request $request) {
-    return $request->header('X-Admin-Key') === env('ADMIN_SECRET_KEY', 'musc2026admin');
+if (!function_exists('adminCheck')) {
+    function adminCheck(Request $request)
+    {
+        return $request->header('X-Admin-Key') === env('ADMIN_SECRET_KEY', 'musc2026admin');
+    }
 }
 
 // ── Admin: Registrations ─────────────────────────────────────────────────────
