@@ -2701,7 +2701,7 @@ function MUSportsClubApp() {
 </div>
    <div className="min-w-0 block">
     <span className="text-sm md:text-lg font-black tracking-widest block text-white leading-none whitespace-nowrap">MU SPORTS CLUB</span>
-    <span className="text-[8px] md:text-[9px] tracking-[.2em] font-bold uppercase text-amber-400/90 block mt-0.5 whitespace-nowrap">Metropolitan University · Sylhet</span>
+                <span className="text-red-500">METROPOLITAN</span> <span className="text-white">UNIVERSITY . Sylhet</span>
 </div>
 </div>
 
