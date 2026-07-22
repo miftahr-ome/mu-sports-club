@@ -2696,7 +2696,7 @@ function MUSportsClubApp() {
                        {/* Left — Club Brand */}
 {/* Left — Club Brand */}
 <div className="flex items-center gap-3 cursor-pointer group min-w-0 shrink-0" onClick={() => goTo('home')}>
-   <div className="logo-badge w-11 h-11 md:w-12 md:h-12 rounded-full shrink-0 bg-blue-50 p-1.5 shadow-lg shadow-amber-500/10 ring-1 ring-white/10">
+<div className="logo-badge w-11 h-11 md:w-12 md:h-12 rounded-full shrink-0 bg-blue-50 p-1.5 shadow-lg shadow-amber-500/10 ring-1 ring-white/10">
     <img src="https://i.imgur.com/RBtBKlX.jpg" alt="Club Logo" className="w-full h-full object-contain rounded-full" />
 </div>
    <div className="min-w-0 block">
@@ -2749,20 +2749,25 @@ function MUSportsClubApp() {
                     </div>
                 </div>
 
-                {isMenuOpen && (
-                    <div className="lg:hidden bg-slate-900/98 border-t border-slate-800 px-4 pt-3 pb-5 space-y-1 text-base font-semibold text-white" style={{ backdropFilter: 'blur(20px)' }}>
-                        {navItems.map(item => (
-                            <button key={item.key} onClick={() => goTo(item.key)}
-                                className={`block w-full text-left py-2.5 px-3 rounded-lg transition-colors ${currentTab === item.key ? 'text-amber-400 bg-amber-400/10' : 'hover:text-amber-400 hover:bg-white/5'}`}>
-                                {item.label}
-                            </button>
-                        ))}
-                        <button onClick={() => goTo('register')}
-                            className="block w-full text-center bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black py-3 rounded-xl mt-3 shadow-lg">
-                            Register Now 🚀
-                        </button>
-                    </div>
-                )}
+    {isMenuOpen && (
+    <div className="lg:hidden bg-slate-900/98 border-t border-slate-800 px-4 pt-3 pb-5 space-y-1 text-base font-semibold text-white" style={{ backdropFilter: 'blur(20px)' }}>
+        {navItems.map(item => (
+            <button key={item.key} onClick={() => goTo(item.key)}
+                className={`block w-full text-left py-2.5 px-3 rounded-lg transition-colors ${currentTab === item.key ? 'text-amber-400 bg-amber-400/10' : 'hover:text-amber-400 hover:bg-white/5'}`}>
+                {item.label}
+            </button>
+        ))}
+        <button onClick={() => setDarkMode(!d)}
+            className="flex items-center justify-between w-full text-left py-2.5 px-3 rounded-lg transition-colors hover:text-amber-400 hover:bg-white/5">
+            <span>{d ? 'Light Mode' : 'Dark Mode'}</span>
+            <span className="text-lg">{d ? '☀️' : '🌙'}</span>
+        </button>
+        <button onClick={() => goTo('register')}
+            className="block w-full text-center bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black py-3 rounded-xl mt-3 shadow-lg">
+            Register Now 🚀
+        </button>
+    </div>
+)}
             </nav>
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
