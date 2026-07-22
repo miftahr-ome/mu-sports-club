@@ -1291,9 +1291,9 @@ function Toast({ message, type, onClose }) {
 
 const testimonials = [
     { name: "SH AH AN", dept: "CSE 61, MU", text: "MU Sports Club transformed my university experience. The tournaments are world-class and the executive team is incredibly professional.", avatar: "SH" },
-    { name: "AVIZITH", dept: "CSE 61, MU", text: "The energy during INTRA-FUTSAL was absolutely electric!", avatar: "AV" },
+    { name: "AVIZITH", dept: "CSE 61, MU", text: "The energy during INTRA-FUTSAL was absolutely electric! ", avatar: "AV" },
     { name: "MANNA", dept: "CSE 62, MU", text: "The indoor games season is brilliantly organized. Carrom and Chess tournaments with proper brackets — loved every moment.", avatar: "MN" },
-    { name: "SALEH", dept: "English, MU", text: "From futsal to cricket, every event is managed with so much passion and dedication. Proud to be part of this family.", avatar: "SL" },
+    { name: "Sensei", dept: "CSE 65, MU", text: "Love this GOATED squad.proud to be part of this..", avatar: "SN" },
 ];
 
 function TestimonialCarousel({ dark }) {
@@ -1328,14 +1328,14 @@ function TestimonialCarousel({ dark }) {
 
 const sportsCategories = [
     { icon: "⚽", name: "Football", desc: "Inter-university 9-a-side leagues and futsal tournaments", tag: "League M · Futsal" },
-    { icon: "🏏", name: "Cricket", desc: "Grand cricket tournaments under international standard rules", tag: "UPL · MPL-15" },
-    { icon: "♟️", name: "Chess & Carrom", desc: "Strategic mind games targeting MUSC member brackets", tag: "Indoor Season" },
-    { icon: "🏸", name: "Badminton", desc: "Fast-paced court action in seasonal knockout cups", tag: "Indoor Season" },
+    { icon: "🏏", name: "Cricket", desc: "Grand cricket tournaments under international standard rules", tag: "UPL · MPL" },
+    { icon: "♟️", name: "Chess,Carrom..", desc: "Strategic games targeting MU students brackets", tag: "Indoor Season" },
+    { icon: "🏸", name: "Badminton", desc: "Fast-paced court action in seasonal knockout cups", tag: "Coming Soon" },
     { icon: "🎮", name: "Esports", desc: "Next-generation Esports battles — strategy, reflex, dominance ⚡", tag: "Coming Soon" },
     { icon: "🏋️", name: "Athletics", desc: "Track, field and endurance events for campus athletes", tag: "Coming Soon" },
 ];
 
-const TEAM_TOURNAMENTS = ['LEAGUE M', 'INTRA-MUSC FUTSAL', 'INTRA FUTSAL', 'UPL', 'MPL-15'];
+const TEAM_TOURNAMENTS = ['LEAGUE M', 'INTRA-MUSC FUTSAL', 'INTRA FUTSAL', 'UPL', 'MPL'];
 const INDOOR_TOURNAMENTS = ['INDOOR GAMES SEASON-15'];
 
 const DEFAULT_INDOOR_GAMES = [
@@ -1345,10 +1345,9 @@ const DEFAULT_INDOOR_GAMES = [
     { id: 6, game_name: 'Ludo', game_icon: '🎲', entry_type: 'team' },
     { id: 7, game_name: 'Dart', game_icon: '🎯', entry_type: 'solo' },
     { id: 9, game_name: 'eFootball', game_icon: '🎮', entry_type: 'solo' },
-    { id: 10, game_name: 'fifa26', game_icon: '🎮', entry_type: 'solo' },
+    { id: 10, game_name: 'fifa 26', game_icon: '🎮', entry_type: 'solo' },
 ];
 
-// ─── Registration Page ─────────────────────────────────────────────────────────
 function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
     const [regTab, setRegTab] = useState('tournament');
     const d = dark;
@@ -1486,8 +1485,8 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
                     <div className="flex items-center gap-3 mb-6">
                         <span className="text-3xl">🎽</span>
                         <div>
-                            <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-blue-950'}`}>Club Member Registration</h2>
-                            <p className={`text-xs ${d ? 'text-slate-400' : 'text-slate-500'}`}>Join MUSC as an official member of Metropolitan University</p>
+                            <h2 className={`text-xl font-black ${d ? 'text-white' : 'text-blue-950'}`}>New Member Registration</h2>
+                            <p className={`text-xs ${d ? 'text-slate-400' : 'text-slate-500'}`}>Join MUSC as an official member</p>
                         </div>
                     </div>
                     <form onSubmit={handleMemberSubmit} className="space-y-4">
@@ -1506,7 +1505,7 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
                                 <label className={labelCls}>Department *</label>
                                 <select value={memberForm.department} onChange={e => setMemberForm({ ...memberForm, department: e.target.value })} className={inputCls} required>
                                     <option value="">Select Department</option>
-                                    {['CSE', 'EEE', 'BBA', 'English', 'Law', 'Architecture', 'Civil', 'Pharmacy', 'Economics', 'Sociology'].map(dep => (
+                                    {['CSE', 'SWE', 'EEE', 'BBA', 'English', 'Law', 'Economics', ].map(dep => (
                                         <option key={dep} value={dep}>{dep}</option>
                                     ))}
                                     <option value="Other">Other</option>
@@ -1516,7 +1515,7 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
                                 <label className={labelCls}>Semester *</label>
                                 <select value={memberForm.semester} onChange={e => setMemberForm({ ...memberForm, semester: e.target.value })} className={inputCls} required>
                                     <option value="">Select Semester</option>
-                                    {['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th'].map(s => (
+                                    {['1.1', '1.2', '1.3', '2.1', '2.2', '2.3', '3.1', '3.2', '3.3', '4.1', '4.2', '4.3'].map(s => (
                                         <option key={s} value={s}>{s} Semester</option>
                                     ))}
                                 </select>
@@ -1525,11 +1524,11 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label className={labelCls}>Phone *</label>
-                                <input type="text" value={memberForm.phone} onChange={e => setMemberForm({ ...memberForm, phone: e.target.value })} className={inputCls} placeholder="018XXXXXXXX" required />
+                                <input type="text" value={memberForm.phone} onChange={e => setMemberForm({ ...memberForm, phone: e.target.value })} className={inputCls} placeholder="01XXXXXXXX" required />
                             </div>
                             <div>
                                 <label className={labelCls}>Email *</label>
-                                <input type="email" value={memberForm.email} onChange={e => setMemberForm({ ...memberForm, email: e.target.value })} className={inputCls} placeholder="you@example.com" required />
+                                <input type="email" value={memberForm.email} onChange={e => setMemberForm({ ...memberForm, email: e.target.value })} className={inputCls} placeholder="you@beauty.com" required />
                             </div>
                         </div>
                         <button type="submit" disabled={isMemberSaving}
@@ -1557,16 +1556,16 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label className={labelCls}>Email *</label>
-                                <input type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className={inputCls} placeholder="you@example.com" required />
+                                <input type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className={inputCls} placeholder="you@beauty.com" required />
                             </div>
                             <div>
                                 <label className={labelCls}>Phone *</label>
-                                <input type="text" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} className={inputCls} placeholder="018XXXXXXXX" required />
+                                <input type="text" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} className={inputCls} placeholder="01XXXXXXXX" required />
                             </div>
                         </div>
                         <div>
                             <label className={labelCls}>Department / Institution *</label>
-                            <input type="text" value={formData.department} onChange={e => setFormData({ ...formData, department: e.target.value })} className={inputCls} placeholder="e.g. CSE, MU" required />
+                            <input type="text" value={formData.department} onChange={e => setFormData({ ...formData, department: e.target.value })} className={inputCls} placeholder="e.g. CSE 61, MU" required />
                         </div>
                         <div>
                             <label className={labelCls}>Select Tournament *</label>
@@ -1613,7 +1612,7 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
 
                         {formData.event_name && TEAM_TOURNAMENTS.includes(formData.event_name) && (
                             <div className={`p-4 rounded-xl border ${d ? 'bg-blue-950 border-blue-900' : 'bg-blue-50 border-blue-200'}`}>
-                                <p className={`text-xs font-black ${d ? 'text-blue-300' : 'text-blue-700'}`}>⚽ This is a team tournament! Please use the <strong>Team Entry</strong> tab instead.</p>
+                                <p className={`text-xs font-black ${d ? 'text-blue-300' : 'text-blue-700'}`}> This is a team tournament! Please use the <strong>Team Entry</strong> tab instead.</p>
                                 <button type="button" onClick={() => setRegTab('team')} className="mt-2 text-xs font-black bg-blue-600 text-white px-4 py-1.5 rounded-lg hover:bg-blue-500 transition-colors">
                                     Switch to Team Entry →
                                 </button>
@@ -1651,7 +1650,7 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
                         {teamForm.tournament_name && (
                             <div className={`p-3 rounded-xl ${d ? 'bg-slate-800 border border-slate-700' : 'bg-blue-50 border border-blue-100'}`}>
                                 <p className={`text-xs font-black ${d ? 'text-blue-400' : 'text-blue-700'}`}>
-                                    {isCricket ? '🏏 Cricket — Register full squad (11 players + subs)' : '⚽ Football/Futsal — Register your team (min 5 players)'}
+                                    {isCricket ? '🏏 Cricket — Register full squad (11 players + subs)' : '⚽ Football/Futsal — Register your team (fill the squad)'}
                                 </p>
                             </div>
                         )}
@@ -1659,11 +1658,11 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label className={labelCls}>Team Name *</label>
-                                <input type="text" value={teamForm.team_name} onChange={e => setTeamForm({ ...teamForm, team_name: e.target.value })} className={inputCls} placeholder="e.g. Thunder FC" required />
+                                <input type="text" value={teamForm.team_name} onChange={e => setTeamForm({ ...teamForm, team_name: e.target.value })} className={inputCls} placeholder="e.g. Nexus-61" required />
                             </div>
                             <div>
                                 <label className={labelCls}>Department / Institution *</label>
-                                <input type="text" value={teamForm.department} onChange={e => setTeamForm({ ...teamForm, department: e.target.value })} className={inputCls} placeholder="e.g. CSE, MU" required />
+                                <input type="text" value={teamForm.department} onChange={e => setTeamForm({ ...teamForm, department: e.target.value })} className={inputCls} placeholder="e.g. CSE 61, MU" required />
                             </div>
                         </div>
 
@@ -1736,7 +1735,7 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
     );
 }
 
-// ─── Admin Panel ──────────────────────────────────────────────────────────────
+
 const EMPTY_MEMBER = { name: '', email: '', phone: '', committee_role: '' };
 
 function AdminPanel({ onLogout, dark }) {
@@ -1765,7 +1764,7 @@ function AdminPanel({ onLogout, dark }) {
     const showToast = (msg, type = 'success') => setToast({ message: msg, type });
     const csrfToken = () => document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 
-    // fetcher now checks response.ok and surfaces the real error instead of a generic failure
+
     const fetcher = async (url) => {
         const res = await fetch(url, { headers: { 'X-Admin-Key': ADMIN_PASSWORD } });
         if (!res.ok) {
@@ -1900,7 +1899,7 @@ function AdminPanel({ onLogout, dark }) {
 
     const tabs = [
         { key: 'registrations', label: 'Solo Registrations', icon: '📋', count: registrations.length },
-        { key: 'teams', label: 'Team Registrations', icon: '⚽', count: teamRegs.length },
+        { key: 'teams', label: 'Team Registrations', icon: '⚽🏏', count: teamRegs.length },
         { key: 'club-members', label: 'Club Members', icon: '🎽', count: clubMembers.length },
         { key: 'members', label: 'Committee', icon: '👥', count: members.length },
         { key: 'events', label: 'Events', icon: '🏆', count: events.length },
@@ -2610,6 +2609,8 @@ function MUSportsClubApp() {
         { src: "https://imgur.com/v3jndUb.jpg", label: "Farewell MR.President 24-25" },
         { src: "https://imgur.com/vR6QBef.jpg", label: "Arrival of MR.15" },
         { src: "https://imgur.com/UJwcCaC.jpg", label: "League M Champions 2025" },
+        { src: "https://imgur.com/UJwcCaC.jpg", label: "MPL-24 with CSE GLADIATORS" },
+
     ];
 
     const eventTypes = ['All', ...Array.from(new Set(clubEvents.map(e => e.type || 'Tournament')))];
@@ -2688,23 +2689,23 @@ function MUSportsClubApp() {
 
         <div className={`min-h-screen font-sans antialiased transition-colors duration-300 ${d ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
 
-            {/* ── PREMIUM HEADER ── */}
+
       <nav className={`shadow-2xl sticky top-0 z-50 border-b transition-colors duration-300 ${d ? 'bg-slate-900/95 border-slate-800' : 'bg-slate-950/95 border-amber-500/20'}`} style={{ backdropFilter: 'blur(20px)' }}>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center gap-3 flex-nowrap overflow-hidden">
 
-            {/* Left — Club Brand */}
+
             <div className="flex items-center gap-3 cursor-pointer group min-w-0 shrink-0" onClick={() => goTo('home')}>
                 <div className="logo-badge w-11 h-11 md:w-12 md:h-12 rounded-full shrink-0 bg-blue-50 p-1.5 shadow-lg shadow-amber-500/10 ring-1 ring-white/10">
-                    <img src="https://i.imgur.com/paum0I9.png" alt="Club Logo" className="w-full h-full object-contain rounded-full" />
+                    <img src="https://i.imgur.com/EpKK8F9.png" alt="Club Logo" className="w-full h-full object-contain rounded-full" />
                 </div>
                 <div className="min-w-0 block overflow-hidden">
-                    <span className="text-sm md:text-lg font-black tracking-widest block text-white leading-none whitespace-nowrap truncate">MU SPORTS CLUB</span>
-                    <span className="hidden sm:block text-[8px] md:text-[9px] tracking-[.2em] font-bold uppercase text-amber-400/90 mt-0.5 whitespace-nowrap">Metropolitan University · Sylhet</span>
+                    <span className="text-red-500">MU SPORTS CLUB</span>
+                    <span className="text-[7px] md:text-[8px] tracking-[.25em] text-slate-400 font-semibold mt-0.5">Metropolitan University.Sylhet</span>
                 </div>
             </div>
 
-            {/* Center — Nav Links (desktop) */}
+
             <div className="hidden lg:flex items-center gap-6 text-[13px] font-semibold text-gray-300 flex-1 justify-center">
                 {navItems.map(item => (
                     <button key={item.key} onClick={() => goTo(item.key)}
