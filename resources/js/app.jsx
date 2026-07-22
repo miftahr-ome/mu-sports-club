@@ -2691,18 +2691,19 @@ function MUSportsClubApp() {
             {/* ── PREMIUM HEADER ── */}
             <nav className={`shadow-2xl sticky top-0 z-50 border-b transition-colors duration-300 ${d ? 'bg-slate-900/95 border-slate-800' : 'bg-slate-950/95 border-amber-500/20'}`} style={{ backdropFilter: 'blur(20px)' }}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between h-20 items-center gap-3">
-
+<div className="flex justify-between h-20 items-center gap-3 flex-nowrap overflow-hidden">
                        {/* Left — Club Brand */}
 {/* Left — Club Brand */}
 <div className="flex items-center gap-3 cursor-pointer group min-w-0 shrink-0" onClick={() => goTo('home')}>
 <div className="logo-badge w-11 h-11 md:w-12 md:h-12 rounded-full shrink-0 bg-blue-50 p-1.5 shadow-lg shadow-amber-500/10 ring-1 ring-white/10">
     <img src="https://i.imgur.com/RBtBKlX.jpg" alt="Club Logo" className="w-full h-full object-contain rounded-full" />
 </div>
-   <div className="min-w-0 block">
-    <span className="text-sm md:text-lg font-black tracking-widest block text-white leading-none whitespace-nowrap">MU SPORTS CLUB</span>
-                <span className="text-red-500">METROPOLITAN</span> <span className="text-white">UNIVERSITY . Sylhet</span>
-</div>
+  <div className="min-w-0 block overflow-hidden">
+    <span className="text-sm md:text-lg font-black tracking-widest block text-white leading-none whitespace-nowrap truncate">MU SPORTS CLUB</span>
+    <span className="hidden sm:block text-[8px] md:text-[9px] tracking-[.2em] font-bold uppercase mt-0.5 whitespace-nowrap">
+        <span className="text-white/90">Metropolitan University</span> 
+        <span className="text-red-500"> · Sylhet</span>
+    </span>
 </div>
 
                         {/* Center — Nav Links (desktop) */}
@@ -2726,8 +2727,8 @@ function MUSportsClubApp() {
 
     <div className="brand-divider h-9 hidden sm:block"></div>
 
-    <div className="hidden sm:flex items-center gap-2.5">
-        <div className="flex flex-col items-end leading-none">
+<div className="hidden xl:flex items-center gap-2.5">
+            <div className="flex flex-col items-end leading-none">
             <span className="text-[8px] md:text-[9px] tracking-[.15em] font-black uppercase whitespace-nowrap">
                 <span className="text-red-500">METROPOLITAN</span> <span className="text-white">UNIVERSITY</span>
             </span>
