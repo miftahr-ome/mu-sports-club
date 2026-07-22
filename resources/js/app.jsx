@@ -2681,8 +2681,8 @@ function MUSportsClubApp() {
             ::-webkit-scrollbar-thumb { background:#334155; border-radius:3px; }
             .membership-benefit:hover .benefit-icon { transform:scale(1.15) rotate(-5deg); }
             .benefit-icon { transition:transform .3s ease; }
-            .logo-ring { transition: box-shadow 0.3s ease, transform 0.3s ease; }
-            .logo-ring:hover { transform: scale(1.06); }
+            .logo-badge { transition: box-shadow 0.3s ease, transform 0.3s ease; }
+.logo-badge:hover { transform: scale(1.06); }
             .brand-divider { width: 1px; background: linear-gradient(to bottom, transparent, rgba(148,163,184,0.3), transparent); }
         `}</style>
 
@@ -2694,9 +2694,10 @@ function MUSportsClubApp() {
                     <div className="flex justify-between h-20 items-center gap-3">
 
                        {/* Left — Club Brand */}
+{/* Left — Club Brand */}
 <div className="flex items-center gap-3 cursor-pointer group min-w-0 shrink-0" onClick={() => goTo('home')}>
-    <div className="logo-ring w-12 h-12 rounded-full overflow-hidden shrink-0 shadow-lg shadow-amber-500/10">
-        <img src="https://i.imgur.com/RBtBKlX.jpg" alt="Club Logo" className="w-full h-full object-cover" />
+    <div className="logo-badge w-11 h-11 md:w-12 md:h-12 rounded-full shrink-0 bg-white p-1.5 shadow-lg shadow-amber-500/10 ring-1 ring-white/10">
+        <img src="https://i.imgur.com/RBtBKlX.jpg" alt="Club Logo" className="w-full h-full object-contain rounded-full" />
     </div>
     <div className="min-w-0 hidden xs:block">
         <span className="text-sm md:text-lg font-black tracking-widest block text-white leading-none whitespace-nowrap">MU SPORTS CLUB</span>
@@ -2725,17 +2726,7 @@ function MUSportsClubApp() {
 
                             <div className="brand-divider h-9 hidden sm:block"></div>
 
-                            <div className="hidden sm:flex items-center gap-2.5">
-    <div className="flex flex-col items-end leading-none">
-        <span className="text-[8px] md:text-[9px] tracking-[.15em] font-black uppercase whitespace-nowrap">
-            <span className="text-red-500">METROPOLITAN</span> <span className="text-white">UNIVERSITY</span>
-        </span>
-        <span className="text-[7px] md:text-[8px] tracking-[.25em] text-slate-400 font-semibold mt-0.5">SYLHET</span>
-    </div>
-    <div className="logo-ring w-12 h-12 rounded-full overflow-hidden shrink-0 shadow-md">
-        <img src="https://i.imgur.com/SGXqF5C.jpg" alt="MU Logo" className="w-full h-full object-cover" />
-    </div>
-</div>
+                                        <span className="text-red-500">METROPOLITAN</span> <span className="text-white">UNIVERSITY</span>
 
                             <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden text-white p-2 -mr-2">
                                 <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -3055,9 +3046,9 @@ function MUSportsClubApp() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
                         <div>
                             <div className="flex items-center gap-3 mb-4">
-                                <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-amber-400/30">
-                                    <img src="https://imgur.com/RBtBKlX.jpg" alt="logo" className="w-full h-full object-cover" />
-                                </div>
+                                <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-amber-400/30 bg-white p-1">
+    <img src="https://imgur.com/RBtBKlX.jpg" alt="logo" className="w-full h-full object-contain rounded-full" />
+</div>
                                 <div>
                                     <p className="text-white font-black text-sm tracking-wider">MU SPORTS CLUB</p>
                                     <p className="text-amber-400 text-[9px] font-bold uppercase tracking-widest">Metropolitan University, Sylhet</p>
