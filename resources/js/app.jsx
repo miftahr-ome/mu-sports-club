@@ -2700,8 +2700,8 @@ function MUSportsClubApp() {
                     <img src="https://i.imgur.com/EpKK8F9.png" alt="Club Logo" className="w-full h-full object-contain rounded-full" />
                 </div>
                 <div className="min-w-0 block overflow-hidden">
-                    <span className="text-red-500">MU SPORTS CLUB</span>
-                    <span className="text-[7px] md:text-[8px] tracking-[.25em] text-slate-400 font-semibold mt-0.5">Metropolitan University.Sylhet</span>
+                    <span className="text-white font-black text-sm tracking-wider">MU SPORTS CLUB</span>
+                    {/* <span className="text-[7px] md:text-[8px] tracking-[.25em] text-slate-400 font-semibold mt-0.5">Metropolitan University.Sylhet</span> */}
                 </div>
             </div>
 
@@ -2715,7 +2715,7 @@ function MUSportsClubApp() {
                 ))}
             </div>
 
-            {/* Right — Actions + MU Logo */}
+
             <div className="flex items-center gap-3 shrink-0">
                 <button onClick={() => setDarkMode(!d)} className="hidden sm:block text-amber-400 text-base hover:scale-110 transition-transform">
                     {d ? '☀️' : '🌙'}
@@ -2733,9 +2733,9 @@ function MUSportsClubApp() {
                         </span>
                         <span className="text-[7px] md:text-[8px] tracking-[.25em] text-slate-400 font-semibold mt-0.5">SYLHET</span>
                     </div>
-                    <div className="logo-badge w-11 h-11 md:w-12 md:h-12 rounded-full shrink-0 bg-blue-50 p-1.5 shadow-md ring-1 ring-white/10">
+                    {/* <div className="logo-badge w-11 h-11 md:w-12 md:h-12 rounded-full shrink-0 bg-blue-50 p-1.5 shadow-md ring-1 ring-white/10">
                         <img src="https://i.imgur.com/387GOKA.png" alt="MU Logo" className="w-full h-full object-contain rounded-full" />
-                    </div>
+                    </div> */}
                 </div>
 
                 <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden text-white p-2 -mr-2 flex-shrink-0">
@@ -2781,7 +2781,7 @@ function MUSportsClubApp() {
                                 <span className="inline-block bg-gradient-to-r from-red-600/20 via-blue-700/20 to-cyan-500/20 border border-red-400/40 text-white text-[10px] font-black uppercase tracking-[.25em] px-5 py-2 rounded-full backdrop-blur-2xl">🏆 Official Sports Arena · Metropolitan University</span>
                                 <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-none uppercase" style={{ fontFamily: "'Bebas Neue',sans-serif", letterSpacing: '.02em' }}>
                                     <span className="block text-white">Born To Rule</span>
-                                    <span className="block gold-shimmer">Over The Game</span>
+                                    <span className="block bg-blue-500">Over The Game</span>
                                 </h1>
                                 <p className="text-blue-100/70 text-base md:text-lg max-w-2xl mx-auto font-medium leading-relaxed">
                                     <span className="block text-white font-black">Welcome to the Royal Club</span>
@@ -2844,7 +2844,7 @@ function MUSportsClubApp() {
 
                         <div className={`rounded-3xl p-8 md:p-12 border ${d ? 'bg-slate-900 border-slate-800' : 'bg-gradient-to-br from-blue-950 to-indigo-950'}`}>
                             <div className="text-center mb-10">
-                                <p className="text-xs font-black tracking-widest uppercase mb-2 text-amber-400">Why Join Us</p>
+                                <p className="text-xs font-black tracking-widest uppercase mb-2 text-amber-400">Why Join Us?</p>
                                 <h2 className="text-3xl font-black tracking-tight uppercase text-white">Membership Benefits</h2>
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
