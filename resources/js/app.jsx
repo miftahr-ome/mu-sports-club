@@ -2696,7 +2696,7 @@ function MUSportsClubApp() {
             {/* Left — Club Brand */}
             <div className="flex items-center gap-3 cursor-pointer group min-w-0 shrink-0" onClick={() => goTo('home')}>
                 <div className="logo-badge w-11 h-11 md:w-12 md:h-12 rounded-full shrink-0 bg-blue-50 p-1.5 shadow-lg shadow-amber-500/10 ring-1 ring-white/10">
-                    <img src="https://i.imgur.com/RBtBKlX.jpg" alt="Club Logo" className="w-full h-full object-contain rounded-full" />
+                    <img src="https://i.imgur.com/paum0I9.png" alt="Club Logo" className="w-full h-full object-contain rounded-full" />
                 </div>
                 <div className="min-w-0 block overflow-hidden">
                     <span className="text-sm md:text-lg font-black tracking-widest block text-white leading-none whitespace-nowrap truncate">MU SPORTS CLUB</span>
@@ -2733,7 +2733,7 @@ function MUSportsClubApp() {
                         <span className="text-[7px] md:text-[8px] tracking-[.25em] text-slate-400 font-semibold mt-0.5">SYLHET</span>
                     </div>
                     <div className="logo-badge w-11 h-11 md:w-12 md:h-12 rounded-full shrink-0 bg-blue-50 p-1.5 shadow-md ring-1 ring-white/10">
-                        <img src="https://i.imgur.com/SGXqF5C.jpg" alt="MU Logo" className="w-full h-full object-contain rounded-full" />
+                        <img src="https://i.imgur.com/387GOKA.png" alt="MU Logo" className="w-full h-full object-contain rounded-full" />
                     </div>
                 </div>
 
