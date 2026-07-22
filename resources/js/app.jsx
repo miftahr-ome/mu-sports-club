@@ -2781,7 +2781,7 @@ function MUSportsClubApp() {
                                 <span className="inline-block bg-gradient-to-r from-red-600/20 via-blue-700/20 to-cyan-500/20 border border-red-400/40 text-white text-[10px] font-black uppercase tracking-[.25em] px-5 py-2 rounded-full backdrop-blur-2xl">🏆 Official Sports Arena · Metropolitan University</span>
                                 <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-none uppercase" style={{ fontFamily: "'Bebas Neue',sans-serif", letterSpacing: '.02em' }}>
                                     <span className="block text-white">Born To Rule</span>
-                                    <span className="block bg-blue-500">Over The Game</span>
+                                    <span className="block text-blue-500">Over The Game</span>
                                 </h1>
                                 <p className="text-blue-100/70 text-base md:text-lg max-w-2xl mx-auto font-medium leading-relaxed">
                                     <span className="block text-white font-black">Welcome to the Royal Club</span>
@@ -2798,8 +2798,8 @@ function MUSportsClubApp() {
                         <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-4 gap-4">
                             <StatCard count={350} suffix="+" label="Athletes Enrolled" icon="🏃‍♂️" dark={d} delay={0} trigger={statsInView} />
                             <StatCard count={6} suffix="+" label="Active Events" icon="🔥" dark={d} delay={100} trigger={statsInView} />
-                            <StatCard count={11} suffix="" label="Panel Members" icon="👑" dark={d} delay={200} trigger={statsInView} />
-                            <StatCard count={99} suffix="%" label="Fair Play" icon="🛡️" dark={d} delay={300} trigger={statsInView} />
+                            <StatCard count={40} suffix="+" label="Panel Members" icon="👑" dark={d} delay={200} trigger={statsInView} />
+                            <StatCard count={99.99} suffix="%" label="Fair Play" icon="🛡️" dark={d} delay={300} trigger={statsInView} />
                         </div>
 
                         <div className="space-y-6">
@@ -2932,7 +2932,7 @@ function MUSportsClubApp() {
                         <div className={`p-8 rounded-3xl border shadow-md animate-fade-in-up ${d ? 'bg-slate-900 border-slate-800' : 'bg-blue-50/60 border-blue-100'}`}>
                             <div className="mb-6">
                                 <h3 className={`text-xl font-black ${d ? 'text-amber-400' : 'text-blue-950'}`}>🤝 Want to Collaborate?</h3>
-                                <p className={`text-xs mt-1 font-medium ${d ? 'text-slate-300' : 'text-slate-600'}`}>Partner with MU Sports Club for regional athletic events, sponsorships, or friendly league fixtures.</p>
+                                <p className={`text-xs mt-1 font-medium ${d ? 'text-slate-300' : 'text-slate-600'}`}>Collab with MU Sports Club for regional athletic events, sponsorships, or friendly league fixtures.</p>
                             </div>
                             <div className="space-y-4">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
