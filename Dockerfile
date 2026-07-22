@@ -21,11 +21,20 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 RUN npm ci && npm run build
-RUN chmod -R 775 storage bootstrap/cache
+
+# Create the storage/bootstrap structure Laravel needs, THEN chmod it
+RUN mkdir -p storage/framework/sessions \
+             storage/framework/views \
+             storage/framework/cache/data \
+             storage/framework/testing \
+             storage/logs \
+             bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
 EXPOSE 8000
 
-CMD php artisan key:generate && \
+CMD php artisan config:clear && \
     php artisan migrate --force && \
     php artisan config:cache && \
+    php artisan route:cache && \
     php artisan serve --host=0.0.0.0 --port=8000
