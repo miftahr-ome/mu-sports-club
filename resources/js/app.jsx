@@ -2696,13 +2696,13 @@ function MUSportsClubApp() {
                        {/* Left — Club Brand */}
 {/* Left — Club Brand */}
 <div className="flex items-center gap-3 cursor-pointer group min-w-0 shrink-0" onClick={() => goTo('home')}>
-    <div className="logo-badge w-11 h-11 md:w-12 md:h-12 rounded-full shrink-0 bg-white p-1.5 shadow-lg shadow-amber-500/10 ring-1 ring-white/10">
-        <img src="https://i.imgur.com/RBtBKlX.jpg" alt="Club Logo" className="w-full h-full object-contain rounded-full" />
-    </div>
-    <div className="min-w-0 hidden xs:block">
-        <span className="text-sm md:text-lg font-black tracking-widest block text-white leading-none whitespace-nowrap">MU SPORTS CLUB</span>
-        <span className="text-[8px] md:text-[9px] tracking-[.2em] font-bold uppercase text-amber-400/90 block mt-0.5 whitespace-nowrap">Metropolitan University · Sylhet</span>
-    </div>
+   <div className="logo-badge w-11 h-11 md:w-12 md:h-12 rounded-full shrink-0 bg-blue-50 p-1.5 shadow-lg shadow-amber-500/10 ring-1 ring-white/10">
+    <img src="https://i.imgur.com/RBtBKlX.jpg" alt="Club Logo" className="w-full h-full object-contain rounded-full" />
+</div>
+   <div className="min-w-0 block">
+    <span className="text-sm md:text-lg font-black tracking-widest block text-white leading-none whitespace-nowrap">MU SPORTS CLUB</span>
+    <span className="text-[8px] md:text-[9px] tracking-[.2em] font-bold uppercase text-amber-400/90 block mt-0.5 whitespace-nowrap">Metropolitan University · Sylhet</span>
+</div>
 </div>
 
                         {/* Center — Nav Links (desktop) */}
@@ -2716,26 +2716,36 @@ function MUSportsClubApp() {
                         </div>
 
                         {/* Right — Actions + MU Logo */}
-                        <div className="flex items-center gap-3 shrink-0">
-                            <button onClick={() => setDarkMode(!d)} className="text-amber-400 text-base hover:scale-110 transition-transform">
-                                {d ? '☀️' : '🌙'}
-                            </button>
-                            <button onClick={() => goTo('register')} className="hidden sm:inline-flex items-center bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black px-4 py-2 md:px-5 md:py-2.5 rounded-xl text-[10px] md:text-xs uppercase tracking-wider transition shadow-lg shadow-amber-500/20 animate-pulse-glow">
-                                Register Now
-                            </button>
+                 <div className="flex items-center gap-3 shrink-0">
+    <button onClick={() => setDarkMode(!d)} className="hidden sm:block text-amber-400 text-base hover:scale-110 transition-transform">
+        {d ? '☀️' : '🌙'}
+    </button>
+    <button onClick={() => goTo('register')} className="hidden sm:inline-flex items-center bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black px-4 py-2 md:px-5 md:py-2.5 rounded-xl text-[10px] md:text-xs uppercase tracking-wider transition shadow-lg shadow-amber-500/20 animate-pulse-glow">
+        Register!
+    </button>
 
-                            <div className="brand-divider h-9 hidden sm:block"></div>
+    <div className="brand-divider h-9 hidden sm:block"></div>
 
-                                        <span className="text-red-500">METROPOLITAN</span> <span className="text-white">UNIVERSITY</span>
+    <div className="hidden sm:flex items-center gap-2.5">
+        <div className="flex flex-col items-end leading-none">
+            <span className="text-[8px] md:text-[9px] tracking-[.15em] font-black uppercase whitespace-nowrap">
+                <span className="text-red-500">METROPOLITAN</span> <span className="text-white">UNIVERSITY</span>
+            </span>
+            <span className="text-[7px] md:text-[8px] tracking-[.25em] text-slate-400 font-semibold mt-0.5">SYLHET</span>
+        </div>
+        <div className="logo-badge w-11 h-11 md:w-12 md:h-12 rounded-full shrink-0 bg-blue-50 p-1.5 shadow-md ring-1 ring-white/10">
+            <img src="https://i.imgur.com/SGXqF5C.jpg" alt="MU Logo" className="w-full h-full object-contain rounded-full" />
+        </div>
+    </div>
 
-                            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden text-white p-2 -mr-2">
-                                <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    {isMenuOpen
-                                        ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
-                                        : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />}
-                                </svg>
-                            </button>
-                        </div>
+    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden text-white p-2 -mr-2 flex-shrink-0">
+        <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            {isMenuOpen
+                ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />}
+        </svg>
+    </button>
+</div>
                     </div>
                 </div>
 
@@ -3041,52 +3051,54 @@ function MUSportsClubApp() {
                 )}
             </main>
 
-            <footer className={`mt-20 border-t ${d ? 'bg-slate-900 border-slate-800' : 'bg-slate-950 border-amber-500/10'}`}>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                        <div>
-                            <div className="flex items-center gap-3 mb-4">
-                                <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-amber-400/30 bg-white p-1">
-    <img src="https://imgur.com/RBtBKlX.jpg" alt="logo" className="w-full h-full object-contain rounded-full" />
-</div>
-                                <div>
-                                    <p className="text-white font-black text-sm tracking-wider">MU SPORTS CLUB</p>
-                                    <p className="text-amber-400 text-[9px] font-bold uppercase tracking-widest">Metropolitan University, Sylhet</p>
-                                </div>
-                            </div>
-                            <p className="text-slate-400 text-xs leading-relaxed">The official sports authority of Metropolitan University. Cultivating elite athletes since day one.</p>
-                        </div>
-                        <div>
-                            <p className="text-white font-black text-xs uppercase tracking-wider mb-4">Quick Links</p>
-                            <div className="space-y-2">
-                                {[['home', 'Home'], ['about', 'About'], ['committee', 'Executive Panel'], ['events', 'Tournaments'], ['register', 'Register']].map(([tab, label]) => (
-                                    <button key={tab} onClick={() => goTo(tab)} className="block text-slate-400 hover:text-amber-400 text-xs font-medium transition-colors">{label}</button>
-                                ))}
-                            </div>
-                        </div>
-                        <div>
-                            <p className="text-white font-black text-xs uppercase tracking-wider mb-4">Contact Us</p>
-                            <div className="space-y-2 text-slate-400 text-xs font-medium">
-                                <a href="mailto:sports.club@mu.edu" className="block hover:text-amber-400 transition-colors">📧 sports.club@mu.edu</a>
-                                <p>📍 Metropolitan University, Sylhet, Bangladesh</p>
-                                <div className="flex gap-3 pt-2">
-                                    <a href="https://www.facebook.com/MetropolitanUniversity.Sports.Club" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
-                                        <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" className="w-6 h-6 object-contain" alt="FB" />
-                                    </a>
-                                    <a href="https://www.instagram.com/sportsclubmu/" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
-                                        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" className="w-6 h-6 object-contain" alt="IG" />
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+           <footer className={`mt-20 border-t ${d ? 'bg-slate-900 border-slate-800' : 'bg-slate-950 border-amber-500/10'}`}>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div>
+                <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-amber-400/30 bg-blue-50 p-1 shrink-0">
+                        <img src="https://i.imgur.com/RBtBKlX.jpg" alt="Club Logo" className="w-full h-full object-contain rounded-full" />
                     </div>
-                    <div className="border-t border-slate-800 mt-10 pt-6 text-center">
-                        <p className="text-slate-500 text-[11px]">© 2025–26 MU Sports Club · Metropolitan University, Sylhet · All rights reserved.</p>
-                        <button onClick={() => setShowAdminLogin(true)} className="text-slate-800 hover:text-slate-600 text-[10px] mt-2 transition-colors">⚙</button>
+                    <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-amber-400/30 bg-blue-50 p-1 shrink-0">
+                        <img src="https://i.imgur.com/SGXqF5C.jpg" alt="MU Logo" className="w-full h-full object-contain rounded-full" />
+                    </div>
+                    <div>
+                        <p className="text-white font-black text-sm tracking-wider">MU SPORTS CLUB</p>
+                        <p className="text-amber-400 text-[9px] font-bold uppercase tracking-widest">Metropolitan University,Sylhet</p>
                     </div>
                 </div>
-            </footer>
-
+                <p className="text-slate-400 text-xs leading-relaxed">The official sports authority of Metropolitan University. Cultivating elite athletes since day one.</p>
+            </div>
+            <div>
+                <p className="text-white font-black text-xs uppercase tracking-wider mb-4">Quick Links..</p>
+                <div className="space-y-2">
+                    {[['home', 'Home'], ['about', 'About'], ['committee', 'Executive Panel'], ['events', 'Tournaments'], ['register', 'Register']].map(([tab, label]) => (
+                        <button key={tab} onClick={() => goTo(tab)} className="block text-slate-400 hover:text-amber-400 text-xs font-medium transition-colors">{label}</button>
+                    ))}
+                </div>
+            </div>
+            <div>
+                <p className="text-white font-black text-xs uppercase tracking-wider mb-4">Contact us</p>
+                <div className="space-y-2 text-slate-400 text-xs font-medium">
+                    <a href="mailto:sports.club@mu.edu" className="block hover:text-amber-400 transition-colors">📧 sports.club@mu.edu</a>
+                    <p>📍 Metropolitan University, Sylhet, Bangladesh</p>
+                    <div className="flex gap-3 pt-2">
+                        <a href="https://www.facebook.com/MetropolitanUniversity.Sports.Club" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
+                            <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" className="w-6 h-6 object-contain" alt="FB" />
+                        </a>
+                        <a href="https://www.instagram.com/sportsclubmu/" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" className="w-6 h-6 object-contain" alt="IG" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div className="border-t border-slate-800 mt-10 pt-6 text-center">
+            <p className="text-slate-500 text-[11px]">© 2025–26 MU Sports Club · Metropolitan University, Sylhet · All rights reserved.</p>
+            <button onClick={() => setShowAdminLogin(true)} className="text-slate-800 hover:text-slate-600 text-[10px] mt-2 transition-colors">⚙</button>
+        </div>
+    </div>
+</footer>
             {lightboxImg && (
                 <div className="fixed inset-0 z-[9998] bg-slate-950/95 flex items-center justify-center p-4" onClick={() => setLightboxImg(null)}>
                     <div className="relative max-w-3xl w-full" onClick={e => e.stopPropagation()}>
