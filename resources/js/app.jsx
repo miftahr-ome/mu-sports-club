@@ -2696,9 +2696,13 @@ function MUSportsClubApp() {
 
 
             <div className="flex items-center gap-3 cursor-pointer group min-w-0 shrink-0" onClick={() => goTo('home')}>
-                <div className="logo-badge w-11 h-11 md:w-12 md:h-12 rounded-full shrink-0 bg-blue-50 p-1.5 shadow-lg shadow-amber-500/10 ring-1 ring-white/10">
-                    <img src="https://i.imgur.com/EpKK8F9.png" alt="Club Logo" className="w-full h-full object-contain rounded-full" />
-                </div>
+               <div className="logo-badge w-16 h-16 md:w-20 md:h-20 shrink-0 flex items-center justify-center">
+    <img 
+        src="https://i.imgur.com/EpKK8F9.png" 
+        alt="Club Logo" 
+        className="w-full h-full object-contain" 
+    />
+</div>
                 <div className="min-w-0 block overflow-hidden">
                     <span className="text-white font-black text-sm tracking-wider">MU SPORTS CLUB</span>
                     {/* <span className="text-[7px] md:text-[8px] tracking-[.25em] text-slate-400 font-semibold mt-0.5">Metropolitan University.Sylhet</span> */}
