@@ -2689,87 +2689,85 @@ function MUSportsClubApp() {
         <div className={`min-h-screen font-sans antialiased transition-colors duration-300 ${d ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
 
             {/* ── PREMIUM HEADER ── */}
-            <nav className={`shadow-2xl sticky top-0 z-50 border-b transition-colors duration-300 ${d ? 'bg-slate-900/95 border-slate-800' : 'bg-slate-950/95 border-amber-500/20'}`} style={{ backdropFilter: 'blur(20px)' }}>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div className="flex justify-between h-20 items-center gap-3 flex-nowrap overflow-hidden">
-                       {/* Left — Club Brand */}
-{/* Left — Club Brand */}
-<div className="flex items-center gap-3 cursor-pointer group min-w-0 shrink-0" onClick={() => goTo('home')}>
-<div className="logo-badge w-11 h-11 md:w-12 md:h-12 rounded-full shrink-0 bg-blue-50 p-1.5 shadow-lg shadow-amber-500/10 ring-1 ring-white/10">
-    <img src="https://i.imgur.com/RBtBKlX.jpg" alt="Club Logo" className="w-full h-full object-contain rounded-full" />
-</div>
-  <div className="min-w-0 block overflow-hidden">
-    <span className="text-sm md:text-lg font-black tracking-widest block text-white leading-none whitespace-nowrap truncate">MU SPORTS CLUB</span>
-    <span className="hidden sm:block text-[8px] md:text-[9px] tracking-[.2em] font-bold uppercase mt-0.5 whitespace-nowrap">
-        <span className="text-white/90">Metropolitan University</span> 
-        <span className="text-red-500"> · Sylhet</span>
-    </span>
-</div>
+      <nav className={`shadow-2xl sticky top-0 z-50 border-b transition-colors duration-300 ${d ? 'bg-slate-900/95 border-slate-800' : 'bg-slate-950/95 border-amber-500/20'}`} style={{ backdropFilter: 'blur(20px)' }}>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-20 items-center gap-3 flex-nowrap overflow-hidden">
 
-                        {/* Center — Nav Links (desktop) */}
-                        <div className="hidden lg:flex items-center gap-6 text-[13px] font-semibold text-gray-300 flex-1 justify-center">
-                            {navItems.map(item => (
-                                <button key={item.key} onClick={() => goTo(item.key)}
-                                    className={`nav-link transition ${currentTab === item.key ? 'text-amber-400 active' : 'hover:text-white'}`}>
-                                    {item.label}
-                                </button>
-                            ))}
-                        </div>
+            {/* Left — Club Brand */}
+            <div className="flex items-center gap-3 cursor-pointer group min-w-0 shrink-0" onClick={() => goTo('home')}>
+                <div className="logo-badge w-11 h-11 md:w-12 md:h-12 rounded-full shrink-0 bg-blue-50 p-1.5 shadow-lg shadow-amber-500/10 ring-1 ring-white/10">
+                    <img src="https://i.imgur.com/RBtBKlX.jpg" alt="Club Logo" className="w-full h-full object-contain rounded-full" />
+                </div>
+                <div className="min-w-0 block overflow-hidden">
+                    <span className="text-sm md:text-lg font-black tracking-widest block text-white leading-none whitespace-nowrap truncate">MU SPORTS CLUB</span>
+                    <span className="hidden sm:block text-[8px] md:text-[9px] tracking-[.2em] font-bold uppercase text-amber-400/90 mt-0.5 whitespace-nowrap">Metropolitan University · Sylhet</span>
+                </div>
+            </div>
 
-                        {/* Right — Actions + MU Logo */}
-                 <div className="flex items-center gap-3 shrink-0">
-    <button onClick={() => setDarkMode(!d)} className="hidden sm:block text-amber-400 text-base hover:scale-110 transition-transform">
-        {d ? '☀️' : '🌙'}
-    </button>
-    <button onClick={() => goTo('register')} className="hidden sm:inline-flex items-center bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black px-4 py-2 md:px-5 md:py-2.5 rounded-xl text-[10px] md:text-xs uppercase tracking-wider transition shadow-lg shadow-amber-500/20 animate-pulse-glow">
-        Register!
-    </button>
+            {/* Center — Nav Links (desktop) */}
+            <div className="hidden lg:flex items-center gap-6 text-[13px] font-semibold text-gray-300 flex-1 justify-center">
+                {navItems.map(item => (
+                    <button key={item.key} onClick={() => goTo(item.key)}
+                        className={`nav-link transition ${currentTab === item.key ? 'text-amber-400 active' : 'hover:text-white'}`}>
+                        {item.label}
+                    </button>
+                ))}
+            </div>
 
-    <div className="brand-divider h-9 hidden sm:block"></div>
+            {/* Right — Actions + MU Logo */}
+            <div className="flex items-center gap-3 shrink-0">
+                <button onClick={() => setDarkMode(!d)} className="hidden sm:block text-amber-400 text-base hover:scale-110 transition-transform">
+                    {d ? '☀️' : '🌙'}
+                </button>
+                <button onClick={() => goTo('register')} className="hidden sm:inline-flex items-center bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black px-4 py-2 md:px-5 md:py-2.5 rounded-xl text-[10px] md:text-xs uppercase tracking-wider transition shadow-lg shadow-amber-500/20 animate-pulse-glow">
+                    Register Now
+                </button>
 
-<div className="hidden xl:flex items-center gap-2.5">
-            <div className="flex flex-col items-end leading-none">
-            <span className="text-[8px] md:text-[9px] tracking-[.15em] font-black uppercase whitespace-nowrap">
-                <span className="text-red-500">METROPOLITAN</span> <span className="text-white">UNIVERSITY</span>
-            </span>
-            <span className="text-[7px] md:text-[8px] tracking-[.25em] text-slate-400 font-semibold mt-0.5">SYLHET</span>
-        </div>
-        <div className="logo-badge w-11 h-11 md:w-12 md:h-12 rounded-full shrink-0 bg-blue-50 p-1.5 shadow-md ring-1 ring-white/10">
-            <img src="https://i.imgur.com/SGXqF5C.jpg" alt="MU Logo" className="w-full h-full object-contain rounded-full" />
-        </div>
-    </div>
+                <div className="brand-divider h-9 hidden sm:block"></div>
 
-    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden text-white p-2 -mr-2 flex-shrink-0">
-        <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            {isMenuOpen
-                ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
-                : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />}
-        </svg>
-    </button>
-</div>
+                <div className="hidden xl:flex items-center gap-2.5">
+                    <div className="flex flex-col items-end leading-none">
+                        <span className="text-[8px] md:text-[9px] tracking-[.15em] font-black uppercase whitespace-nowrap">
+                            <span className="text-red-500">METROPOLITAN</span> <span className="text-white">UNIVERSITY</span>
+                        </span>
+                        <span className="text-[7px] md:text-[8px] tracking-[.25em] text-slate-400 font-semibold mt-0.5">SYLHET</span>
+                    </div>
+                    <div className="logo-badge w-11 h-11 md:w-12 md:h-12 rounded-full shrink-0 bg-blue-50 p-1.5 shadow-md ring-1 ring-white/10">
+                        <img src="https://i.imgur.com/SGXqF5C.jpg" alt="MU Logo" className="w-full h-full object-contain rounded-full" />
                     </div>
                 </div>
 
-    {isMenuOpen && (
-    <div className="lg:hidden bg-slate-900/98 border-t border-slate-800 px-4 pt-3 pb-5 space-y-1 text-base font-semibold text-white" style={{ backdropFilter: 'blur(20px)' }}>
-        {navItems.map(item => (
-            <button key={item.key} onClick={() => goTo(item.key)}
-                className={`block w-full text-left py-2.5 px-3 rounded-lg transition-colors ${currentTab === item.key ? 'text-amber-400 bg-amber-400/10' : 'hover:text-amber-400 hover:bg-white/5'}`}>
-                {item.label}
-            </button>
-        ))}
-        <button onClick={() => setDarkMode(!d)}
-            className="flex items-center justify-between w-full text-left py-2.5 px-3 rounded-lg transition-colors hover:text-amber-400 hover:bg-white/5">
-            <span>{d ? 'Light Mode' : 'Dark Mode'}</span>
-            <span className="text-lg">{d ? '☀️' : '🌙'}</span>
-        </button>
-        <button onClick={() => goTo('register')}
-            className="block w-full text-center bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black py-3 rounded-xl mt-3 shadow-lg">
-            Register Now 🚀
-        </button>
+                <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden text-white p-2 -mr-2 flex-shrink-0">
+                    <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        {isMenuOpen
+                            ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                            : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />}
+                    </svg>
+                </button>
+            </div>
+        </div>
     </div>
-)}
-            </nav>
+
+    {isMenuOpen && (
+        <div className="lg:hidden bg-slate-900/98 border-t border-slate-800 px-4 pt-3 pb-5 space-y-1 text-base font-semibold text-white" style={{ backdropFilter: 'blur(20px)' }}>
+            {navItems.map(item => (
+                <button key={item.key} onClick={() => goTo(item.key)}
+                    className={`block w-full text-left py-2.5 px-3 rounded-lg transition-colors ${currentTab === item.key ? 'text-amber-400 bg-amber-400/10' : 'hover:text-amber-400 hover:bg-white/5'}`}>
+                    {item.label}
+                </button>
+            ))}
+            <button onClick={() => setDarkMode(!d)}
+                className="flex items-center justify-between w-full text-left py-2.5 px-3 rounded-lg transition-colors hover:text-amber-400 hover:bg-white/5">
+                <span>{d ? 'Light Mode' : 'Dark Mode'}</span>
+                <span className="text-lg">{d ? '☀️' : '🌙'}</span>
+            </button>
+            <button onClick={() => goTo('register')}
+                className="block w-full text-center bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black py-3 rounded-xl mt-3 shadow-lg">
+                Register Now 🚀
+            </button>
+        </div>
+    )}
+</nav>
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
