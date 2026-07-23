@@ -1497,7 +1497,7 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
                             </div>
                             <div>
                                 <label className={labelCls}>Student ID *</label>
-                                <input type="text" value={memberForm.student_id} onChange={e => setMemberForm({ ...memberForm, student_id: e.target.value })} className={inputCls} placeholder="e.g. 011223456" required />
+                                <input type="text" value={memberForm.student_id} onChange={e => setMemberForm({ ...memberForm, student_id: e.target.value })} className={inputCls} placeholder="e.g. 242-115-111" required />
                             </div>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1555,8 +1555,8 @@ function RegistrationPage({ dark, clubEvents, showToast, goTo }) {
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label className={labelCls}>Email *</label>
-                                <input type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className={inputCls} placeholder="you@beauty.com" required />
+                                <label className={labelCls}>Email </label>
+                                <input type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className={inputCls} placeholder="you@beauty.com" />
                             </div>
                             <div>
                                 <label className={labelCls}>Phone *</label>
@@ -2730,17 +2730,13 @@ function MUSportsClubApp() {
 
                 <div className="brand-divider h-9 hidden sm:block"></div>
 
-                <div className="hidden xl:flex items-center gap-2.5">
-                    <div className="flex flex-col items-end leading-none">
-                        <span className="text-[8px] md:text-[9px] tracking-[.15em] font-black uppercase whitespace-nowrap">
-                            <span className="text-red-500">METROPOLITAN</span> <span className="text-white">UNIVERSITY</span>
-                        </span>
-                        <span className="text-[7px] md:text-[8px] tracking-[.25em] text-slate-400 font-semibold mt-0.5">SYLHET</span>
-                    </div>
-                    {/* <div className="logo-badge w-11 h-11 md:w-12 md:h-12 rounded-full shrink-0 bg-blue-50 p-1.5 shadow-md ring-1 ring-white/10">
-                        <img src="https://i.imgur.com/387GOKA.png" alt="MU Logo" className="w-full h-full object-contain rounded-full" />
-                    </div> */}
-                </div>
+               <div className="logo-badge w-14 h-14 md:w-16 md:h-16 shrink-0 rounded-2xl overflow-hidden ring-1 ring-white/10 shadow-lg">
+    <img 
+        src="https://i.imgur.com/EpKK8F9.png" 
+        alt="Club Logo" 
+        className="w-full h-full object-cover" 
+    />
+</div>
 
                 <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden text-white p-2 -mr-2 flex-shrink-0">
                     <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
