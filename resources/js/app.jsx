@@ -2695,19 +2695,18 @@ function MUSportsClubApp() {
         <div className="flex justify-between h-20 items-center gap-3 flex-nowrap overflow-hidden">
 
 
-            <div className="flex items-center gap-3 cursor-pointer group min-w-0 shrink-0" onClick={() => goTo('home')}>
-              <div className="logo-badge w-14 h-14 md:w-16 md:h-16 shrink-0 rounded-2xl overflow-hidden bg-slate-950 flex items-center justify-center">
-    <img 
-        src="https://i.imgur.com/EpKK8F9.png" 
-        alt="Club Logo" 
-        className="w-[85%] h-[85%] object-contain" 
-    />
+          <div className="flex items-center gap-3 cursor-pointer group min-w-0 shrink-0" onClick={() => goTo('home')}>
+    <div className="logo-badge w-12 h-12 md:w-14 md:h-14 shrink-0 rounded-full overflow-hidden ring-2 ring-amber-400/30 bg-blue-50 p-1">
+        <img 
+            src="https://i.imgur.com/EpKK8F9.png" 
+            alt="Club Logo" 
+            className="w-full h-full object-contain rounded-full" 
+        />
+    </div>
+    <div className="min-w-0 block overflow-hidden">
+        <span className="text-white font-black text-sm tracking-wider">MU SPORTS CLUB</span>
+    </div>
 </div>
-                <div className="min-w-0 block overflow-hidden">
-                    <span className="text-white font-black text-sm tracking-wider">MU SPORTS CLUB</span>
-                    {/* <span className="text-[7px] md:text-[8px] tracking-[.25em] text-slate-400 font-semibold mt-0.5">Metropolitan University.Sylhet</span> */}
-                </div>
-            </div>
 
 
             <div className="hidden lg:flex items-center gap-6 text-[13px] font-semibold text-gray-300 flex-1 justify-center">
@@ -2728,15 +2727,7 @@ function MUSportsClubApp() {
                     Register Now
                 </button>
 
-                <div className="brand-divider h-9 hidden sm:block"></div>
-
-               <div className="logo-badge w-14 h-14 md:w-16 md:h-16 shrink-0 rounded-2xl overflow-hidden ring-1 ring-white/10 shadow-lg">
-    <img 
-        src="https://i.imgur.com/EpKK8F9.png" 
-        alt="Club Logo" 
-        className="w-full h-full object-cover" 
-    />
-</div>
+                
 
                 <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden text-white p-2 -mr-2 flex-shrink-0">
                     <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
