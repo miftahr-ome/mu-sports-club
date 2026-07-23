@@ -2695,7 +2695,7 @@ function MUSportsClubApp() {
         <div className="flex justify-between h-20 items-center gap-3 flex-nowrap overflow-hidden">
 
 
-          <div className="flex items-center gap-3 cursor-pointer group min-w-0 shrink-0" onClick={() => goTo('home')}>
+            <div className="flex items-center gap-3 cursor-pointer group min-w-0 shrink-0" onClick={() => goTo('home')}>
     <div className="logo-badge w-12 h-12 md:w-14 md:h-14 shrink-0 rounded-full overflow-hidden ring-2 ring-amber-400/30 bg-blue-50 p-1">
         <img 
             src="https://i.imgur.com/EpKK8F9.png" 
@@ -2727,7 +2727,19 @@ function MUSportsClubApp() {
                     Register Now
                 </button>
 
-                
+                <div className="brand-divider h-9 hidden sm:block"></div>
+
+                <div className="hidden xl:flex items-center gap-2.5">
+                    <div className="flex flex-col items-end leading-none">
+                        <span className="text-[8px] md:text-[9px] tracking-[.15em] font-black uppercase whitespace-nowrap">
+                            <span className="text-red-500">METROPOLITAN</span> <span className="text-white">UNIVERSITY</span>
+                        </span>
+                        <span className="text-[7px] md:text-[8px] tracking-[.25em] text-slate-400 font-semibold mt-0.5">SYLHET</span>
+                    </div>
+                    {/* <div className="logo-badge w-11 h-11 md:w-12 md:h-12 rounded-full shrink-0 bg-blue-50 p-1.5 shadow-md ring-1 ring-white/10">
+                        <img src="https://i.imgur.com/387GOKA.png" alt="MU Logo" className="w-full h-full object-contain rounded-full" />
+                    </div> */}
+                </div>
 
                 <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden text-white p-2 -mr-2 flex-shrink-0">
                     <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
