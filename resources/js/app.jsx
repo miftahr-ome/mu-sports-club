@@ -2696,11 +2696,11 @@ function MUSportsClubApp() {
 
 
             <div className="flex items-center gap-3 cursor-pointer group min-w-0 shrink-0" onClick={() => goTo('home')}>
-               <div className="logo-badge w-16 h-16 md:w-20 md:h-20 shrink-0 flex items-center justify-center">
+              <div className="logo-badge w-14 h-14 md:w-16 md:h-16 shrink-0 rounded-2xl overflow-hidden bg-slate-950 flex items-center justify-center">
     <img 
         src="https://i.imgur.com/EpKK8F9.png" 
         alt="Club Logo" 
-        className="w-full h-full object-contain" 
+        className="w-[85%] h-[85%] object-contain" 
     />
 </div>
                 <div className="min-w-0 block overflow-hidden">
